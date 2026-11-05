@@ -1,3 +1,1 @@
-81dbc3a4b4d46079eb9772e820a89e794a6cbcfef58340a63d1f1de16c572dea  FSB-Helper-Setup.exe
-eeb61f39ac930b59b4c46a1b6fe0b0296e7307f59926b25b052ec0f00d201424  FSB-Helper-Portable.exe
-869abca0e2c126ffd2d3f04cd9990ef61c33262a6fecf9eb0f036a7a54fba193  FSB-Helper-Kutuzovsky.html
+e36aa0e3cb0ae27c9b729294da4529393a65815374ac70cc342abd3e6d289df3  FSB-Helper-Setup.exe

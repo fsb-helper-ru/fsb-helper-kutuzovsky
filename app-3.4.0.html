@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="fsb-app" content="kutuzovsky">
-<meta name="fsb-app-version" content="3.2.0">
+<meta name="fsb-app-version" content="3.4.0">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; font-src data:; media-src data: blob:; connect-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="dark light">
@@ -37,7 +37,7 @@
   color-scheme:light;
   --bg:#eef1f7; --bg2:#e6eaf3; --panel:#ffffff; --panel2:#f3f5fa; --panel3:#e7ecf6;
   --line:#d3dbea; --line2:#e4e9f3; --side1:#ffffff; --side2:#f6f8fc; --top:rgba(238,241,247,.86);
-  --text:#121a2e; --muted:#4a5875; --dim:#586684;
+  --text:#121a2e; --muted:#4a5875; --dim:#515f7e;
   --shadow:0 1px 2px rgba(20,32,70,.06),0 6px 20px rgba(20,32,70,.07);
   --shadow-lg:0 24px 60px rgba(20,32,70,.28);
   --ok-t:#0c6a4a; --warn-t:#855400; --bad-t:#a3261e; --blue-t:#1b4aa6; --purple-t:#5a3cc0; --org-t:#a2480d;
@@ -50,7 +50,7 @@
     color-scheme:light;
     --bg:#eef1f7; --bg2:#e6eaf3; --panel:#ffffff; --panel2:#f3f5fa; --panel3:#e7ecf6;
     --line:#d3dbea; --line2:#e4e9f3; --side1:#ffffff; --side2:#f6f8fc; --top:rgba(238,241,247,.86);
-    --text:#121a2e; --muted:#4a5875; --dim:#586684;
+    --text:#121a2e; --muted:#4a5875; --dim:#515f7e;
     --shadow:0 1px 2px rgba(20,32,70,.06),0 6px 20px rgba(20,32,70,.07);
     --ok-t:#0c6a4a; --warn-t:#855400; --bad-t:#a3261e; --blue-t:#1b4aa6; --purple-t:#5a3cc0; --org-t:#a2480d;
     --link:#1d54b8; --gold:#b98a10; --accent-t:var(--a3);
@@ -1164,17 +1164,24 @@ html[data-shell=overlay] .ovhome{padding-top:2px}
 .ovtiles .tile b{display:block;font-size:.95em}
 .ovtiles .tile span:not(.ti){display:block;font-size:.74em;line-height:1.3}
 .ovtiles .tile>:not(.ti){min-width:0}
+/* узкая панель: плитки в две колонки без вылезания за край, подпись под названием */
+.ovtiles{grid-template-columns:repeat(2,minmax(0,1fr))}
+.ovtiles .tile{min-width:0;overflow:hidden;gap:8px}
+.ovtiles .tile span.tt{display:flex;flex-direction:column;min-width:0;font-size:1em;line-height:1.2;text-align:left}
+.ovtiles .tile .tt b{font-size:.95em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ovtiles .tile .tt small{display:block;margin-top:2px;font-size:.74em;line-height:1.25;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+html[data-shell=overlay] .bottomnav a{min-width:52px;flex:1 0 52px;padding:5px 2px;font-size:.6em;letter-spacing:-.015em}
+html[data-shell=overlay] .bottomnav a .nt{max-width:100%;overflow:hidden;text-overflow:ellipsis}
 
-/* --- экран ключа активации (включается только в сборках с ключами) --- */
-#lic-gate{position:fixed;inset:0;z-index:2147483000;display:grid;place-items:center;padding:16px;background:rgba(5,9,18,.94);backdrop-filter:blur(6px);overflow:auto}
-.lic-box{width:min(520px,100%);padding:22px;border-radius:18px;border:1px solid var(--line2);background:var(--panel);box-shadow:var(--shadow,0 20px 60px rgba(0,0,0,.5))}
-.lic-box h1{margin:.2em 0 .4em;font-size:1.35em}
-.lic-ico{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:rgba(var(--ar),.16);color:var(--accent-t)}
-.lic-ico .i{width:24px;height:24px;margin:0}
-.lic-box textarea{width:100%;margin:6px 0;font:.85em ui-monospace,Consolas,monospace;border-radius:10px;border:1px solid var(--line2);background:var(--panel2);color:var(--text);padding:9px;resize:vertical}
-.lic-err{min-height:1.3em;color:var(--bad-t);font-size:.9em}
-.lic-box .row{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0}
-.lic-box .small{font-size:.8em}
+
+/* --- экзамен в «Учёбе» --- */
+.qopt.sel{background:rgba(var(--ar),.13);border-color:rgba(var(--ar),.75)}
+.tag[data-qz-left]{font-variant-numeric:tabular-nums;font-size:.9em;white-space:nowrap}
+.tag[data-qz-left] .i{width:14px;height:14px;margin:0 4px 0 0;vertical-align:-2px}
+.tile.exam{border-color:rgba(var(--ar),.55);box-shadow:inset 0 0 0 1px rgba(var(--ar),.22),var(--shadow)}
+.examst .i,.examres .i{width:16px;height:16px;margin:0 6px 0 0;vertical-align:-3px}
+.examst .i{color:var(--accent-t)}
+.qmark.mine{color:var(--accent-t)}
 
 /* ===== Учёба 2.0, тесты 2.0, «откуда пришли», мастер первого запуска, «Что сделать сейчас?» ===== */
 .tag.warn{background:rgba(var(--warnr),.14);border-color:rgba(var(--warnr),.45);color:var(--warn-t)}
@@ -1361,6 +1368,26 @@ html[data-mode=pro] .purpose{display:none}
 .guide-sum{white-space:pre-wrap;font:inherit;font-size:.9em;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:8px 0}
 @media (prefers-reduced-motion:reduce){.guide-bar i{transition:none}}
 
+/* ===== ключ активации 3.3 ===== */
+.lic-live{min-height:1.3em;font-size:.9em;margin:2px 0 6px;color:var(--muted)}
+.lic-live.ok{color:var(--ok-t)}
+.lic-live.bad{color:var(--bad-t)}
+.lic-where{display:flex;gap:10px;align-items:flex-start;border:1px solid rgba(var(--ar),.4);background:rgba(var(--ar),.08);border-radius:12px;padding:10px 12px;margin:10px 0;font-size:.92em}
+.lic-where .i{flex:none;margin:.15em 0 0;color:var(--accent-t)}
+.lic-box.in-modal{width:auto;padding:0;border:0;background:transparent;box-shadow:none}
+.lic-box.in-modal h3{display:flex;align-items:center;gap:8px;margin:0 0 8px}
+.lic-box.in-modal textarea{width:100%;margin:6px 0;font:.85em ui-monospace,Consolas,monospace;border-radius:10px;border:1px solid var(--line2);background:var(--panel2);color:var(--text);padding:10px}
+.lic-box .btn.gold,.liccard .btn.gold{background:linear-gradient(180deg,#f2cf72,#d4a948);color:#1a1405;border-color:#d4a948}
+.liccard .kv{margin:8px 0}
+.liccard .row.sb b .i{color:inherit}
+.licbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 14px;background:linear-gradient(90deg,rgba(var(--ar),.22),rgba(var(--ar),.08));border-bottom:1px solid rgba(var(--ar),.55);font-size:.92em}
+.licbar .i{width:16px;height:16px;margin:0 6px 0 0;vertical-align:-3px;color:var(--accent-t)}
+.licbar .grow{flex:1}
+.licbar.bad{background:linear-gradient(90deg,rgba(var(--badr),.25),rgba(var(--badr),.08));border-bottom-color:rgba(var(--badr),.55)}
+.licbar.bad .i{color:var(--bad-t)}
+.updprog{height:6px;border-radius:99px;background:var(--line);overflow:hidden}
+.updprog i{display:block;height:100%;background:var(--accent);transition:width .3s}
+
 </style>
 </head>
 <body>
@@ -1374,6 +1401,18 @@ html[data-mode=pro] .purpose{display:none}
    ДВИЖОК: данные, хранение, поиск, ссылки между статьями, расчёты.
    Ничего не ходит в интернет. Всё хранится в этом браузере (localStorage).
    ================================================================ */
+
+/* ---------- аккаунт (программа Windows) ----------
+   Программа открывает эту страницу только после входа (логин, пароль, ключ) и сообщает, кто вошёл.
+   У каждого аккаунта свои данные. Сборка для программы без неё не запускается. */
+const ACCOUNT = (() => { try { const a = window.fsbNative && window.fsbNative.account; return a && typeof a.id === "string" ? a : null; } catch (e) { return null; } })();
+(function nativeOnly() {
+  let mode = "file";
+  try { const el = document.getElementById("site-config"); mode = (el && JSON.parse(el.textContent).mode) || "file"; } catch (e) { }
+  if (mode !== "native" || ACCOUNT) return;
+  document.body.innerHTML = '<div style="max-width:560px;margin:12vh auto;padding:24px;font:16px/1.5 system-ui,sans-serif;color:#e9eef9;background:#101a2e;border:1px solid #253659;border-radius:14px"><b>Откройте программу «ФСБ-помощник».</b><p>Эта страница — часть программы для Windows и открывается только в ней, после входа в аккаунт.</p><p>Скачать программу: <a style="color:#f0c766" href="https://fsb-helper-ru.github.io/fsb-helper-kutuzovsky/">fsb-helper-ru.github.io/fsb-helper-kutuzovsky</a></p></div>';
+  throw new Error("ФСБ-помощник: страница открыта без программы");
+})();
 
 /* ---------- мелкие помощники ---------- */
 const $ = (s, r) => (r || document).querySelector(s);
@@ -1464,7 +1503,8 @@ const SEV_RANK = { perm: 6, hard: 5, ban: 4, dem: 3, warn: 2, lead: 1, oth: 0 };
 function sevRank(p) { return sevTokens(p).reduce((m, s) => Math.max(m, SEV_RANK[s.cls]), -1); }
 
 /* ---------- хранение ---------- */
-const KEY = "fsb_helper_kutuzovsky_v2", KEY1 = "fsb_helper_kutuzovsky_v1";
+const KEY_BASE = "fsb_helper_kutuzovsky_v2";
+const KEY = ACCOUNT && !ACCOUNT.guest ? KEY_BASE + "@" + ACCOUNT.id : KEY_BASE, KEY1 = "fsb_helper_kutuzovsky_v1";
 const KEY_PRE3 = KEY + "_pre_v3_backup", KEY_PRE4 = KEY + "_pre_v4_backup", KEY_AUTO = KEY + "_auto_backup";
 const SCHEMA = 4;
 const HINT_GROUPS = ["tips", "guide", "welcome", "reminders", "tooltips"];
@@ -1546,6 +1586,9 @@ function normalizeState(p) {
     /* ключ активации (пока ключи выключены, поле просто пустое) */
     const lc = S.license;
     S.license = lc && typeof lc === "object" && isStr(lc.key) && lc.key.length < 900 && isStr(lc.id) && lc.id.length < 40 ? { key: lc.key, id: lc.id, name: isStr(lc.name) ? lc.name.slice(0, 80) : "", exp: isStr(lc.exp) ? lc.exp.slice(0, 12) : "", plan: isStr(lc.plan) ? lc.plan.slice(0, 20) : "", at: isNum(lc.at) ? lc.at : 0 } : null;
+    S.licRevoked = Array.isArray(S.licRevoked) ? S.licRevoked.filter(x => isStr(x) && /^[A-Za-z0-9]{4,16}$/.test(x)).slice(0, 5000) : [];
+    { const p = S.licPolicy; S.licPolicy = p && typeof p === "object" ? { required: p.required === true, from: isStr(p.from) && /^\d{4}-\d{2}-\d{2}$/.test(p.from) ? p.from : "", grace: Number.isInteger(p.grace) ? Math.max(0, Math.min(30, p.grace)) : 3, msg: isStr(p.msg) ? p.msg.slice(0, 300) : "", contact: isStr(p.contact) ? p.contact.slice(0, 120) : "", ts: isNum(p.ts) ? p.ts : 0 } : null; }
+    S.licBarHid = isStr(S.licBarHid) ? S.licBarHid.slice(0, 20) : "";
     S.lastUpdCheck = isNum(S.lastUpdCheck) ? S.lastUpdCheck : 0;
     S.seenVer = isStr(S.seenVer) ? S.seenVer.slice(0, 30) : "";
     S.set.ovHideAfterCopy = S.set.ovHideAfterCopy !== false;
@@ -1564,7 +1607,13 @@ function loadState() {
   try { raw = localStorage.getItem(KEY); } catch (e) { memOnly = true; }
   try { p = raw ? JSON.parse(raw) : null; } catch (e) { p = null; }
   if (p) from = KEY;
-  if (!p) { // перенос из прежней версии программы
+  /* первый аккаунт на этом компьютере получает данные, накопленные до появления входа (3.3 и раньше) */
+  if (!p && KEY !== KEY_BASE && ACCOUNT && ACCOUNT.legacy) {
+    let r0 = null; try { r0 = localStorage.getItem(KEY_BASE); } catch (e) { }
+    try { p = r0 ? JSON.parse(r0) : null; } catch (e) { p = null; }
+    if (p) { raw = r0; from = KEY_BASE; }
+  }
+  if (!p && (KEY === KEY_BASE || (ACCOUNT && ACCOUNT.legacy))) { // перенос из прежней версии программы
     let r1 = null; try { r1 = localStorage.getItem(KEY1); } catch (e) { }
     try { p = r1 ? JSON.parse(r1) : null; } catch (e) { p = null; }
     if (p) { raw = r1; from = KEY1; }
@@ -1594,7 +1643,8 @@ function normAtt(a) {
     pct: qs.length ? Math.round(ok / qs.length * 100) : 0, grade: ["repeat", "base", "good", "great"].indexOf(a.grade) >= 0 ? a.grade : "repeat", qs,
     topics: Array.isArray(a.topics) ? a.topics.filter(isStr).map(t => t.slice(0, 40)).slice(0, 12) : [],
     lessons: Array.isArray(a.lessons) ? a.lessons.filter(isStr).map(t => t.slice(0, 12)).slice(0, 12) : [],
-    refs: Array.isArray(a.refs) ? a.refs.filter(isStr).map(t => t.slice(0, 80)).slice(0, 30) : []
+    refs: Array.isArray(a.refs) ? a.refs.filter(isStr).map(t => t.slice(0, 80)).slice(0, 30) : [],
+    exam: !!a.exam, pass: !!a.exam && !!a.pass, timeout: !!a.timeout, dur: isNum(a.dur) ? Math.max(0, Math.min(864e5, a.dur)) : 0
   };
 }
 function normalizeV4() {
@@ -1607,6 +1657,8 @@ function normalizeV4() {
     const snap = e.q ? normQ(e.q) : null;
     q.todo[k] = { id: k, q: snap, legacy: !!e.legacy, miss: isNum(e.miss) ? Math.max(1, Math.min(99, e.miss | 0)) : 1, first: isNum(e.first) ? e.first : 0, last: isNum(e.last) ? e.last : 0, fixed: isNum(e.fixed) ? e.fixed : 0, att: sCut(e.att, 40) };
   });
+  const ex = q.exam && typeof q.exam === "object" ? q.exam : {};
+  q.exam = { tries: isNum(ex.tries) ? Math.max(0, ex.tries | 0) : 0, best: isNum(ex.best) ? Math.max(0, Math.min(100, ex.best | 0)) : 0, passTs: isNum(ex.passTs) ? ex.passTs : 0 };
   const c = q.cur;
   q.cur = null;
   if (c && typeof c === "object" && isStr(c.id) && Array.isArray(c.qs)) {
@@ -1614,7 +1666,8 @@ function normalizeV4() {
     if (qs.length >= 1) {
       const picks = Array.isArray(c.picks) ? c.picks.slice(0, qs.length).map((v, i) => (Number.isInteger(v) && v >= 0 && v < qs[i].o.length ? v : -1)) : [];
       const i = Number.isInteger(c.i) && c.i >= 0 && c.i < qs.length ? c.i : Math.min(picks.length, qs.length - 1);
-      q.cur = { id: c.id.slice(0, 40), mode: sCut(c.mode, 16) || "std", lvl: [1, 2, 3].indexOf(c.lvl) >= 0 ? c.lvl : 1, from: sCut(c.from, 40), qs, picks, i, ts: isNum(c.ts) ? c.ts : Date.now() };
+      q.cur = { id: c.id.slice(0, 40), mode: sCut(c.mode, 16) || "std", lvl: [1, 2, 3].indexOf(c.lvl) >= 0 ? c.lvl : 1, from: sCut(c.from, 40), qs, picks, i, ts: isNum(c.ts) ? c.ts : Date.now(),
+        t0: isNum(c.t0) ? c.t0 : (isNum(c.ts) ? c.ts : Date.now()), exam: !!c.exam, dl: c.exam && isNum(c.dl) ? c.dl : 0 };
     }
   }
   /* прогресс уроков */
@@ -3404,6 +3457,7 @@ const DG = (function () {
   function paperTex(tint) {
     if (PAPER[tint]) return PAPER[tint];
     const c = mk(PW, PH), x = c.getContext("2d"), r = rng("paper-" + tint);
+    if (tint === "secure") return (PAPER[tint] = securePaper());
     const base = tint === "cream" ? [249, 244, 229] : tint === "plain" ? [255, 255, 255] : [253, 252, 249];
     x.fillStyle = "rgb(" + base.join(",") + ")"; x.fillRect(0, 0, PW, PH);
     if (tint !== "plain") {
@@ -3426,6 +3480,86 @@ const DG = (function () {
       x.fillStyle = g; x.fillRect(0, 0, PW, PH);
     }
     return (PAPER[tint] = c);
+  }
+
+  /* «Защищённая» бумага, как у настоящих бланков строгой отчётности: светло-зелёный фон, тонкая гильош-сетка
+     из волн, розетки, рамка с узором и микротекст по краю. Всё нарисовано кодом и ИГРОВОЕ — не копия настоящих бланков. */
+  const SGREEN = (a) => "rgba(28,112,72," + a + ")";
+  /* гильош: n тонких замкнутых кривых r(t) = R + A·sin(k·t + сдвиг) — вместе они сплетаются в «сетчатое» кольцо */
+  function guilloche(x, cx, cy, R, A, k, n, a, lw) {
+    x.lineWidth = lw; x.strokeStyle = SGREEN(a);
+    const steps = Math.max(480, Math.round(k * 24));
+    for (let j = 0; j < n; j++) {
+      const ph = j * TAU / n; x.beginPath();
+      for (let s = 0; s <= steps; s++) {
+        const t = s / steps * TAU, rr = R + A * Math.sin(k * t + ph);
+        const px = cx + rr * Math.cos(t), py = cy + rr * Math.sin(t);
+        s ? x.lineTo(px, py) : x.moveTo(px, py);
+      }
+      x.closePath(); x.stroke();
+    }
+  }
+  function securePaper() {
+    const c = mk(PW, PH), x = c.getContext("2d"), r = rng("paper-secure");
+    x.fillStyle = "rgb(240,247,239)"; x.fillRect(0, 0, PW, PH);
+    /* лёгкая неравномерность бумаги */
+    const img = x.getImageData(0, 0, PW, PH), d = img.data;
+    for (let i = 0; i < d.length; i += 4) { const n = (r() - 0.5) * 5; d[i] += n * 0.9; d[i + 1] += n; d[i + 2] += n * 0.9; }
+    x.putImageData(img, 0, 0);
+    /* гильош-сетка: два встречных семейства тонких волн дают «муаровый» узор */
+    x.lineWidth = 0.7;
+    for (let fam = 0; fam < 2; fam++) {
+      x.strokeStyle = SGREEN(fam ? 0.075 : 0.09);
+      for (let y0 = -40; y0 < PH + 40; y0 += 9) {
+        x.beginPath();
+        for (let px = 0; px <= PW; px += 6) {
+          const py = y0 + Math.sin(px / (fam ? 46 : 61) + y0 / 37) * (fam ? 7 : 9) + Math.sin(px / 173 + y0 / 90) * 4;
+          px ? x.lineTo(px, py) : x.moveTo(px, py);
+        }
+        x.stroke();
+      }
+    }
+    /* гильош-розетки: большая под гербом в центре и малые медальоны по углам */
+    const cx = PW / 2, cy = PH * 0.47;
+    guilloche(x, cx, cy, 322, 20, 44, 12, 0.1, 0.65);
+    guilloche(x, cx, cy, 268, 12, 60, 8, 0.08, 0.55);
+    guilloche(x, cx, cy, 150, 46, 18, 14, 0.06, 0.55);
+    [[132, 140], [PW - 132, 140], [132, PH - 150], [PW - 132, PH - 150]].forEach(p => {
+      guilloche(x, p[0], p[1], 46, 10, 12, 6, 0.17, 0.6);
+      guilloche(x, p[0], p[1], 24, 8, 8, 5, 0.13, 0.55);
+    });
+    /* рамка: двойная линия и волна между ними */
+    const m = 34, w = PW - 2 * m, h = PH - 2 * m;
+    x.strokeStyle = SGREEN(0.42); x.lineWidth = 1.6; x.strokeRect(m, m, w, h);
+    x.lineWidth = 0.8; x.strokeRect(m + 12, m + 12, w - 24, h - 24);
+    x.strokeStyle = SGREEN(0.32); x.lineWidth = 0.7;
+    const band = (x0, y0, x1, y1) => {
+      const len = Math.hypot(x1 - x0, y1 - y0), ux = (x1 - x0) / len, uy = (y1 - y0) / len, nx = -uy, ny = ux;
+      for (let ph = 0; ph < 2; ph++) { x.beginPath(); for (let s = 0; s <= len; s += 3) { const o = Math.sin(s / 9 + ph * Math.PI) * 4.2; const px = x0 + ux * s + nx * o, py = y0 + uy * s + ny * o; s ? x.lineTo(px, py) : x.moveTo(px, py); } x.stroke(); }
+    };
+    const b = m + 6; band(b, b, PW - b, b); band(PW - b, b, PW - b, PH - b); band(PW - b, PH - b, b, PH - b); band(b, PH - b, b, b);
+    /* микротекст по краю рамки: каждая строка обрезана своим отрезком, углы остаются чистыми */
+    x.fillStyle = SGREEN(0.5); x.font = "bold 7px " + SANS; x.textBaseline = "middle";
+    const micro = "ФСБ РО · КУТУЗОВСКИЙ · ИГРОВОЙ ДОКУМЕНТ · RP · ";
+    const line = (len) => { let s = ""; while (x.measureText(s).width < len + 40) s += micro; return s; };
+    const run = (tx, ty, rot, len) => {
+      x.save(); x.translate(tx, ty); x.rotate(rot); x.beginPath(); x.rect(0, -6, len, 12); x.clip(); x.fillText(line(len), 0, 0); x.restore();
+    };
+    const i0 = m + 34;                                   /* отступ от угла: строки не заходят друг на друга */
+    run(i0, m + 25, 0, PW - 2 * i0);
+    run(i0, PH - m - 25, 0, PW - 2 * i0);
+    run(m + 25, PH - i0, -Math.PI / 2, PH - 2 * i0);
+    run(PW - m - 25, i0, Math.PI / 2, PH - 2 * i0);
+    return c;
+  }
+  /* дополнительные водяные знаки защищённой бумаги: повторяющаяся диагональная надпись */
+  function secureWatermarks(x) {
+    x.save(); x.fillStyle = "rgba(28,112,72,0.045)"; x.font = "bold 30px " + SANS; x.textAlign = "center"; x.textBaseline = "middle";
+    for (let row = 0; row < 9; row++) for (let col = 0; col < 3; col++) {
+      const cx = 210 + col * 410 + (row % 2) * 205, cy = 150 + row * 195;
+      x.save(); x.translate(cx, cy); x.rotate(-0.52); x.fillText("ИГРОВОЙ ДОКУМЕНТ", 0, 0); x.restore();
+    }
+    x.restore();
   }
 
   /* ---------- примитивы ---------- */
@@ -3731,7 +3865,10 @@ const DG = (function () {
   Flow.prototype.newPage = function () {
     const c = mk(PW * this.sc, PH * this.sc), x = c.getContext("2d");
     x.scale(this.sc, this.sc); x.drawImage(paperTex(this.o.tint || "white"), 0, 0);
-    if (this.o.watermark !== false) emblem(x, PW / 2, PH * 0.47, 600, "rgba(27,37,64,0.04)", { fill: true, lw: 3.2 });
+    if (this.o.watermark !== false) {
+      if (this.o.tint === "secure") { secureWatermarks(x); emblem(x, PW / 2, PH * 0.47, 560, "rgba(28,112,72,0.07)", { fill: true, lw: 3.2 }); }
+      else emblem(x, PW / 2, PH * 0.47, 600, "rgba(27,37,64,0.04)", { fill: true, lw: 3.2 });
+    }
     this.cur = { c, x, i: this.pages.length }; this.pages.push(this.cur); this.y = M.t;
   };
   Flow.prototype.room = function () { return PH - M.b - this.y; };
@@ -3897,9 +4034,15 @@ const DG = (function () {
     });
     const n = f.pages.length;
     f.pages.forEach((p, i) => {
-      const x = p.x; x.save(); x.textAlign = "center"; x.textBaseline = "alphabetic";
-      x.font = fnt(25, false, false, SERIF); x.fillStyle = "#33363f"; x.fillText("стр. " + (i + 1) + (n > 1 ? " из " + n : ""), PW / 2, PH - 88);
-      x.font = fnt(16, false, false, SANS); x.fillStyle = "#8b90a0"; x.fillText(FOOT, PW / 2, PH - 52); x.restore();
+      const x = p.x, sec = f.o.tint === "secure"; x.save(); x.textAlign = "center"; x.textBaseline = "alphabetic";
+      /* на защищённой бумаге подписи внизу поднимаются внутрь рамки, чтобы не лечь на микротекст */
+      x.font = fnt(25, false, false, SERIF); x.fillStyle = "#33363f"; x.fillText("стр. " + (i + 1) + (n > 1 ? " из " + n : ""), PW / 2, PH - (sec ? 104 : 88));
+      x.font = fnt(16, false, false, SANS); x.fillStyle = sec ? "#5f7266" : "#8b90a0"; x.fillText(FOOT, PW / 2, PH - (sec ? 74 : 52));
+      if (sec && f.o.serial) {                           /* «номер бланка» красной краской, как у бланков строгой отчётности — игровой (серия RP) */
+        x.textAlign = "left"; x.font = 'bold 21px "Consolas","Liberation Mono","Courier New",monospace'; x.fillStyle = "rgba(178,30,38,0.85)";
+        x.fillText(f.o.serial, M.l - 40, PH - 104);
+      }
+      x.restore();
     });
     return { pages: f.pages, anchors: f.anchors, scale: f.sc, info: doc.info || {} };
   }
@@ -4013,13 +4156,13 @@ const MININAV = [
 const MININAV_OV = [
   { r: "home", ic: "zap", t: "Слоты" },
   { r: "scn", ic: "compass", t: "Ситуации" },
-  { r: "tools/det", ic: "timer", t: "Задержание" },
-  { r: "tools/binder", ic: "layers", t: "Отыгровки" },
+  { r: "tools/det", ic: "timer", t: "Задержание", bt: "Задерж." },
+  { r: "tools/binder", ic: "layers", t: "Отыгровки", bt: "Отыгр." },
   { r: "tools/phrases", ic: "chat", t: "Фразы" },
   { r: "tools/duty", ic: "clock", t: "Пост" },
   { r: "rules", ic: "flag", t: "Правила" },
   { r: "laws", ic: "scale", t: "Законы" },
-  { r: "favs", ic: "star", t: "Избранное" }
+  { r: "favs", ic: "star", t: "Избранное", bt: "Избр." }
 ];
 const navItemHTML = n => `<a data-go="${n.r}" data-nav="${n.r}" ${n.d ? `data-tip="${esc(n.t + " — " + n.d)}"` : ""}><span class="ic">${ico(n.ic)}</span><span class="nt"><b>${n.t}</b>${n.d ? `<small class="nd">${n.d}</small>` : ""}</span>${n.r === "tools" ? '<i class="nb">идёт</i>' : ""}${n.g ? `<kbd class="gk">G ${n.g}</kbd>` : ""}</a>`;
 const bottomItemHTML = n => `<a data-go="${n.r}" data-nav="${n.r}"${n.bt ? ` aria-label="${esc(n.t)}"` : ""}><span class="ic">${ico(n.ic)}</span><span class="nt">${n.bt || n.t}</span>${n.r === "tools" ? '<i class="nb">идёт</i>' : ""}</a>`;
@@ -4416,7 +4559,7 @@ function tickApp(app) { readTick(app); tickDet(app); tickDuty(app); tickTimers(a
    история поиска, горячие клавиши.
    ================================================================ */
 
-const APP_VERSION = "3.2.0";
+const APP_VERSION = "3.4.0";
 
 /* ---------- инструменты (единый список для меню, главной и палитры) ---------- */
 const TOOLS = [
@@ -5476,13 +5619,13 @@ V.qaAll = function (app) {
 };
 
 /* ================= НАСТРОЙКИ ================= */
-const SET_TABS = [["profile", "user", "Профиль и время"], ["ui", "palette", "Вид и режим"], ["hints", "bulb", "Подсказки"], ["keys", "keyboard", "Горячие клавиши"], ["overlay", "monitor", "Оверлей"], ["data", "backup", "Данные и копии"], ["docs", "book-marked", "Мои документы"]];
+const SET_TABS = [["profile", "user", "Профиль и время"], ["ui", "palette", "Вид и режим"], ["hints", "bulb", "Подсказки"], ["keys", "keyboard", "Горячие клавиши"], ["overlay", "monitor", "Оверлей"], ["acc", "user", "Аккаунт"], ["data", "backup", "Данные и копии"], ["docs", "book-marked", "Мои документы"]];
 V.settings = function (app, tab) {
   tab = SET_TABS.some(t => t[0] === tab) ? tab : "profile";
-  const body = { profile: setProfile, ui: setUI, hints: setHints, keys: setKeys, overlay: setOverlay, data: setData, docs: setDocs }[tab](app);
+  const body = { profile: setProfile, ui: setUI, hints: setHints, keys: setKeys, overlay: setOverlay, acc: setAccount, data: setData, docs: setDocs }[tab](app);
   return `<h1>${ico("sliders")}Настройки</h1>
   ${memOnly ? `<div class="card bad"><b>${ico("alert")}Браузер не даёт сохранять данные.</b><p class="small">Возможно, открыта приватная вкладка или запрещены данные сайтов. Пока вкладка открыта, всё работает, но после закрытия настройки пропадут. Откройте файл в обычном окне Chrome или Edge.</p></div>` : ""}
-  <div class="tabs2" role="tablist">${SET_TABS.map(t => `<button role="tab" class="tab2 ${t[0] === tab ? "on" : ""}" data-go="settings/${t[0]}" aria-selected="${t[0] === tab}">${ico(t[1])}<span>${t[2]}</span></button>`).join("")}</div>
+  <div class="tabs2" role="tablist">${SET_TABS.filter(t => t[0] !== "acc" || accOn()).map(t => `<button role="tab" class="tab2 ${t[0] === tab ? "on" : ""}" data-go="settings/${t[0]}" aria-selected="${t[0] === tab}">${ico(t[1])}<span>${t[2]}</span></button>`).join("")}</div>
   ${body}`;
 };
 const setNum = (k, label, min, max, hint) => `<div><label>${label}</label><input type="number" inputmode="numeric" min="${min}" max="${max}" value="${S.set[k]}" data-chg="set-num" data-k="${k}" data-min="${min}" data-max="${max}"><div class="tiny dim">${hint}</div></div>`;
@@ -5718,7 +5861,7 @@ V.about = function (app) {
   return `<h1>${ico("info")}О программе <span class="tag">версия ${APP_VERSION}</span></h1>
   <p class="sub">Справочник и набор инструментов для сотрудника ФСБ на проекте «Россия Онлайн», сервер «Кутузовский». Работает без интернета, ничего не отправляет и не вмешивается в игру.</p>
   <div class="card warn"><b>Важно.</b> Это неофициальная сводка. Тексты взяты из редакций, которые были доступны при сборке (дата сборки — ноябрь 2026). Игровые законы меняются: если текст расходится с форумом, <b>прав форум</b>. Сомневаетесь — спросите руководителя.</div>
-  ${typeof licCard === "function" ? licCard() : ""}
+  ${typeof accCard === "function" ? accCard() : ""}
   <h2>Что нового в версии ${APP_VERSION}</h2>
   <div class="card"><ul style="margin:0;padding-left:1.1em">
     <li><b>Два режима интерфейса.</b> «Новичок» — с подробными пояснениями и подсказками, «Профи» — компактно и быстро. Переключатель — в боковом меню и в Настройках; подсказки можно отключать по отдельности.</li>
@@ -6105,7 +6248,7 @@ V.learnHub = function (app) {
   <div class="tiles">
     <button class="tile gold" data-go="learn/first"><span class="ti">${ico("rocket")}</span><b>Первые шаги</b><span>${s.comp[0].x} из ${s.comp[0].y} · с чего начать новичку</span></button>
     <button class="tile" data-go="learn/lessons"><span class="ti">${ico("book")}</span><b>Уроки</b><span>${s.comp[1].x} из ${s.comp[1].y} прочитано · по 2–5 минут</span></button>
-    <button class="tile" data-go="learn/quiz"><span class="ti">${ico("flask")}</span><b>Тесты и практика</b><span>${S.quiz.runs ? "лучший результат " + S.quiz.best + "%" : "проверьте себя"}${s.errors ? " · ошибок для повтора: " + s.errors : ""}</span></button>
+    <button class="tile" data-go="learn/quiz"><span class="ti">${ico("flask")}</span><b>Тесты и экзамен</b><span>${S.quiz.runs ? "лучший результат " + S.quiz.best + "%" : "проверьте себя"}${S.quiz.exam && S.quiz.exam.passTs ? " · экзамен сдан" : " · экзамен: 25 вопросов за 20 минут"}${s.errors ? " · ошибок для повтора: " + s.errors : ""}</span></button>
     <button class="tile" data-go="learn/glossary"><span class="ti">${ico("book-text")}</span><b>Словарь</b><span>${GLOSSARY.length} терминов простыми словами</span></button>
     <button class="tile" data-go="learn/qa"><span class="ti">${ico("bulb")}</span><b>Быстрые ответы</b><span>${QA.length} частых вопросов</span></button>
     <button class="tile" data-go="rules"><span class="ti">${ico("scale")}</span><b>Как не вылететь</b><span>правила, за которые наказывают</span></button>
@@ -6126,6 +6269,7 @@ const QZ_MODES = [
   { id: "std", t: "Стандарт", n: 20, ic: "target", lvl: 2, graded: true, d: "20 вопросов по основным темам, часть собирается из базы УК" },
   { id: "hard", t: "Сложный", n: 12, ic: "brain", lvl: 3, graded: true, d: "Ситуации: что делать первым, кто решает, когда нельзя, какой инструмент открыть" },
   { id: "final", t: "Итоговый", n: 30, ic: "trophy", lvl: 3, graded: true, d: "Итоговый тест по всем темам: нормы, ситуации, компетенции" },
+  { id: "exam", t: "Экзамен", n: 25, ic: "shield-check", lvl: 3, graded: true, d: "25 вопросов за 20 минут без подсказок: разбор — только в конце. Сдан — от 80%" },
   { id: "agency", t: "Компетенции ведомств", n: 12, ic: "users", lvl: 2, graded: true, d: "Чьё это дело: буквы Ф, Р, В, С, прокурор, следователь СК" },
   { id: "wrong", t: "Работа над ошибками", n: 10, ic: "rcw", lvl: 1, graded: false, d: "Вопросы, на которых вы ошибались в завершённых тестах" },
   { id: "practice", t: "Мини-практика", n: 8, ic: "compass", lvl: 2, graded: false, d: "8 ситуаций: выберите действие — и сразу объяснение с нормой" },
@@ -6133,6 +6277,12 @@ const QZ_MODES = [
 ];
 const qzMode = id => QZ_MODES.find(m => m.id === id) || QZ_MODES[1];
 const qzModeName = id => qzMode(id).t;
+/* экзамен: время идёт и при выходе из теста, ответы не подсвечиваются, неотвеченное по истечении времени — ошибка */
+const EXAM_MIN = 20, EXAM_PASS = 80;
+const examLeft = c => (c && c.exam ? Math.max(0, c.dl - Date.now()) : 0);
+const examUp = c => !!(c && c.exam && Date.now() >= c.dl);
+const examClock = ms => { const t = Math.max(0, Math.ceil(ms / 1000)), m = Math.floor(t / 60), x = t % 60; return m + ":" + String(x).padStart(2, "0"); };
+const examStat = () => (S.quiz.exam && typeof S.quiz.exam === "object" ? S.quiz.exam : (S.quiz.exam = { tries: 0, best: 0, passTs: 0 }));
 const gradeOf = pct => pct >= 90 ? "great" : pct >= 75 ? "good" : pct >= 50 ? "base" : "repeat";
 const GRADE_LBL = { repeat: "нужно повторить", base: "базовый уровень", good: "хорошо", great: "отлично" };
 const GRADE_CLS = { repeat: "bad", base: "warn", good: "ok", great: "gold" };
@@ -6247,6 +6397,12 @@ function qzBuild(mode, o) {
     let c = 0; for (let k = 0; c < 20 && k < 14; k++) lists.forEach(l => { if (c < 20 && l[k] && add(l[k])) c++; });
     fillS(bank.filter(q => q.sit), 4); fillD(["letter", "mine", "stars", "kpz", "transfer", "compare"], 6);
   }
+  else if (mode === "exam") {
+    const g = {}; bank.filter(q => !q.sit && q.tp !== "инструмент").forEach(q => { const t = qTopic(q); (g[t] = g[t] || []).push(q); });
+    const lists = shuffle(Object.keys(g)).map(t => shuffle(g[t]));
+    let c = 0; for (let k = 0; c < 14 && k < 14; k++) lists.forEach(l => { if (c < 14 && l[k] && add(l[k])) c++; });
+    fillS(bank.filter(q => q.sit), 6); fillD(["transfer", "compare", "letter", "stars", "kpz", "mine"], 5);
+  }
   else if (mode === "agency") { fillS(byIds(QZ_AGENCY), 5); fillD(["letter", "compare", "mine", "transfer", "letter", "compare", "mine"], 7); }
   else if (mode === "practice") {
     const okIds = new Set(); S.quiz.att.forEach(a => a.qs.forEach(q => { if (q.pick === q.a) okIds.add(q.id); }));
@@ -6263,7 +6419,9 @@ function qzBegin(app, mode, o) {
   o = o || {};
   const qs = qzBuild(mode, o);
   if (!qs.length) { toast(app, "Для этого теста пока нет вопросов", "warn"); return; }
-  S.quiz.cur = { id: uid("t"), mode, lvl: qzMode(mode).lvl, from: o.from || "", qs, picks: qs.map(() => -1), i: 0, ts: Date.now() };
+  const now = Date.now(), exam = mode === "exam";
+  S.quiz.cur = { id: uid("t"), mode, lvl: qzMode(mode).lvl, from: o.from || "", qs, picks: qs.map(() => -1), i: 0, ts: now, t0: now, exam, dl: exam ? now + EXAM_MIN * 60000 : 0 };
+  if (exam) examStat().tries++;
   save(); app.ui.qzOpen = true; app.ui.qzAtt = null; app.ui.qzOnlyWrong = false;
   if (!isQuizRoute(app)) go(app, "learn/quiz"); else paint(app);
   syncOthers(app);
@@ -6276,8 +6434,18 @@ function qzAskReplace(app, then) {
     <div class="qzchoice"><button class="btn gold" data-act="qz-resume" data-autofocus>${ico("play")}Продолжить прежний тест</button><button class="btn ghost danger" data-act="qz-replace">${ico("x")}Отменить прежний и начать новый</button><button class="btn ghost" data-act="modal-close">Назад</button></div>`);
 }
 ACT["qz-replace"] = app => { const f = app.modalCb; closeModal(app); S.quiz.cur = null; save(); if (f) f(); };
+function examIntro(app) {
+  const E = examStat();
+  openModal(app, `<h3>${ico("shield-check")}Экзамен</h3>
+    <ul class="small"><li><b>25 вопросов</b> по всем темам: нормы, ситуации, компетенции, расчёты.</li><li><b>${EXAM_MIN} минут.</b> Время идёт, даже если выйти из теста.</li><li><b>Без подсказок:</b> верно или нет — не показывается. Ответ можно поменять, пока не нажали «Дальше».</li><li><b>Сдан — от ${EXAM_PASS}%</b> (20 из 25). Неотвеченное к концу времени считается ошибкой.</li><li>После экзамена — полный разбор с объяснениями и статьями.</li></ul>
+    ${E.tries ? `<p class="small muted">Попыток: ${E.tries} · лучший результат ${E.best}%${E.passTs ? " · сдан " + fmtDate(E.passTs) : ""}</p>` : ""}
+    <div class="qzchoice"><button class="btn gold" data-act="qz-exam-go" data-autofocus>${ico("play")}Начать экзамен</button><button class="btn ghost" data-act="modal-close">Не сейчас</button></div>`);
+}
+ACT["qz-exam-go"] = app => { closeModal(app); qzBegin(app, "exam", {}); };
+ACT["qz-timeup"] = app => { closeModal(app); qzFinish(app, true); };
 ACT["qz-start"] = (app, el) => {
   const mode = el.getAttribute("data-mode"), m = qzMode(mode);
+  if (mode === "exam") { if (S.quiz.cur) qzAskReplace(app, () => examIntro(app)); else examIntro(app); return; }
   if (mode === "wrong" && !todoActive().some(todoQuestion)) { toast(app, "Ошибок для повторения пока нет — работа над ошибками станет доступна после теста с ошибками", "warn"); return; }
   const start = () => qzBegin(app, m.id, {});
   if (S.quiz.cur) qzAskReplace(app, start); else start();
@@ -6290,6 +6458,7 @@ ACT["qz-lesson"] = (app, el) => {
 ACT["qz-again"] = (app, el) => {
   const a = S.quiz.att.find(x => x.id === el.getAttribute("data-id")); if (!a) return;
   if (a.mode === "wrong" && !todoActive().some(todoQuestion)) { toast(app, "Все ошибки уже закреплены — отлично!", "ok"); return; }
+  if (a.mode === "exam") { if (S.quiz.cur) qzAskReplace(app, () => examIntro(app)); else examIntro(app); return; }
   const start = () => qzBegin(app, a.mode, { from: a.from });
   if (S.quiz.cur) qzAskReplace(app, start); else start();
 };
@@ -6309,25 +6478,31 @@ ACT["qz-resume"] = app => {
 /* ---------- ход попытки ---------- */
 ACT["qz-pick"] = (app, el) => {
   const c = S.quiz.cur; if (!c) return;
-  const i = Math.min(c.i, c.qs.length - 1), q = c.qs[i]; if (!q || c.picks[i] >= 0) return;
+  if (examUp(c)) { qzFinish(app, true); return; }
+  const i = Math.min(c.i, c.qs.length - 1), q = c.qs[i]; if (!q || (c.picks[i] >= 0 && !c.exam)) return;
   const p = +el.getAttribute("data-i"); if (!(p >= 0 && p < q.o.length)) return;
   c.picks[i] = p; c.ts = Date.now(); save(); paint(app, true);
   const ex = app.page.querySelector("[data-qexpl]"); if (ex && ex.scrollIntoView) { try { ex.scrollIntoView({ block: "nearest", behavior: "smooth" }); } catch (e) { } }
 };
 ACT["qz-next"] = app => {
   const c = S.quiz.cur; if (!c) return;
+  if (examUp(c)) { qzFinish(app, true); return; }
   const i = Math.min(c.i, c.qs.length - 1); if (c.picks[i] < 0) return;
   if (i + 1 >= c.qs.length) { qzFinish(app); return; }
   c.i = i + 1; c.ts = Date.now(); save(); paint(app);
 };
 /* завершение: ТОЛЬКО здесь пишем историю, результат и список ошибок */
-function qzFinish(app) {
-  const c = S.quiz.cur; if (!c || c.picks.some(p => p < 0)) return;
+function qzFinish(app, timeUp) {
+  const c = S.quiz.cur; if (!c) return;
+  const up = !!c.exam && (!!timeUp || examUp(c));
+  if (c.picks.some(p => p < 0) && !up) return;
   mergeLegacy();
   const ts = Date.now();
   const qs = c.qs.map((q, k) => Object.assign({}, q, { pick: c.picks[k] }));
   const ok = qs.filter(q => q.pick === q.a).length, pct = Math.round(ok / qs.length * 100), wrong = qs.filter(q => q.pick !== q.a);
-  const att = normAtt({ id: c.id, ts, mode: c.mode, lvl: c.lvl, from: c.from, qs, grade: gradeOf(pct), topics: uniq(wrong.map(qTopic)), lessons: uniq(wrong.map(q => q.l).filter(Boolean)), refs: uniq(wrong.map(q => q.ref).filter(Boolean)) });
+  const att = normAtt({ id: c.id, ts, mode: c.mode, lvl: c.lvl, from: c.from, qs, grade: gradeOf(pct), topics: uniq(wrong.map(qTopic)), lessons: uniq(wrong.map(q => q.l).filter(Boolean)), refs: uniq(wrong.map(q => q.ref).filter(Boolean)),
+    exam: !!c.exam, pass: !!c.exam && pct >= EXAM_PASS, timeout: up, dur: Math.max(0, Math.min(ts, c.dl || ts) - (c.t0 || c.ts || ts)) });
+  if (c.exam) { const E = examStat(); E.best = Math.max(E.best || 0, pct); if (pct >= EXAM_PASS) E.passTs = ts; }
   qs.forEach(q => {
     const e = S.quiz.todo[q.id];
     if (q.pick !== q.a) {
@@ -6348,7 +6523,7 @@ function qzFinish(app) {
   if (c.mode === "lesson" && c.from && lessonById(c.from)) { const e = lpTouch(c.from); e.test = Math.max(e.test, pct); e.testTs = ts; }
   S.quiz.cur = null;
   save();
-  logAct("learn", "Тест «" + qzModeName(c.mode) + "»: " + ok + " из " + qs.length + " (" + pct + "%)", "learn/quiz");
+  logAct("learn", (c.exam ? "Экзамен" : "Тест «" + qzModeName(c.mode) + "»") + ": " + ok + " из " + qs.length + " (" + pct + "%)" + (c.exam ? (pct >= EXAM_PASS ? " — сдан" : " — не сдан") : ""), "learn/quiz");
   app.ui.qzOpen = false; app.ui.qzAtt = att.id; app.ui.qzOnlyWrong = wrong.length > 0;
   paint(app); syncOthers(app);
 }
@@ -6365,6 +6540,7 @@ function qzLeavePrompt(app, inPage) {
   const done = c.picks.filter(p => p >= 0).length, i = Math.min(c.i, c.qs.length - 1) + 1;
   openModal(app, `<h3>${ico("flask")}Тест не закончен</h3>
     <p>«${esc(qzModeName(c.mode))}»: вопрос ${i} из ${c.qs.length}, отвечено — ${done}. Пока тест не завершён, ни результат, ни ошибки не записываются.</p>
+    ${c.exam ? `<p class="small"><b>Это экзамен: время не останавливается</b> (осталось ${examClock(examLeft(c))}). Когда оно выйдет, неотвеченные вопросы засчитаются как ошибки.</p>` : ""}
     <div class="qzchoice">
       <button class="btn gold" data-act="qz-resume" data-autofocus>${ico("play")}Продолжить тест</button>
       <button class="btn" data-act="qz-stay">${ico("clock")}${inPage ? "Выйти, продолжу позже" : "Остаться здесь"}<small>тест сохранится: он будет ждать в разделе «Учёба» и на главной</small></button>
@@ -6398,7 +6574,9 @@ const LETTERS = "АБВГДЕ";
 function qzBanner(app, withCancel) {
   const c = S.quiz.cur; if (!c) return "";
   const done = c.picks.filter(p => p >= 0).length, i = Math.min(c.i, c.qs.length - 1) + 1;
-  return `<div class="card warn qzbanner"><div class="row sb"><div><b>${ico("clock")}Незавершённый тест</b><div class="small">«${esc(qzModeName(c.mode))}» — вопрос ${i} из ${c.qs.length}, отвечено ${done} · начат ${fmtDate(c.ts)} ${fmtTime(c.ts)}</div></div>
+  if (c.exam && examUp(c)) return `<div class="card bad qzbanner"><div class="row sb"><div><b>${ico("timer")}Время экзамена вышло</b><div class="small">Отвечено ${done} из ${c.qs.length}. Неотвеченные вопросы засчитаются как ошибки.</div></div>
+    <button class="btn gold" data-act="qz-timeup">${ico("flag")}Показать результат</button></div></div>`;
+  return `<div class="card warn qzbanner"><div class="row sb"><div><b>${ico(c.exam ? "shield-check" : "clock")}${c.exam ? "Идёт экзамен" : "Незавершённый тест"}</b><div class="small">«${esc(qzModeName(c.mode))}» — вопрос ${i} из ${c.qs.length}, отвечено ${done} · ${c.exam ? `осталось <b data-qz-t>${examClock(examLeft(c))}</b>` : `начат ${fmtDate(c.ts)} ${fmtTime(c.ts)}`}</div></div>
     <div class="row"><button class="btn gold" data-act="qz-resume">${ico("play")}Продолжить</button>${withCancel ? `<button class="btn ghost danger sm" data-act="qz-cancel-ask">Отменить попытку</button>` : ""}</div></div></div>`;
 }
 function qzHub(app) {
@@ -6413,43 +6591,50 @@ function qzHub(app) {
   const hist = q.att, hshown = app.ui.qzAllHist ? hist : hist.slice(0, 6);
   return `${learnCrumb(app, "Тесты и практика")}
   <h1>${ico("flask")}Тесты и практика</h1>
-  <p class="sub">Проверка знаний по тем же статьям, что и в справочнике. Тест — это 10–30 вопросов с выбором ответа: после каждого вы сразу видите, верно ли, и получаете ссылку на статью. Пока тест не доведён до конца, результат и ошибки не записываются.</p>
+  <p class="sub">Проверка знаний по тем же статьям, что и в справочнике. Тест — это 10–30 вопросов с выбором ответа: после каждого вы сразу видите, верно ли, и получаете ссылку на статью. На экзамене подсказок нет — разбор в конце. Пока тест не доведён до конца, результат и ошибки не записываются.</p>
   ${qzBanner(app, true)}
   <div class="infobox"><div><small>Лучший результат</small><b>${q.runs && q.best ? q.best + "%" : "—"}</b></div><div><small>Завершено попыток</small><b>${q.runs || 0}</b></div><div><small>Ошибок для повторения</small><b>${act.length}</b></div><div><small>Закреплено после ошибок</small><b>${fixedN}</b></div></div>
+  ${(() => { const E = examStat(); return `<div class="card ${E.passTs ? "ok" : "hl"} small examst">${ico("shield-check")}<b>Экзамен:</b> ${E.passTs ? "сдан " + fmtDate(E.passTs) + " · лучший результат " + E.best + "%" : E.tries ? "пока не сдан · лучший результат " + E.best + "%, нужно " + EXAM_PASS + "%" : "ещё не сдавали — " + qzMode("exam").n + " вопросов за " + EXAM_MIN + " минут, без подсказок"}</div>`; })()}
   <h2>${ico("target")}Выберите тест</h2>
-  <div class="tiles">${tile(M("quick"), "gold")}${tile(M("std"))}${tile(M("hard"))}${tile(M("final"))}${tile(M("agency"))}${tile(M("practice"))}${errTile}</div>
+  <div class="tiles">${tile(M("quick"), "gold")}${tile(M("std"))}${tile(M("hard"))}${tile(M("final"))}${tile(M("exam"), "exam")}${tile(M("agency"))}${tile(M("practice"))}${errTile}</div>
   ${act.length ? `<h2>${ico("alert")}Ошибки для повторения <span class="tag warn">${act.length}</span></h2>
     <p class="small muted">Это вопросы, на которых вы ошибались в завершённых тестах и ещё не ответили правильно. История ошибок сохраняется отдельно — в разделе «История попыток».</p>
     ${shown.map(e => { const qq = todoQuestion(e); const a = qq && qq.ref && ART.get(qq.ref); return `<div class="item" ${a ? `data-go="a/${esc(enc(a.id))}"` : `data-act="qz-start" data-mode="wrong"`}><div class="lead"><b>${e.miss || 1}×</b><small>ошибок</small></div><div class="body"><div class="t">${esc(short(qq.q, 150))}</div><div class="s">${esc(qTopic(qq))}${e.legacy ? " · из прежних тестов" : ""}${e.last ? " · " + fmtDate(e.last) : ""}${a ? " · прочитать: " + esc(artShort(a)) : ""}</div></div></div>`; }).join("")}
     ${errs.length > 5 ? `<button class="btn ghost sm" data-act="qz-more-err">${app.ui.qzAllErr ? "Свернуть" : "Показать все (" + errs.length + ")"}</button>` : ""}` : ""}
   <h2>${ico("history")}История попыток</h2>
-  ${hist.length ? `${hshown.map(a => `<div class="item" data-act="qz-open-att" data-id="${esc(a.id)}"><div class="lead"><b>${a.pct}%</b><small>${GRADE_LBL[a.grade]}</small></div><div class="body"><div class="t">${esc(qzModeName(a.mode))}${a.from && lessonById(a.from) ? " · " + esc(lessonLabel(lessonById(a.from))) : ""}</div><div class="s">${fmtDate(a.ts)} ${fmtTime(a.ts)} · верно ${a.ok} из ${a.n}${a.bad ? " · ошибок " + a.bad : ""}</div></div></div>`).join("")}
+  ${hist.length ? `${hshown.map(a => `<div class="item" data-act="qz-open-att" data-id="${esc(a.id)}"><div class="lead"><b>${a.pct}%</b><small>${GRADE_LBL[a.grade]}</small></div><div class="body"><div class="t">${esc(qzModeName(a.mode))}${a.exam ? (a.pass ? " · сдан" : " · не сдан") : ""}${a.from && lessonById(a.from) ? " · " + esc(lessonLabel(lessonById(a.from))) : ""}</div><div class="s">${fmtDate(a.ts)} ${fmtTime(a.ts)} · верно ${a.ok} из ${a.n}${a.bad ? " · ошибок " + a.bad : ""}</div></div></div>`).join("")}
     <div class="row">${hist.length > 6 ? `<button class="btn ghost sm" data-act="qz-more-hist">${app.ui.qzAllHist ? "Свернуть" : "Показать все (" + hist.length + ")"}</button>` : ""}<button class="btn ghost danger sm" data-act="qz-hist-clear">Очистить историю</button></div>
     <p class="tiny dim">Хранится до 100 последних попыток вместе со снимком вопросов и вариантов.</p>`
     : `<div class="card"><b>Пока не пройдено ни одного теста.</b><p class="small muted">Начните с «Быстрого старта» — это 10 базовых вопросов на несколько минут. Результат и разбор появятся здесь.</p></div>`}`;
 }
 function qzQuestionView(app, c) {
-  const n = c.qs.length, i = Math.min(c.i, n - 1), q = c.qs[i], pick = c.picks[i], answered = pick >= 0, ok = answered && pick === q.a;
+  const n = c.qs.length, i = Math.min(c.i, n - 1), q = c.qs[i], pick = c.picks[i], answered = pick >= 0, ok = answered && pick === q.a, ex = !!c.exam;
   const okN = c.qs.reduce((s, x, k) => s + (c.picks[k] === x.a ? 1 : 0), 0), last = i + 1 >= n;
   const refA = q.ref && ART.get(q.ref), les = q.l && lessonById(q.l), les0 = c.mode === "lesson" && lessonById(c.from);
+  if (ex && examUp(c)) return `${crumbs(app, [{ t: "Учёба", go: "learn" }, { t: "Экзамен" }])}${qzBanner(app, false)}`;
+  const reveal = answered && !ex;
   const opts = q.o.map((t, k) => {
-    const cls = answered ? (k === q.a ? "right" : k === pick ? "wrong" : "") : "";
-    const mark = answered && k === q.a ? `<span class="qmark">${ico("check")}верный</span>` : answered && k === pick ? `<span class="qmark bad">${ico("x")}ваш ответ</span>` : "";
-    return `<button class="qopt ${cls}" data-act="qz-pick" data-i="${k}" ${answered ? "disabled" : ""} aria-pressed="${k === pick}"><span class="ql">${LETTERS[k] || k + 1}</span> ${esc(t)}${mark}</button>`;
+    const cls = reveal ? (k === q.a ? "right" : k === pick ? "wrong" : "") : ex && k === pick ? "sel" : "";
+    const mark = reveal && k === q.a ? `<span class="qmark">${ico("check")}верный</span>` : reveal && k === pick ? `<span class="qmark bad">${ico("x")}ваш ответ</span>` : ex && k === pick ? `<span class="qmark mine">выбрано</span>` : "";
+    return `<button class="qopt ${cls}" data-act="qz-pick" data-i="${k}" ${reveal ? "disabled" : ""} aria-pressed="${k === pick}"><span class="ql">${LETTERS[k] || k + 1}</span> ${esc(t)}${mark}</button>`;
   }).join("");
   const goChip = q.go ? (() => { const rm = routeMeta(q.go); return `<span class="chip" data-go="${esc(q.go)}">${ico(rm.ic || "toolbox")}Открыть: ${esc(rm.t || "раздел")}</span>`; })() : "";
+  const left = examLeft(c);
   return `${crumbs(app, [{ t: "Учёба", go: "learn" }, { t: esc(qzModeName(c.mode)) }])}
-  <div class="row sb"><b>Вопрос ${i + 1} из ${n}</b><span class="small muted">Верно: ${okN}</span></div>
+  <div class="row sb"><b>Вопрос ${i + 1} из ${n}</b>${ex ? `<span class="tag ${left < 120000 ? "bad" : "gold"}" data-qz-left>${ico("timer")}<b data-qz-t>${examClock(left)}</b></span>` : `<span class="small muted">Верно: ${okN}</span>`}</div>
   <div class="bar gap" role="progressbar" aria-valuemin="0" aria-valuemax="${n}" aria-valuenow="${i + (answered ? 1 : 0)}" aria-label="Прогресс теста"><i style="width:${Math.round((i + (answered ? 1 : 0)) / n * 100)}%"></i></div>
-  <div class="qmeta"><span class="tag gold">${esc(qzModeName(c.mode))}</span>${les0 ? `<span class="tag">${esc(lessonLabel(les0))}</span>` : ""}<span class="tag">${esc(qTypeLbl(q))}</span><span class="tag">${esc(qTopic(q))}</span></div>
+  <div class="qmeta"><span class="tag gold">${esc(qzModeName(c.mode))}</span>${les0 ? `<span class="tag">${esc(lessonLabel(les0))}</span>` : ""}${ex ? "" : `<span class="tag">${esc(qTypeLbl(q))}</span><span class="tag">${esc(qTopic(q))}</span>`}</div>
   <div class="card"><h3 class="qtext">${esc(q.q)}</h3><div role="group" aria-label="Варианты ответа">${opts}</div></div>
-  ${answered ? `<div class="card ${ok ? "ok" : "bad"}" data-qexpl role="status" aria-live="polite"><b>${ok ? ico("check") + "Верно!" : ico("x") + "Неверно."}</b>
+  ${ex ? (answered ? `<p class="tiny dim" role="status">Ответ принят. Его можно поменять, пока вы не нажали «${last ? "Завершить экзамен" : "Дальше"}».</p>
+    <button class="btn gold big" data-act="qz-next">${last ? "Завершить экзамен" : "Дальше →"}</button>`
+      : `<p class="tiny dim">Выберите вариант. Во время экзамена верно или нет — не показывается: полный разбор будет в конце.</p>`)
+  : answered ? `<div class="card ${ok ? "ok" : "bad"}" data-qexpl role="status" aria-live="polite"><b>${ok ? ico("check") + "Верно!" : ico("x") + "Неверно."}</b>
     ${ok ? "" : `<p>Правильный ответ: <b>${LETTERS[q.a] || ""}. ${esc(q.o[q.a])}</b></p>`}
     <p>${rich(q.ex || "")}</p>
     <div>${refA ? `<span class="chip" data-go="a/${esc(enc(refA.id))}">${ico("doc")}Прочитать: ${esc(artShort(refA))}</span>` : ""}${goChip}${les && !les0 ? `<span class="chip" data-go="learn/l/${esc(les.id)}">${ico("book")}${esc(lessonLabel(les))}</span>` : ""}</div></div>
   <button class="btn gold big" data-act="qz-next">${last ? "Завершить и показать результат" : "Дальше →"}</button>`
       : `<p class="tiny dim">Выберите вариант. Изменить ответ после выбора нельзя, зато вы сразу увидите объяснение и ссылку на статью.</p>`}
-  <div class="gap2"><button class="btn ghost sm" data-act="qz-exit">Выйти из теста</button></div>`;
+  <div class="gap2"><button class="btn ghost sm" data-act="qz-exit">${ex ? "Выйти (время экзамена идёт)" : "Выйти из теста"}</button></div>`;
 }
 function qzResultView(app, a) {
   const wrong = a.qs.filter(q => q.pick !== q.a), les = a.from && lessonById(a.from);
@@ -6464,6 +6649,7 @@ function qzResultView(app, a) {
   return `${crumbs(app, [{ t: "Учёба", go: "learn" }, { t: "Тесты", go: "learn/quiz" }, { t: "Результат" }])}
   <div class="row sb"><h1 style="margin:0">${ico("flag")}Результат: ${a.ok} из ${a.n} (${a.pct}%)</h1>${gradeTag(a.grade)}</div>
   <p class="sub">«${esc(qzModeName(a.mode))}»${les ? " · " + esc(lessonLabel(les)) : ""} · ${fmtDate(a.ts)} ${fmtTime(a.ts)}</p>
+  ${a.exam ? (() => { const blank = a.qs.filter(q => q.pick < 0).length; return `<div class="card ${a.pass ? "ok" : "bad"} examres"><b>${a.pass ? ico("shield-check") + "Экзамен сдан" : ico("x") + "Экзамен не сдан"}</b> — нужно от ${EXAM_PASS}%, у вас ${a.pct}%.${a.timeout ? " Время вышло" + (blank ? ": без ответа " + blank + " " + plural(blank, "вопрос", "вопроса", "вопросов") + " — засчитаны как ошибки" : "") + "." : ""}${a.dur ? ` <span class="small muted">Затрачено ${examClock(a.dur)} из ${EXAM_MIN}:00.</span>` : ""}</div>`; })() : ""}
   <div class="card ${a.grade === "repeat" ? "bad" : a.grade === "base" ? "warn" : a.grade === "good" ? "ok" : "hl"}"><b>${GRADE_MSG[a.grade]}</b></div>
   <div class="infobox"><div><small>Верных ответов</small><b>${a.ok}</b></div><div><small>Неверных</small><b>${a.bad}</b></div><div><small>Оценка</small><b>${GRADE_LBL[a.grade]}</b></div><div><small>Осталось ошибок для повтора</small><b>${rest}</b></div></div>
   ${lessonNote}
@@ -6479,11 +6665,26 @@ function qzResultView(app, a) {
   </div>
   <h2>${ico("list-checks")}Разбор вопросов</h2>
   <div class="row">${wrong.length ? `<button class="btn ghost sm" data-act="qz-only-wrong">${app.ui.qzOnlyWrong ? "Показать все вопросы" : "Показать только ошибки"}</button>` : ""}</div>
-  ${rows.map(r => { const q = r.q, refA = q.ref && ART.get(q.ref); return `<details class="acc qrev ${r.ok ? "ok" : "bad"}" ${r.ok ? "" : "open"}><summary><span>${r.ok ? ico("check") : ico("x")}${r.k + 1}. ${esc(short(q.q, 90))}</span><span class="tag ${r.ok ? "ok" : "bad"}">${r.ok ? "верно" : "ошибка"}</span></summary>
+  ${rows.map(r => { const q = r.q, refA = q.ref && ART.get(q.ref); return `<details class="acc qrev ${r.ok ? "ok" : "bad"}" ${r.ok ? "" : "open"}><summary><span>${r.ok ? ico("check") : ico("x")}${r.k + 1}. ${esc(short(q.q, 90))}</span><span class="tag ${r.ok ? "ok" : "bad"}">${r.ok ? "верно" : q.pick < 0 ? "нет ответа" : "ошибка"}</span></summary>
     <div class="in"><p><b>${esc(q.q)}</b></p>
     ${q.o.map((t, j) => `<div class="qline ${j === q.a ? "right" : j === q.pick ? "wrong" : ""}"><span class="ql">${LETTERS[j] || j + 1}</span> ${esc(t)}${j === q.a ? ` <span class="qmark">${ico("check")}верный</span>` : j === q.pick ? ` <span class="qmark bad">${ico("x")}ваш ответ</span>` : ""}</div>`).join("")}
     <p class="small">${rich(q.ex || "")}</p>${refA ? `<span class="chip" data-go="a/${esc(enc(refA.id))}">${ico("doc")}Прочитать: ${esc(artShort(refA))}</span>` : ""}</div></details>`; }).join("")}`;
 }
+
+/* ---------- часы экзамена: раз в секунду обновляем остаток; время вышло — показываем результат ---------- */
+let qzTickDone = "";
+function qzTick() {
+  if (typeof S === "undefined" || !S.quiz) return;
+  const c = S.quiz.cur; if (!c || !c.exam) return;
+  const left = examLeft(c), t = examClock(left);
+  APPS.forEach(a => { if (!a.root) return; a.root.querySelectorAll("[data-qz-t]").forEach(el => { if (el.textContent !== t) el.textContent = t; const tg = el.closest("[data-qz-left]"); if (tg) tg.classList.toggle("bad", left < 120000); }); });
+  if (left > 0 || qzTickDone === c.id) return;
+  qzTickDone = c.id;
+  const ap = APPS.find(a => a.ui && a.ui.qzOpen && isQuizRoute(a));
+  if (ap) { qzFinish(ap, true); toast(ap, "Время экзамена вышло — вот результат", "warn"); }
+  else APPS.forEach(a => { if (a.root && a.root.querySelector("[data-qz-t]")) { try { paint(a, true); } catch (e) { } } });
+}
+setInterval(qzTick, 1000);
 
 /* ================================================================
    ИНСТРУМЕНТЫ 2: свои таймеры, калькуляторы времени, журнал действий,
@@ -7655,17 +7856,23 @@ function bkNewDoc(type, sample) {
   const doc = {
     type, d: { unit: "Управление ФСБ РО", city: "г. Москва", date: bkToday(), no: sample ? t.prefix + "-0001" : bkNextNo(type), rank: p.rank || "", title: p.title || "", fio: p.fio || "", idn: p.callsign || "" },
     stamps: [{ id: "st" + Date.now() + "a", kind: "seal", x: 0.6, y: 0.8, rot: -8, sc: 1, page: 0, auto: true }],
-    sig: { style: "scrawl", seed: 0, color: "#1b2f86" }, paper: { tint: "white", watermark: true }
+    sig: { style: "scrawl", seed: 0, color: "#1b2f86" }, paper: { tint: "secure", watermark: true }
   };
   bkApplyPreset(doc, t.presets[0].d);
   if (sample) { doc.d.rank = "Полковник ФСБ"; doc.d.title = "Начальник управления"; doc.d.fio = "Дмитрий Орлов"; doc.d.idn = "47606"; }
   return doc;
 }
+/* игровой «номер бланка» для защищённой бумаги: постоянный для документа (из типа и рег. номера), серия RP */
+function bkSerial(doc) {
+  let h = 2166136261; const k = doc.type + "|" + (doc.d.no || "") + "|" + (doc.d.date || "");
+  for (let i = 0; i < k.length; i++) { h ^= k.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
+  return "Серия RP № " + String(h % 10000000).padStart(7, "0");
+}
 function bkBuild(doc) {
   const blocks = bkInjectExtras(doc, BKBY[doc.type].build(doc));
   /* штампы «секретно / срочно» ставятся в верхнем поле — оставляем для них место, чтобы не закрывать шапку */
   if ((doc.stamps || []).some(s => { const d = DG.STAMPBY[s.kind]; return d && d.g === "top"; })) blocks.unshift({ k: "gap", h: 100 });
-  return { blocks, info: { unit: doc.d.unit }, opts: { tint: doc.paper.tint, watermark: doc.paper.watermark } };
+  return { blocks, info: { unit: doc.d.unit }, opts: { tint: doc.paper.tint, watermark: doc.paper.watermark, serial: bkSerial(doc) } };
 }
 function bkTitleOf(x) { const t = BKBY[x.type]; return t ? t.t : "Документ"; }
 function bkBrief(x) { const d = x.d; return d.topic || d.subject || d.sub || d.who || d.object || d.kind || ""; }
@@ -8042,7 +8249,7 @@ V.blanks = function (app, type, sub) {
   }
   if (doc) bkUpgradeDoc(doc);
   if (!doc) return `<div class="card bad">${ico("alert")} Такого бланка нет (возможно, шаблон был удалён). <a class="ref" data-go="blanks">К списку бланков</a></div>`;
-  doc.stamps = doc.stamps || []; doc.sig = Object.assign({ style: "scrawl", seed: 0, color: "#1b2f86" }, doc.sig); doc.paper = Object.assign({ tint: "white", watermark: true }, doc.paper);
+  doc.stamps = doc.stamps || []; doc.sig = Object.assign({ style: "scrawl", seed: 0, color: "#1b2f86" }, doc.sig); doc.paper = Object.assign({ tint: "secure", watermark: true }, doc.paper);
   app.ui.bk = { key: type === "e" ? key : type, doc, savedId, sel: null, tab: "form", res: null, tried: false, at: savedId ? 0 : (doc.ts || 0), dirty: false, touched: false, from: pf ? pf.from : "", norm: {} };
   app.afterOnce = fresh && !app.mini ? a => { try { history.replaceState(null, "", "#/blanks/" + type); } catch (e) { } a.route = "blanks/" + type; bkMount(a); } : bkMount;
   return bkEditorHTML(app);
@@ -8059,7 +8266,7 @@ function bkEditorHTML(app) {
   const bk = app.ui.bk, doc = bk.doc, t = BKBY[doc.type], d = doc.d, name = bkName(doc);
   const grp = (title, f) => `<div class="bk-pal"><div class="tiny dim">${title}</div><div>${DG.STAMPS.filter(f).map(s => `<button class="chip" data-act="bk-st-add" data-id="${s.id}">${s.name}</button>`).join("")}</div></div>`;
   const stl = doc.stamps.map(s => { const def = DG.STAMPBY[s.kind]; return def ? `<button class="chip ${bk.sel === s.id ? "on" : ""}" data-act="bk-st-sel" data-id="${s.id}">${esc(def.name)}</button>` : ""; }).join("");
-  const sigs = [["scrawl", "Роспись"], ["script", "Прописью"], ["none", "Без подписи"]], tints = [["white", "Белая"], ["cream", "Кремовая"], ["plain", "Чистая"]];
+  const sigs = [["scrawl", "Роспись"], ["script", "Прописью"], ["none", "Без подписи"]], tints = [["secure", "Защищённая (зелёная)"], ["white", "Белая"], ["cream", "Кремовая"], ["plain", "Чистая"]];
   const fld = (k, label, ph, extra) => `<div class="bk-f" data-fk="${k}" data-req><label>${label} <i class="rq" data-tip="Обязательное поле">*</i></label><input type="text" data-bind="bk-f" data-k="${k}" value="${esc(d[k] || "")}" placeholder="${esc(ph)}" autocomplete="off"></div>`;
   const fld2 = (k, label, ph) => `<div class="bk-f" data-fk="${k}"><label>${label}</label><input type="text" data-bind="bk-f" data-k="${k}" value="${esc(d[k] || "")}" placeholder="${esc(ph)}" autocomplete="off"></div>`;
   return `${crumbs(app, [{ t: "Бланки", go: "blanks" }, { t: esc(name) }])}
@@ -8095,7 +8302,7 @@ function bkEditorHTML(app) {
       ${grp("Печати", s => s.shape === "round")}${grp("Секретность и срочность", s => s.g === "top")}${grp("Резолюции и отметки", s => s.g === "low" || s.g === "mid" || s.g === "in")}
       <div class="tiny dim gap">На бумаге сейчас:</div><div data-bk-stlist>${stl || '<span class="tiny dim">пока ничего</span>'}</div><div class="gap" data-bk-sel>${bkSelHTML(bk)}</div></section>
     <section class="card bk-sec"><h3><b>5</b> Бумага</h3><div>${tints.map(s => `<span class="chip ${doc.paper.tint === s[0] ? "on" : ""}" data-act="bk-paper" data-v="${s[0]}">${s[1]}</span>`).join("")}</div>
-      <label class="chk"><input type="checkbox" data-chg="bk-wm" ${doc.paper.watermark ? "checked" : ""}><div class="ct">Водяной знак (герб на фоне)</div></label></section>
+      <label class="chk"><input type="checkbox" data-chg="bk-wm" ${doc.paper.watermark ? "checked" : ""}><div class="ct">Водяные знаки (герб и надписи «Игровой документ» на фоне)</div></label></section>
    </div>
    <div class="bk-view">
     <div class="bk-issues" data-bk-issues></div>
@@ -9102,145 +9309,62 @@ ACT["bind-import"] = app => {
 };
 
 /* ================================================================
-   ПОДПИСИ (Ed25519, только проверка) И КЛЮЧИ АКТИВАЦИИ
-   Ключи активации созданы, но ВЫКЛЮЧЕНЫ: пока SITE.licenseEnabled = false, программа их не просит и ни на что не влияет.
-   Ключ — это подписанная запись «кому/до какого числа». Проверяется прямо в программе, без интернета.
-   Честно: это защита от случайных людей, а не от специалиста — любой HTML-файл можно изменить.
+   АККАУНТ (программа для Windows)
+   Вход, ключ активации и проверка по списку на сайте проекта — в самой программе (shell/lib/auth.js):
+   страница открывается только после входа. Здесь — вкладка «Аккаунт» в настройках:
+   кто вошёл, срок ключа, смена пароля, выход.
    ================================================================ */
-const b64d = s => {
-  s = String(s).replace(/-/g, "+").replace(/_/g, "/"); while (s.length % 4) s += "=";
-  const bin = atob(s), out = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i); return out;
-};
-const b64u = u8 => { let s = ""; u8.forEach(b => s += String.fromCharCode(b)); return btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); };
-
-const Ed25519 = (() => {
-  const P = (1n << 255n) - 19n, L = (1n << 252n) + 27742317777372353535851937790883648493n;
-  const mod = (a, m = P) => { const r = a % m; return r >= 0n ? r : r + m; };
-  const inv = (n, m = P) => { let a = mod(n, m), b = m, x = 0n, y = 1n, u = 1n, v = 0n; while (a !== 0n) { const q = b / a, r = b % a, m2 = x - u * q, n2 = y - v * q; b = a; a = r; x = u; y = v; u = m2; v = n2; } return mod(x, m); };
-  const pw = (b, e) => { let r = 1n; b = mod(b); while (e > 0n) { if (e & 1n) r = mod(r * b); b = mod(b * b); e >>= 1n; } return r; };
-  const D = mod(-121665n * inv(121666n)), I = pw(2n, (P - 1n) / 4n);
-  const le2n = u8 => { let n = 0n; for (let i = u8.length - 1; i >= 0; i--) n = (n << 8n) | BigInt(u8[i]); return n; };
-  const decode = u8 => {                                   // сжатая точка → (x, y)
-    if (u8.length !== 32) return null;
-    const c = Uint8Array.from(u8), sign = (c[31] >> 7) & 1; c[31] &= 127;
-    const y = le2n(c); if (y >= P) return null;
-    const y2 = mod(y * y), u = mod(y2 - 1n), v = mod(D * y2 + 1n);
-    let x = mod(u * pw(v, P - 2n)); x = pw(x, (P + 3n) / 8n);
-    const x2 = mod(x * x), vx2 = mod(v * x2);
-    if (vx2 !== mod(u)) { if (vx2 !== mod(-u)) return null; x = mod(x * I); }
-    if (x === 0n && sign) return null;
-    if (Number(x & 1n) !== sign) x = mod(-x);
-    return [x, y, 1n, mod(x * y)];
-  };
-  const add = (p, q) => {
-    const A = mod((p[1] - p[0]) * (q[1] - q[0])), B = mod((p[1] + p[0]) * (q[1] + q[0])), C = mod(2n * D * p[3] * q[3]), Dd = mod(2n * p[2] * q[2]);
-    const E = B - A, F = Dd - C, G = Dd + C, H = B + A;
-    return [mod(E * F), mod(G * H), mod(F * G), mod(E * H)];
-  };
-  const ZERO = [0n, 1n, 1n, 0n];
-  const mul = (p, k) => { let r = ZERO, a = p; while (k > 0n) { if (k & 1n) r = add(r, a); a = add(a, a); k >>= 1n; } return r; };
-  const aff = p => { const zi = inv(p[2]); return [mod(p[0] * zi), mod(p[1] * zi)]; };
-  const BY = mod(4n * inv(5n)), BASE = (() => { const e = new Uint8Array(32); let y = BY; for (let i = 0; i < 32; i++) { e[i] = Number(y & 255n); y >>= 8n; } return decode(e); })();
-  const sha512 = async (...parts) => { const n = parts.reduce((s, p) => s + p.length, 0), all = new Uint8Array(n); let o = 0; parts.forEach(p => { all.set(p, o); o += p.length; }); return new Uint8Array(await crypto.subtle.digest("SHA-512", all)); };
-  /* sig: 64 байта, msg: Uint8Array, pub: 32 байта → true / false */
-  async function verify(sig, msg, pub) {
-    try {
-      if (!(sig && sig.length === 64 && pub && pub.length === 32)) return false;
-      const R = decode(sig.slice(0, 32)), A = decode(pub); if (!R || !A) return false;
-      const S = le2n(sig.slice(32)); if (S >= L) return false;
-      const h = le2n(await sha512(sig.slice(0, 32), pub, msg)) % L;
-      const lhs = aff(mul(BASE, S)), rhs = aff(add(R, mul(A, h)));
-      return lhs[0] === rhs[0] && lhs[1] === rhs[1];
-    } catch (e) { return false; }
-  }
-  return { verify };
-})();
-
-/* ---------- ключи активации ---------- */
-const LIC = {
-  revoked: [],
-  PREFIX: "FSBK",
-  required() { return !!(typeof SITE !== "undefined" && SITE.licenseEnabled); },
-  /* разбор и проверка подписи ключа: { ok, why, data } */
-  async parse(key) {
-    try {
-      const t = String(key || "").replace(/\s+/g, ""), m = t.match(/^FSBK\.([A-Za-z0-9_-]{8,600})\.([A-Za-z0-9_-]{80,120})$/);
-      if (!m) return { ok: false, why: "format" };
-      if (!SITE.licensePubKey) return { ok: false, why: "nokey" };
-      const body = b64d(m[1]);
-      if (!(await Ed25519.verify(b64d(m[2]), body, b64d(SITE.licensePubKey)))) return { ok: false, why: "sig" };
-      const d = JSON.parse(new TextDecoder().decode(body));
-      if (!d || d.v !== 1 || typeof d.id !== "string" || d.app !== "fsb-helper-kutuzovsky") return { ok: false, why: "format" };
-      return { ok: true, data: d };
-    } catch (e) { return { ok: false, why: "format" }; }
-  },
-  /* текущее состояние: off | missing | valid | expired | revoked | bad */
-  async status() {
-    if (!LIC.required()) return { state: "off" };
-    const k = S.license && S.license.key; if (!k) return { state: "missing" };
-    const r = await LIC.parse(k); if (!r.ok) return { state: "bad", why: r.why };
-    const d = r.data;
-    if (LIC.revoked.includes(d.id)) return { state: "revoked", data: d };
-    if (d.exp && Date.now() > Date.parse(d.exp + "T23:59:59Z")) return { state: "expired", data: d };
-    return { state: "valid", data: d };
-  },
-  async activate(key) {
-    const r = await LIC.parse(key); if (!r.ok) return r;
-    if (LIC.revoked.includes(r.data.id)) return { ok: false, why: "revoked" };
-    if (r.data.exp && Date.now() > Date.parse(r.data.exp + "T23:59:59Z")) return { ok: false, why: "expired", data: r.data };
-    S.license = { key: String(key).replace(/\s+/g, ""), id: r.data.id, name: r.data.name || "", exp: r.data.exp || "", plan: r.data.plan || "", at: Date.now() };
-    save(); return { ok: true, data: r.data };
-  },
-  remove() { S.license = null; save(); },
-  WHY: { format: "Ключ записан неверно. Скопируйте его целиком, вместе с «FSBK».", sig: "Ключ не подходит к этой программе (подпись не совпала).", nokey: "В этой версии не задан открытый ключ проверки.", revoked: "Этот ключ отозван владельцем.", expired: "Срок действия ключа закончился." }
-};
-
-/* ---------- экран «Нужен ключ» (показывается только если ключи включены в сборке) ---------- */
-const LICSTATE = { st: null, busy: false };
-async function licCheck() {
-  if (!LIC.required()) { const g = document.getElementById("lic-gate"); if (g) g.remove(); return; }
-  const st = await LIC.status(); LICSTATE.st = st;
-  let g = document.getElementById("lic-gate");
-  const rootEl = document.getElementById("root");
-  if (st.state === "valid") { if (g) g.remove(); if (rootEl) rootEl.inert = false; return; }
-  const keep = g && g.querySelector("#lic-key") ? g.querySelector("#lic-key").value : "";
-  if (!g) {
-    g = document.createElement("div"); g.id = "lic-gate"; g.setAttribute("role", "dialog"); g.setAttribute("aria-modal", "true"); g.setAttribute("aria-label", "Ключ активации"); document.body.appendChild(g);
-    g.addEventListener("click", e => { const b = e.target.closest("[data-act]"); const f = b && ACT[b.getAttribute("data-act")]; if (f) f(APPS[0], b, e); });
-    g.addEventListener("keydown", e => { if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) { e.preventDefault(); ACT["lic-activate"](); } e.stopPropagation(); });
-  }
-  if (rootEl) rootEl.inert = true;
-  const why = { missing: "Чтобы пользоваться помощником, нужен ключ активации. Его выдаёт владелец проекта.", bad: "Сохранённый ключ не подошёл. Введите ключ ещё раз.", expired: "Срок действия вашего ключа закончился. Попросите у владельца новый ключ.", revoked: "Ваш ключ отозван владельцем. Если это ошибка — напишите ему." }[st.state] || "Нужен ключ активации.";
-  const contact = SITE.contact ? `<p class="muted">Где взять ключ: <b>${esc(SITE.contact)}</b></p>` : "";
-  g.innerHTML = `<div class="lic-box"><div class="lic-ico">${ico("key-round")}</div><h1>Нужен ключ активации</h1><p>${esc(why)}</p>
-    <label for="lic-key" class="muted">Вставьте ключ целиком (начинается с «FSBK.»)</label>
-    <textarea id="lic-key" rows="4" spellcheck="false" autocomplete="off" placeholder="FSBK.…">${esc(keep)}</textarea>
-    <div class="lic-err" id="lic-err" role="alert"></div>
-    <div class="row"><button class="btn primary" data-act="lic-activate">${ico("check")}Активировать</button><button class="btn" data-act="lic-paste">${ico("clipboard-paste")}Вставить из буфера</button></div>${contact}
-    <p class="muted small">Ключ проверяется на вашем компьютере, без интернета. Игровые данные никуда не отправляются.</p></div>`;
-  setTimeout(() => { const t = g.querySelector("#lic-key"); if (t && !keep) t.focus(); }, 30);
+let ACCINFO = null, accLoading = false;
+const accOn = () => !!(NATIVE && NATIVE.auth && ACCOUNT && !ACCOUNT.guest);
+function accLoad(app) {
+  if (!accOn() || accLoading) return;
+  accLoading = true;
+  NATIVE.auth.info().then(r => { ACCINFO = r || null; }, () => { ACCINFO = null; }).then(() => {
+    accLoading = false;
+    APPS.forEach(a => { if (!a.mini && /^settings\/acc/.test(a.route || "") && !a.ui.cap) { try { paint(a, true); } catch (e) { } } });
+  });
 }
-function licInit() {
-  if (!LIC.required()) return;
-  licCheck(); setInterval(licCheck, 60000);
+function accExpText(st) {
+  if (!st) return "";
+  if (!st.exp) return "без срока";
+  const left = st.left == null ? null : st.left;
+  return "до " + esc(st.exp.split("-").reverse().join(".")) + (left != null ? (left >= 0 ? ` (осталось ${left} ${plural(left, "день", "дня", "дней")})` : "") : "");
 }
-ACT["lic-activate"] = async () => {
-  const t = document.getElementById("lic-key"), err = document.getElementById("lic-err"); if (!t) return;
-  const r = await LIC.activate(t.value);
-  if (!r.ok) { if (err) err.textContent = LIC.WHY[r.why] || "Ключ не подошёл."; return; }
-  toast(APPS[0], "Ключ принят. Спасибо!"); await licCheck(); try { repaintAll(); } catch (e) { }
+function setAccount(app) {
+  if (!accOn()) return `<div class="card"><p class="small" style="margin:0">Аккаунты есть только в программе для Windows.</p></div>`;
+  if (!ACCINFO) { accLoad(app); return `<div class="card"><p class="small muted" style="margin:0">Загружаю…</p></div>`; }
+  const st = ACCINFO.status || {}, net = ACCINFO.net || {}, inf = ACCINFO.info || {};
+  const soon = st.exp && st.left != null && st.left <= 7;
+  return `<div class="card ${soon ? "warn" : "ok"}"><div class="row sb"><div><b>${ico("user")}${esc(ACCOUNT.login)}</b><div class="tiny muted">Аккаунт на этом компьютере</div></div><span class="tag ${st.ok ? "ok" : "bad"}">${st.ok ? "ключ действует" : "вход закрыт"}</span></div>
+    <p class="small" style="margin:10px 0 0">Ключ активации: <b>${accExpText(st)}</b>${soon ? " — попросите у владельца продление заранее." : ""}</p>
+    <p class="tiny muted" style="margin:6px 0 0">${net.at ? (net.ok ? "Связь с сайтом проекта есть. " : "Нет связи с сайтом проекта. ") : ""}Без интернета программа работает не дольше ${inf.offline | 0} ч, потом попросит подключиться.</p></div>
+  <div class="card"><h3 style="margin-top:0">${ico("key-round")}Сменить пароль</h3>
+    <div class="grid2"><div><label for="acc-old">Текущий пароль</label><input type="password" id="acc-old" maxlength="128" autocomplete="current-password"></div><div></div>
+    <div><label for="acc-new">Новый пароль</label><input type="password" id="acc-new" maxlength="128" autocomplete="new-password"></div>
+    <div><label for="acc-new2">Новый пароль ещё раз</label><input type="password" id="acc-new2" maxlength="128" autocomplete="new-password"></div></div>
+    <div class="row gap" style="margin-top:10px"><button class="btn" data-act="acc-pass">${ico("check")}Сменить пароль</button><span class="tiny muted" data-accmsg></span></div></div>
+  <div class="card"><h3 style="margin-top:0">${ico("log-out")}Выйти из аккаунта</h3>
+    <p class="small" style="margin:0 0 10px">Программа закроет панель и покажет экран входа. Ваши данные останутся в этом аккаунте.</p>
+    <button class="btn" data-act="acc-signout">${ico("log-out")}Выйти</button></div>
+  <p class="tiny muted">Забыли пароль? На экране входа выберите «Первый вход / новый ключ» и введите логин и свой ключ — пароль можно задать заново.</p>`;
+}
+ACT["acc-pass"] = async app => {
+  const g = id => { const el = app.root.querySelector("#" + id); return el ? el.value : ""; };
+  const msg = app.root.querySelector("[data-accmsg]");
+  const say = (t, bad) => { if (msg) { msg.textContent = t; msg.style.color = bad ? "var(--bad)" : ""; } };
+  const old = g("acc-old"), n1 = g("acc-new"), n2 = g("acc-new2");
+  if (!old || !n1) return say("Заполните текущий и новый пароль.", true);
+  if (n1.length < 6) return say("Новый пароль — не короче 6 знаков.", true);
+  if (n1 !== n2) return say("Новые пароли не совпадают.", true);
+  say("Проверяю…");
+  let r = null; try { r = await NATIVE.auth.password(old, n1); } catch (e) { r = null; }
+  if (r && r.ok) { ["acc-old", "acc-new", "acc-new2"].forEach(id => { const el = app.root.querySelector("#" + id); if (el) el.value = ""; }); say(""); toast(app, "Пароль изменён", "ok"); logAct("set", "Пароль аккаунта изменён", "settings/acc"); }
+  else say((r && r.why) || "Не получилось сменить пароль.", true);
 };
-ACT["lic-paste"] = async () => {
-  try { const s = await (NATIVE ? Promise.reject() : navigator.clipboard.readText()); const t = document.getElementById("lic-key"); if (t) { t.value = s; t.focus(); } }
-  catch (e) { const t = document.getElementById("lic-key"), err = document.getElementById("lic-err"); if (t) t.focus(); if (err) err.textContent = "Браузер не дал прочитать буфер — вставьте ключ в поле вручную (Ctrl+V)."; }
-};
-ACT["lic-remove"] = app => { confirmBox(app, "Убрать ключ с этого компьютера? Программа попросит ключ заново.", "Убрать", () => { LIC.remove(); licCheck(); repaintAll(); }, true); };
-/* карточка «Ключ активации» для раздела «О программе»: пока ключи выключены, её не видно */
-function licCard() {
-  if (!LIC.required() || !S.license) return "";
-  const l = S.license;
-  return `<h2>Ключ активации</h2><div class="card"><div class="kv"><b>Номер ключа</b><span>${esc(l.id)}</span>${l.name ? `<b>Выдан</b><span>${esc(l.name)}</span>` : ""}<b>Действует до</b><span>${l.exp ? esc(l.exp) : "без срока"}</span></div>
-  <div class="row" style="margin-top:8px"><button class="btn" data-act="lic-remove">${ico("trash-2")}Убрать ключ с этого компьютера</button></div></div>`;
+ACT["acc-signout"] = app => confirmBox(app, "Выйти из аккаунта «" + (ACCOUNT ? ACCOUNT.login : "") + "»? Программа покажет экран входа.", "Выйти", () => { try { save(); } catch (e) { } NATIVE.auth.signOut(); });
+function accCard() {
+  if (!accOn()) return "";
+  return `<div class="card"><div class="row sb"><div><b>${ico("user")}Аккаунт: ${esc(ACCOUNT.login)}</b><div class="tiny muted">Ключ активации и пароль — в настройках, вкладка «Аккаунт».</div></div><button class="btn sm" data-go="settings/acc">${ico("settings")}Открыть</button></div></div>`;
 }
 
 /* ================================================================
@@ -9267,7 +9391,7 @@ const UPD = {
     if (!UPD.configured()) { NSET.upd = { status: "off" }; updateChanged(); return NSET.upd; }
     NSET.upd = { status: "checking" }; updateChanged();
     try {
-      const r = await fetch(SITE.updateUrl, { cache: "no-store", credentials: "omit", referrerPolicy: "no-referrer" });
+      const r = await fetch(SITE.updateUrl + (SITE.updateUrl.indexOf("?") < 0 ? "?" : "&") + "t=" + Date.now(), { cache: "no-store", credentials: "omit", referrerPolicy: "no-referrer" });   // метка времени: в обход кэша сайта, обновление видно сразу
       if (!r.ok) throw new Error("HTTP " + r.status);
       const text = await r.text(); if (text.length > 262144) throw new Error("big");
       const m = JSON.parse(text); if (!m || typeof m.p !== "string" || typeof m.s !== "string") throw new Error("format");
@@ -9280,7 +9404,6 @@ const UPD = {
       const c = UPD.cmp(p.version, APP_VERSION);
       if (!(c > 0)) NSET.upd = { status: "uptodate", version: APP_VERSION, latest: p.version, lastCheck: Date.now() };
       else NSET.upd = { status: "available", version: p.version, notes: Array.isArray(p.notes) ? p.notes.slice(0, 20).map(x => String(x).slice(0, 300)) : [], released: String(p.released || "").slice(0, 20), lastCheck: Date.now(), web: SITE.mode === "web" };
-      if (Array.isArray(p.revoked)) LIC.revoked = p.revoked.filter(x => typeof x === "string").slice(0, 2000);
     } catch (e) {
       NSET.upd = { status: "error", why: e && e.message === "sig" ? "подпись обновления не подошла" : "нет связи с сайтом обновлений" };
     }
@@ -9309,7 +9432,11 @@ const UPD = {
   },
   start() {
     if (!UPD.configured()) return;
-    if (S.set.updAuto !== false) { setTimeout(() => { if (S.set.updAuto !== false) UPD.check(false); }, 5000); setInterval(() => { if (S.set.updAuto !== false) UPD.check(false); }, 6 * 3600 * 1000); }
+    /* проверяем сразу после запуска, потом каждые 10 минут, а также когда появилась сеть или окно снова открыли */
+    const auto = () => S.set.updAuto !== false, busy = () => NSET.upd && (NSET.upd.status === "checking" || NSET.upd.status === "downloading");
+    const maybe = () => { if (auto() && !busy() && Date.now() - (S.lastUpdCheck || 0) > 9 * 60000) UPD.check(false); };
+    if (auto()) { setTimeout(() => { if (auto()) UPD.check(false); }, 4000); setInterval(maybe, 10 * 60000); }
+    try { window.addEventListener("online", () => setTimeout(maybe, 1500)); document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") maybe(); }); } catch (e) { }
     if (SITE.mode === "web" && "serviceWorker" in navigator && location.protocol === "https:") { try { navigator.serviceWorker.register("sw.js").catch(() => { }); } catch (e) { } }
   }
 };
@@ -9355,6 +9482,12 @@ async function nativeInit() {
   NATIVE.on(nativeEvent);
   if (IS_OVERLAY) {
     syncSlots();
+    /* «не забирать фокус»: кнопки нажимаются без фокуса, а для набора текста панель на время просит клавиатуру */
+    document.addEventListener("mousedown", e => {
+      const t = e.target && e.target.closest ? e.target.closest("input,textarea,select,[contenteditable]") : null;
+      if (!t || (t.tagName === "INPUT" && /^(checkbox|radio|button|submit|reset|range|color|file)$/i.test(t.type))) return;
+      try { NATIVE.overlay("type", true); } catch (err) { }
+    }, true);
     setInterval(hudTick, 1000); hudTick();
     document.addEventListener("keydown", ovEsc, true);
     document.addEventListener("keydown", e => {
@@ -9462,12 +9595,21 @@ function hudTick() {
 function ovBarHTML() {
   return `<div class="ovbar"><span class="ovt">${ico("logo")}<b>ФСБ-помощник</b></span><span class="ovchips" data-ovchips></span>
     <button class="ovb" data-act="ov-lock" data-tip="Сквозной режим: клики пойдут в игру (вернуть — ${esc(hkLabel("lock"))})" aria-label="Сквозной режим">${ico("mouse-pointer-click")}</button>
+    <button class="ovb ovz" data-act="ov-zoom" data-d="-1" data-tip="Мельче (весь текст панели)" aria-label="Уменьшить текст">A−</button><button class="ovb ovz" data-act="ov-zoom" data-d="1" data-tip="Крупнее" aria-label="Увеличить текст">A+</button>
     <button class="ovb" data-act="ov-opacity" data-tip="Прозрачность панели" aria-label="Прозрачность">${ico("eye")}</button>
     <button class="ovb" data-act="ov-main" data-tip="Открыть большое окно" aria-label="Большое окно">${ico("maximize-2")}</button>
     <button class="ovb x" data-act="ov-hide" data-tip="Скрыть панель (${esc(hkLabel("panel"))})" aria-label="Скрыть панель">${ico("x")}</button></div>`;
 }
 function hkLabel(id) { const s = NSET.settings; return (s && s.hotkeys && s.hotkeys[id]) || (NSET.info && NSET.info.defaults && NSET.info.defaults[id]) || "—"; }
 ACT["ov-hide"] = () => { if (NATIVE) NATIVE.overlay("hide"); };
+/* размер всего содержимого панели: 70–140 %, шаг 10 % (запоминается) */
+ACT["ov-zoom"] = (app, el) => {
+  if (!NATIVE) return;
+  const cur = (NSET.settings && NSET.settings.overlay && NSET.settings.overlay.zoom) || 0.9;
+  const next = Math.round(Math.max(0.7, Math.min(1.4, cur + (+el.getAttribute("data-d") || 0) * 0.1)) * 10) / 10;
+  NATIVE.overlay("zoom", next).then(() => { if (NSET.settings && NSET.settings.overlay) NSET.settings.overlay.zoom = next; });
+  toast(app, "Размер панели: " + Math.round(next * 100) + "%");
+};
 ACT["ov-main"] = () => { if (NATIVE) NATIVE.overlay("main"); };
 ACT["ov-lock"] = app => { if (NATIVE) { NATIVE.overlay("lock", true); toast(app, "Сквозной режим включён. Вернуть панель: " + hkLabel("lock")); } };
 ACT["ov-opacity"] = app => {
@@ -9500,7 +9642,7 @@ V.ovhome = function (app) {
     }).join("")}</div>
     <p class="tiny dim ovhint">${NATIVE ? "Клавиша слота копирует строку в буфер, а вставляете вы: <kbd>T</kbd> → <kbd>Ctrl</kbd>+<kbd>V</kbd> → <kbd>Enter</kbd>." : ""}</p>
     <h2 class="ovh">${ico("toolbox")}Разделы</h2>
-    <div class="tiles ovtiles">${tiles.map(t => `<button class="tile" data-go="${t[0]}"><span class="ti">${ico(t[1])}</span><b>${t[2]}</b><span>${t[3]}</span></button>`).join("")}</div>
+    <div class="tiles ovtiles">${tiles.map(t => `<button class="tile" data-go="${t[0]}"><span class="ti">${ico(t[1])}</span><span class="tt"><b>${t[2]}</b><small>${t[3]}</small></span></button>`).join("")}</div>
   </div>`;
 };
 ACT["slot-run"] = (app, el) => { app._keepOpen = false; runSlot(+el.getAttribute("data-n"), app); };
@@ -9534,7 +9676,8 @@ function setOverlay(app) {
   const corners = ["top-left", "top-center", "top-right", "middle-left", "", "middle-right", "bottom-left", "bottom-center", "bottom-right"];
   const upd = NSET.upd || {};
   return `<p class="sub">Это настройки программы-оверлея для Windows. Оверлей показывает панель помощника поверх игры и копирует тексты в буфер обмена — всё остальное в игре вы делаете сами.</p>
-  ${hintBox("overlay.how", `<ol><li>Запустите игру в режиме <b>«в окне»</b> или <b>«в окне без рамки»</b> (в настоящем полноэкранном режиме ничто не рисуется поверх игры).</li><li>Нажмите <kbd>${esc(hk.panel || "Insert")}</kbd> — панель появится. Выберите фразу или ситуацию — текст скопируется.</li><li>В игре: <kbd>T</kbd> (чат) → <kbd>Ctrl</kbd>+<kbd>V</kbd> → <kbd>Enter</kbd>.</li><li>Часто используемое привяжите к слотам 1–9 (раздел «Отыгровки») и вызывайте одной клавишей.</li></ol>`, { title: "Как пользоваться оверлеем", ic: "monitor" })}
+  ${hintBox("overlay.how", `<ol><li>В настройках графики игры выберите режим экрана <b>«Оконный без рамки»</b> (Windowed Borderless). Выглядит как полный экран, а панель появляется поверх игры.</li><li>Нажмите <kbd>${esc(hk.panel || "Insert")}</kbd> — панель появится. Выберите фразу или ситуацию — текст скопируется.</li><li>В игре: <kbd>T</kbd> (чат) → <kbd>Ctrl</kbd>+<kbd>V</kbd> → <kbd>Enter</kbd>.</li><li>Часто используемое привяжите к слотам 1–9 (раздел «Отыгровки») и вызывайте одной клавишей.</li></ol>`, { title: "Как пользоваться оверлеем", ic: "monitor" })}
+  <div class="card warn"><b>${ico("alert")}Игра сворачивается, когда открываете панель?</b><p class="small" style="margin:6px 0 0">Значит, игра в режиме <b>«Полноэкранный»</b>. В нём Windows сворачивает игру при появлении любого окна поверх — так устроены Windows и игра, а не помощник. Обойти это можно только встраиваясь в саму игру, а это запрещено правилами и грозит баном. Решение: <b>Настройки → Графика → Режим экрана → «Оконный без рамки»</b>. Картинка та же, панель работает, игра не сворачивается.</p></div>
   <div class="card ${inf.packaged === false ? "warn" : "hl"}"><div class="row sb"><div><b>${ico("monitor")}Программа запущена</b><div class="tiny muted">Версия приложения ${esc(inf.htmlVersion || APP_VERSION)} (${inf.htmlSource === "updated" ? "обновлённая" : "встроенная"}) · оболочка ${esc(inf.shellVersion || "")}</div></div>
     <div class="row gap"><button class="btn gold" data-act="ov-toggle">${ico("layers")}Показать панель</button><button class="btn" data-act="hud-test">${ico("zap")}Проверить HUD</button></div></div></div>
   <h2>${ico("keyboard")}Горячие клавиши</h2>
@@ -9544,7 +9687,8 @@ function setOverlay(app) {
     <p class="tiny dim">Сочетание лучше выбирать с <kbd>Alt</kbd> или <kbd>Ctrl</kbd>, чтобы не мешать вводу текста. Сочетания Windows (Alt+F4, Ctrl+C и подобные) занять нельзя.</p></div>
   <h2>${ico("layout-panel-left")}Панель</h2>
   <div class="card"><div class="field-row"><div><label>Прозрачность панели: <b>${Math.round(ov.opacity * 100)}%</b></label><input type="range" min="40" max="100" step="5" value="${Math.round(ov.opacity * 100)}" data-chg="ns-range" data-p="overlay.opacity" data-div="100"></div><div><label>Размер и место</label><button class="btn sm" data-act="ov-reset">${ico("rotate-ccw")}Вернуть размер и положение</button><div class="tiny dim">Перетаскивайте панель за верхнюю полосу, тяните за край, чтобы изменить размер.</div></div></div>
-    ${chk("overlay.noFocus", "Не забирать фокус у игры при открытии", "Панель появляется, но клавиатура остаётся у игры. Удобно для справочного режима; для поиска текста в панели отключите.")}
+    <div class="field-row"><div><label>Размер текста панели: <b>${Math.round((ov.zoom || 0.9) * 100)}%</b></label><input type="range" min="70" max="140" step="10" value="${Math.round((ov.zoom || 0.9) * 100)}" data-chg="ns-range" data-p="overlay.zoom" data-div="100"><div class="tiny dim">То же — кнопки A− и A+ в верхней полосе панели.</div></div><div></div></div>
+    ${chk("overlay.noFocus", "Не забирать фокус у игры (рекомендуется)", "Щелчки по кнопкам панели не уводят игру в фон. Чтобы напечатать в поиске, щёлкните по полю ввода — панель получит клавиатуру, пока вы снова не щёлкнете по игре.")}
     ${chk("overlay.openOnStart", "Показывать панель при запуске программы")}
     <label class="chk"><input type="checkbox" data-chg="set-bool" data-k="ovHideAfterCopy" ${S.set.ovHideAfterCopy !== false ? "checked" : ""}><div class="ct"><b>Закрывать панель после копирования</b><small>Нажали на фразу — панель скрылась, можно сразу вставлять в чат (<kbd>Ctrl</kbd>+<kbd>V</kbd>)</small></div></label></div>
   <h2>${ico("zap")}Подсказки на экране (HUD)</h2>
@@ -9557,11 +9701,11 @@ function setOverlay(app) {
   <div class="card">${chk("autostart", "Запускать вместе с Windows", "Программа стартует свёрнутой в трей и сразу готова к работе")}
     ${chk("startHidden", "Запускать свёрнутой (только значок у часов)", "Иначе при каждом запуске открывается большое окно")}
     ${chk("closeToTray", "Крестик на большом окне сворачивает в трей", "Оверлей продолжает работать. Выход — правой кнопкой по значку у часов или кнопка ниже")}
-    <div class="row gap"><button class="btn" data-act="app-data">${ico("folder-open")}Папка с данными</button><button class="btn" data-act="app-logs">${ico("file-text")}Журнал программы</button><button class="btn danger" data-act="app-quit">${ico("power")}Закрыть программу совсем</button></div></div>
+    <div class="row gap"><button class="btn" data-act="app-shortcut">${ico("monitor")}Ярлык на рабочий стол</button><button class="btn" data-act="app-data">${ico("folder-open")}Папка с данными</button><button class="btn" data-act="app-logs">${ico("file-text")}Журнал программы</button><button class="btn danger" data-act="app-quit">${ico("power")}Закрыть программу совсем</button></div></div>
   <h2>${ico("refresh-cw")}Обновления</h2>
   ${updateCardHTML()}
   <details class="acc"><summary><span>${ico("settings2")}Расширенно</span></summary><div class="in">
-    ${chk("updates.check", "Проверять обновления автоматически", "Раз в несколько часов, только если у программы задан адрес сайта обновлений")}
+    ${chk("updates.check", "Проверять обновления автоматически", "Программа сверяется с сайтом проекта каждые 30–60 секунд и ставит обновления сама: страница — когда окно уйдёт с экрана, новая программа целиком — когда свёрнута или при выходе")}
     <label>Адрес сайта обновлений (необязательно)</label><input type="text" data-bind="ns-upd-url" value="${esc(st.updates.urlOverride || "")}" placeholder="${esc(upd.configured ? "задан в программе" : "https://ваш-сайт/version.json")}" autocomplete="off"><div class="tiny dim">Менять не нужно, если владелец уже прописал адрес. Только https.</div></div></details>`;
 }
 function setOverlayWeb(app) {
@@ -9582,6 +9726,13 @@ ACT["hud-test"] = () => { if (NATIVE) NATIVE.overlay("hud-test"); };
 ACT["ov-reset"] = app => { if (NATIVE) { NATIVE.overlay("reset-pos"); toast(app, "Размер и положение панели сброшены", "ok"); } };
 ACT["hud-corner"] = (app, el) => nsetPatch({ hud: { corner: el.getAttribute("data-v") } }).then(() => NATIVE.overlay("hud-test"));
 ACT["app-data"] = () => { if (NATIVE) NATIVE.app("open-data"); };
+ACT["app-shortcut"] = async (app) => {
+  if (!NATIVE) return;
+  let r = null; try { r = await NATIVE.app("shortcut"); } catch (e) { r = { ok: false, why: String(e && e.message || e) }; }
+  if (r && r.ok) toast(app, "Ярлык «ФСБ-помощник» — на рабочем столе и в меню «Пуск»", "ok");
+  else if (r && r.why) toast(app, "Ярлык не создан: " + r.why, "warn");
+  else toast(app, "Эта версия программы не умеет создавать ярлык — обновите её", "warn");
+};
 ACT["app-logs"] = () => { if (NATIVE) NATIVE.app("open-logs"); };
 ACT["app-quit"] = app => confirmBox(app, "Закрыть программу совсем? Горячие клавиши и панель перестанут работать до следующего запуска.", "Закрыть", () => NATIVE.app("quit"), true);
 ACT["hk-reset"] = (app, el) => { const id = el.getAttribute("data-id"); const d = NSET.info && NSET.info.defaults; if (d && d[id] !== undefined) nsetPatch({ hotkeys: { [id]: d[id] } }, "Стандартная клавиша возвращена"); };
@@ -9624,6 +9775,7 @@ ACT["hk-cap"] = (app, el) => {
 };
 
 /* ================= ОБНОВЛЕНИЯ (внешний вид; сама работа — в update.js и в оболочке) ================= */
+const canSelfInstall = () => !!(NATIVE && NATIVE.update && NATIVE.update.install && !(NSET.info && NSET.info.portable));
 function updateCardHTML() {
   const u = NSET.upd || { status: "idle" }, inf = NSET.info || {};
   const ver = (NATIVE && inf.htmlVersion) || APP_VERSION;
@@ -9635,17 +9787,20 @@ function updateCardHTML() {
     case "downloading": cls = "hl"; body = `<p class="small" style="margin:6px 0 0">Скачиваю и проверяю обновление…</p>`; break;
     case "ready": cls = "ok"; body = `<p class="small" style="margin:6px 0 0">${ico("check")}Обновление до ${esc(u.version)} установлено.</p>`; break;
     case "uptodate": body = `<p class="small muted" style="margin:6px 0 0">${ico("check")}У вас самая новая версия.${u.skipped ? " (Версия " + esc(u.latest) + " ранее не запустилась и пропущена.)" : ""}</p>`; break;
-    case "need-installer": cls = "warn"; body = `<p style="margin:6px 0 4px"><b>Вышла версия ${esc(u.version)}, для неё нужна новая программа целиком.</b></p><p class="small muted">Скачайте свежий установщик с сайта проекта и запустите — ваши данные сохранятся.</p>${u.installer && u.installer.url ? `<button class="btn gold" data-act="upd-installer">${ico("download")}Скачать установщик</button>` : ""}`; break;
+    case "need-installer": cls = "ok"; body = `<p style="margin:6px 0 4px"><b>Доступна версия ${esc(u.version)}</b> — обновляется программа целиком.</p>${(u.notes || []).length ? `<ul class="small" style="margin:0 0 8px;padding-left:1.1em">${u.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul>` : ""}${canSelfInstall() ? `<p class="small muted">Программа сама скачает установщик с сайта проекта, проверит его и перезапустится. Ваши данные и ключ сохранятся.</p><button class="btn gold" data-act="upd-install">${ico("download")}Обновить сейчас</button>` : `<p class="small muted">Скачайте свежий установщик с сайта проекта и запустите — ваши данные сохранятся.</p>${u.installer && u.installer.url ? `<button class="btn gold" data-act="upd-installer">${ico("download")}Скачать установщик</button>` : ""}`}`; break;
+    case "installer-downloading": cls = "hl"; body = `<p class="small" style="margin:6px 0 4px">Скачиваю новую программу ${esc(u.version || "")}… ${u.progress | 0}%</p><div class="updprog"><i style="width:${u.progress | 0}%"></i></div>`; break;
+    case "installing": cls = "hl"; body = `<p class="small" style="margin:6px 0 0">${ico("check")}Установщик проверен и запущен. Программа закроется и через несколько секунд откроется уже новой версии.</p>`; break;
+    case "staged": cls = "ok"; body = `<p class="small" style="margin:6px 0 0">${ico("check")}Обновление до <b>${esc(u.version)}</b> скачано и проверено. Включится само, когда окно уйдёт с экрана, — или сейчас:</p><div class="row gap" style="margin-top:8px"><button class="btn sm gold" data-act="upd-reload">${ico("refresh-cw")}Перезапустить сейчас</button></div>`; break;
+    case "installer-ready": cls = "ok"; body = `<p class="small" style="margin:6px 0 0">${ico("check")}Новая версия программы <b>${esc(u.version)}</b> скачана и проверена. Она установится сама, когда программа будет свёрнута, или при выходе.</p><div class="row gap" style="margin-top:8px"><button class="btn sm gold" data-act="upd-install">${ico("download")}Установить сейчас</button></div>`; break;
     case "rolled-back": cls = "warn"; body = `<p class="small" style="margin:6px 0 0">${ico("alert")}Версия ${esc(u.bad || "")} не запустилась, программа вернула прежнюю (${esc(u.version || "")}).</p>`; break;
     case "error": cls = "warn"; body = `<p class="small" style="margin:6px 0 0">${ico("alert")}Не получилось: ${esc(u.why || "ошибка")}.</p>`; break;
     default: body = `<p class="small muted" style="margin:6px 0 0">Нажмите «Проверить», чтобы узнать, есть ли новая версия.</p>`;
   }
   const canCheck = NATIVE ? true : (typeof UPD !== "undefined" && UPD.configured());
   return `<div class="card ${cls}" data-upd><div class="row sb"><div><b>${ico("refresh-cw")}Версия ${esc(ver)}</b>${NATIVE && inf.htmlSource === "updated" ? ` <span class="tag">обновлена</span>` : ""}<div class="tiny muted">${u.lastCheck ? "Последняя проверка: " + fmtDate(u.lastCheck) + " " + fmtTime(u.lastCheck) : "Ещё не проверялось"}</div></div>
-    <div class="row gap">${canCheck ? `<button class="btn sm" data-act="upd-check" ${u.status === "checking" || u.status === "downloading" ? "disabled" : ""}>${ico("refresh-cw")}Проверить</button>` : ""}${u.canRollback ? `<button class="btn sm ghost" data-act="upd-rollback" data-tip="Вернуть версию, которая была до обновления">${ico("undo")}Откатить</button>` : ""}</div></div>${body}${!NATIVE && canCheck ? `<label class="chk" style="margin-top:8px"><input type="checkbox" data-chg="set-bool" data-k="updAuto" ${S.set.updAuto !== false ? "checked" : ""}><div class="ct"><b>Проверять обновления при запуске</b><small>Программа обращается только к странице проекта на GitHub, без ваших данных. Если выключить — только по кнопке «Проверить».</small></div></label>` : ""}</div>`;
+    <div class="row gap">${canCheck ? `<button class="btn sm" data-act="upd-check" ${["checking", "downloading", "installer-downloading", "installing"].indexOf(u.status) >= 0 ? "disabled" : ""}>${ico("refresh-cw")}Проверить</button>` : ""}${u.canRollback ? `<button class="btn sm ghost" data-act="upd-rollback" data-tip="Вернуть версию, которая была до обновления">${ico("undo")}Откатить</button>` : ""}</div></div>${body}${NATIVE && !(NATIVE.update && NATIVE.update.install) && !(inf.portable) ? `<p class="tiny muted" style="margin:8px 0 0">Вышла новая программа Windows с обновлением в один клик. Чтобы её получить, один раз скачайте установщик с сайта: <a class="ref" data-act="upd-installer">скачать</a>. Данные и ключ сохранятся.</p>` : ""}${!NATIVE && canCheck ? `<label class="chk" style="margin-top:8px"><input type="checkbox" data-chg="set-bool" data-k="updAuto" ${S.set.updAuto !== false ? "checked" : ""}><div class="ct"><b>Проверять обновления при запуске</b><small>Программа обращается только к странице проекта на GitHub, без ваших данных. Если выключить — только по кнопке «Проверить».</small></div></label>` : ""}</div>`;
 }
 function updateChanged() {
-  if (NSET.upd && Array.isArray(NSET.upd.revoked) && typeof LIC !== "undefined") { LIC.revoked = NSET.upd.revoked; if (LIC.required()) licCheck(); }
   APPS.forEach(a => {
     updateBanner(a);
     if (!a.mini && /^settings\/(overlay|about)/.test(a.route || "") && !a.ui.cap) { try { paint(a, true); } catch (e) { } }
@@ -9654,19 +9809,25 @@ function updateChanged() {
 /* плашка «Доступно обновление» поверх страницы */
 function updateBanner(app) {
   const root = app.root, u = NSET.upd || {}, old = root.querySelector(".updbar");
-  const show = (u.status === "available" || u.status === "need-installer" || u.status === "downloading" || u.status === "rolled-back") && !(app._updHidden === u.version + u.status);
+  const show = ["available", "need-installer", "downloading", "installer-downloading", "installing", "rolled-back", "staged", "installer-ready"].indexOf(u.status) >= 0 && !(app._updHidden === u.version + u.status) && !(u.auto && u.status === "installer-downloading");
   if (!show) { if (old) old.remove(); return; }
   const html = u.status === "available" ? `<span>${ico("refresh-cw")}<b>Доступна версия ${esc(u.version)}</b>${u.notes && u.notes[0] ? " — " + esc(short(u.notes[0], 70)) : ""}</span><span class="grow"></span><button class="btn sm gold" data-act="upd-apply">Обновить сейчас</button><button class="btn sm ghost" data-act="upd-later" aria-label="Позже">Позже</button>`
     : u.status === "downloading" ? `<span>${ico("download")}Скачиваю обновление…</span>`
-      : u.status === "need-installer" ? `<span>${ico("alert")}<b>Версия ${esc(u.version)}</b> требует новой программы целиком</span><span class="grow"></span><button class="btn sm gold" data-act="upd-installer">Скачать</button><button class="btn sm ghost" data-act="upd-later">Позже</button>`
+      : u.status === "installer-downloading" ? `<span>${ico("download")}Скачиваю новую программу ${esc(u.version || "")}… ${u.progress | 0}%</span>`
+      : u.status === "installing" ? `<span>${ico("check")}Устанавливаю обновление — программа сейчас перезапустится</span>`
+      : u.status === "staged" ? `<span>${ico("check")}<b>Обновление ${esc(u.version)} готово.</b> Включится, когда свернёте окно</span><span class="grow"></span><button class="btn sm gold" data-act="upd-reload">Перезапустить сейчас</button><button class="btn sm ghost" data-act="upd-later">Позже</button>`
+      : u.status === "installer-ready" ? `<span>${ico("check")}<b>Версия ${esc(u.version)} скачана.</b> Установится, когда программа свёрнута, или при выходе</span><span class="grow"></span><button class="btn sm gold" data-act="upd-install">Установить сейчас</button><button class="btn sm ghost" data-act="upd-later">Позже</button>`
+      : u.status === "need-installer" ? `<span>${ico("refresh-cw")}<b>Доступна версия ${esc(u.version)}</b>${u.notes && u.notes[0] ? " — " + esc(short(u.notes[0], 60)) : ""}</span><span class="grow"></span>${canSelfInstall() ? `<button class="btn sm gold" data-act="upd-install">Обновить сейчас</button>` : `<button class="btn sm gold" data-act="upd-installer">Скачать</button>`}<button class="btn sm ghost" data-act="upd-later">Позже</button>`
         : `<span>${ico("alert")}Версия ${esc(u.bad || "")} не запустилась — возвращена прежняя</span><span class="grow"></span><button class="btn sm ghost" data-act="upd-later">Понятно</button>`;
   let bar = old; if (!bar) { bar = app.doc.createElement("div"); bar.className = "updbar"; const m = root.querySelector(".main"); if (m) m.insertBefore(bar, m.firstChild); else return; }
   bar.innerHTML = html; iconize(bar, app.doc);
 }
+ACT["upd-reload"] = () => { if (NATIVE && NATIVE.update.reload) NATIVE.update.reload(); };
 ACT["upd-later"] = app => { const u = NSET.upd || {}; app._updHidden = u.version + u.status; updateBanner(app); };
 ACT["upd-check"] = app => { if (NATIVE) { NATIVE.update.check().then(s => { if (s) { NSET.upd = s; updateChanged(); } }); NSET.upd = Object.assign({}, NSET.upd, { status: "checking" }); updateChanged(); } else if (typeof UPD !== "undefined") UPD.check(true); };
 ACT["upd-apply"] = app => { if (NATIVE) { NATIVE.update.apply().then(s => { if (s) { NSET.upd = s; updateChanged(); } }); NSET.upd = Object.assign({}, NSET.upd, { status: "downloading" }); updateChanged(); } else if (typeof UPD !== "undefined") UPD.apply(); };
 ACT["upd-rollback"] = app => confirmBox(app, "Вернуть версию, которая была до последнего обновления?", "Откатить", () => { if (NATIVE) NATIVE.update.rollback().then(r => { if (r && r.ok) APPS.forEach(a => toast(a, "Возвращена версия " + r.version, "ok")); }); }, false);
+ACT["upd-install"] = app => { if (!canSelfInstall()) return ACT["upd-installer"](); NATIVE.update.install().then(s => { if (s) { NSET.upd = s; updateChanged(); } }); NSET.upd = Object.assign({}, NSET.upd, { status: "installer-downloading", progress: 0 }); updateChanged(); };
 ACT["upd-installer"] = () => { const u = NSET.upd || {}; const url = (u.installer && u.installer.url) || (typeof SITE !== "undefined" && SITE.downloadUrl) || ""; if (url) { if (NATIVE) NATIVE.external(url); else window.open(url, "_blank", "noopener"); } };
 
 /* ================================================================
@@ -9796,7 +9957,6 @@ ACT["tab-take-theirs"] = app => {
     window.addEventListener("pagehide", flush); document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") flush(); });
     startupNotices(main);
     try { wizAuto(main); } catch (e) { console.error(e); }
-    licInit();
     UPD.start();
     nativeInit().then(nativeBootOk, nativeBootOk);
   } catch (err) {
