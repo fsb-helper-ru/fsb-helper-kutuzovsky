@@ -4,6 +4,13 @@
 
 Помощник сотрудника ФСБ для сервера «Кутузовский» игры «Россия Онлайн»: ситуации по шагам, законы с поиском, бланки, таймеры, панель поверх игры (Insert). Работает без интернета.
 
+![Главная страница программы](img/home.webp)
+
+| | |
+|---|---|
+| ![Провести меня по шагам](img/guide.webp) | ![Законы](img/laws.webp) |
+| ![Бланки](img/blanks.webp) | ![Таймер задержания](img/timer.webp) |
+
 - Сайт: https://fsb-helper-ru.github.io/fsb-helper-kutuzovsky/
 - Скачать для Windows: [FSB-Helper-Setup.exe](https://github.com/fsb-helper-ru/fsb-helper-kutuzovsky/releases/latest/download/FSB-Helper-Setup.exe)
 - Портативная версия: [FSB-Helper-Portable.exe](https://github.com/fsb-helper-ru/fsb-helper-kutuzovsky/releases/latest/download/FSB-Helper-Portable.exe)

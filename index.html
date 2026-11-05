@@ -9,6 +9,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta property="og:title" content="ФСБ-помощник · Кутузовский">
+<meta property="og:image" content="https://fsb-helper-ru.github.io/fsb-helper-kutuzovsky/img/home.webp">
 <meta property="og:description" content="Неофициальный RP-помощник для ФСБ на сервере «Кутузовский»: ситуации, законы, бланки, таймеры — поверх игры.">
 <style>
 :root{--bg:#0b1326;--panel:#111c36;--panel2:#16234a;--line:#24345f;--text:#e9eef9;--muted:#a7b3cf;--gold:#d4a948;--gold2:#f0c766;--ongold:#16130a;--warn:#ffb84d;--ok:#5fd39a}
@@ -35,6 +36,14 @@ h1{font-size:clamp(1.9rem,4.6vw,3rem);line-height:1.12;margin:16px 0 12px;letter
 .btn:focus-visible,a:focus-visible{outline:3px solid var(--gold2);outline-offset:2px}
 .btn small{font-weight:500;opacity:.85}
 .meta{color:var(--muted);font-size:.9em;margin-top:14px}
+.hero-shot{margin:28px 0 0}
+.hero-shot img,.shots img{display:block;width:100%;height:auto;border-radius:14px;border:1px solid var(--line);background:#0b1326}
+.hero-shot img{box-shadow:0 24px 70px rgba(0,0,0,.38)}
+.shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:18px}
+figure{margin:0}
+figcaption{color:var(--muted);font-size:.92em;margin-top:8px}
+figcaption b{color:var(--text)}
+.shots a:focus-visible{outline:3px solid var(--gold2);outline-offset:3px;border-radius:14px}
 section{padding:30px 0;border-top:1px solid var(--line)}
 h2{font-size:1.5em;margin:0 0 16px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
@@ -59,7 +68,7 @@ footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--muted);f
 </head>
 <body>
 <header class="top"><div class="wrap"><a class="brand" href="#"><svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><path d="M17 2l13 5v9c0 8-5.5 13.5-13 16C9.5 29.5 4 24 4 16V7z" fill="#12234a" stroke="#d4a948" stroke-width="1.8"/><path d="M17 8l7 3v5c0 4.5-3 8-7 9.5C13 24 10 20.5 10 16v-5z" fill="#d4a948"/></svg><span>ФСБ-помощник · Кутузовский</span></a>
-<nav class="links" aria-label="Разделы страницы"><a href="#features">Что умеет</a><a href="#install">Установка</a><a href="#safety">Безопасность</a><a href="#check">SHA-256</a><a href="#news">Что нового</a></nav></div></header>
+<nav class="links" aria-label="Разделы страницы"><a href="#features">Что умеет</a><a href="#shots">Скриншоты</a><a href="#install">Установка</a><a href="#safety">Безопасность</a><a href="#check">SHA-256</a><a href="#news">Что нового</a></nav></div></header>
 <main>
 <div class="wrap hero">
   <span class="badge">Неофициальный игровой RP-помощник. Не является официальной программой или юридическим источником</span>
@@ -70,6 +79,7 @@ footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--muted);f
     <a class="btn" href="https://github.com/fsb-helper-ru/fsb-helper-kutuzovsky/releases/latest/download/FSB-Helper-Portable.exe">Портативная версия без установки <small>· 142 МБ</small></a>
   </div>
   <p class="meta">Версия 3.2.0 · 5 ноября 2026 · Windows 10 и 11 (64-бит) · <a href="FSB-Helper-Kutuzovsky.html" download>HTML-версия для браузера</a> (2,5 МБ) · <a href="https://github.com/fsb-helper-ru/fsb-helper-kutuzovsky/releases">все выпуски</a></p>
+  <figure class="hero-shot"><img src="img/home.webp" width="1280" height="800" alt="Главная страница программы: блок «Что сделать сейчас?» и быстрые действия" fetchpriority="high"></figure>
 </div>
 
 <section id="who"><div class="wrap"><h2>Для кого это</h2>
@@ -79,6 +89,8 @@ footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--muted);f
 </div></div></section>
 
 <section id="features"><div class="wrap"><h2>Что умеет</h2><div class="grid"><article class="card"><svg class="ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36z"/></svg><h3>Ситуации по шагам</h3><p>Задержание, обыск, проверка документов, «чьё это дело» — что делать, что сказать, на что сослаться. Можно пройти по одному шагу.</p></article><article class="card"><svg class="ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg><h3>Законы и поиск</h3><p>Закон о ФСБ, УК, КоАП, процессуальный кодекс, законы ведомств и правила сервера. Ссылки кликабельны, поиск — мгновенный.</p></article><article class="card"><svg class="ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><h3>Кто за что отвечает</h3><p>ФСБ, МВД, СК, прокуратура, ГИБДД — выдержки из их законов. И быстрый ответ: дело ваше или его надо передать.</p></article><article class="card"><svg class="ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg><h3>Бланки</h3><p>Протокол, рапорт, постановления, доклад о смене. Время вводится как удобно, основания — списком, перед выгрузкой — проверка.</p></article><article class="card"><svg class="ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/></svg><h3>Таймеры</h3><p>Задержание с процессуальным временем и паузами, дежурство с докладами, свои таймеры. Из таймера — сразу протокол.</p></article><article class="card"><svg class="ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg><h3>Поверх игры</h3><p>Панель открывается клавишей Insert прямо в игре (оконный режим или «окно без рамки»). Текст копируется — вставьте T → Ctrl+V.</p></article><article class="card"><svg class="ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.42 10.92a1 1 0 0 0-.02-1.84L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.83l8.57 3.91a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg><h3>Учёба</h3><p>Уроки, тесты, работа над ошибками, словарь. Режимы «Новичок» с пояснениями и компактный «Профи».</p></article><article class="card"><svg class="ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h.01"/><path d="M8.5 16.43a5 5 0 0 1 7 0"/><path d="M2 8.82a15 15 0 0 1 4.17-2.65"/><path d="M10.66 5c4.01-.36 8.14.9 11.34 3.76"/><path d="M16.85 11.25a10 10 0 0 1 2.22 1.68"/><path d="M5 13a10 10 0 0 1 5.24-2.76"/><line x1="2" x2="22" y1="2" y2="22"/></svg><h3>Без интернета</h3><p>Всё работает офлайн. В сеть программа ходит только за проверкой обновлений на этом сайте — это можно выключить.</p></article></div></div></section>
+
+<section id="shots"><div class="wrap"><h2>Как это выглядит</h2><div class="shots"><figure><a href="img/guide.webp"><img src="img/guide.webp" width="1280" height="800" loading="lazy" alt="Провести меня по шагам: что сделать, зачем, на что ссылаться и что будет ошибкой — по одному шагу"></a><figcaption><b>Провести меня по шагам</b> — что сделать, зачем, на что ссылаться и что будет ошибкой — по одному шагу</figcaption></figure><figure><a href="img/laws.webp"><img src="img/laws.webp" width="1280" height="800" loading="lazy" alt="Законы: группы, статус редакции и быстрый вопрос «моя ситуация или передавать?»"></a><figcaption><b>Законы</b> — группы, статус редакции и быстрый вопрос «моя ситуация или передавать?»</figcaption></figure><figure><a href="img/blanks.webp"><img src="img/blanks.webp" width="1280" height="800" loading="lazy" alt="Бланки: поля слева, готовая бумага справа: PDF, картинка, печать"></a><figcaption><b>Бланки</b> — поля слева, готовая бумага справа: PDF, картинка, печать</figcaption></figure><figure><a href="img/timer.webp"><img src="img/timer.webp" width="1280" height="800" loading="lazy" alt="Таймер задержания: реальное и процессуальное время, паузы и следующий шаг"></a><figcaption><b>Таймер задержания</b> — реальное и процессуальное время, паузы и следующий шаг</figcaption></figure></div></div></section>
 
 <section id="install"><div class="wrap"><h2>Установка — 3 шага</h2>
 <ol class="steps">
