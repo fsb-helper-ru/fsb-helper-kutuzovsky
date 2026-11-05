@@ -1,0 +1,39 @@
+{
+ "app": "fsb-helper-kutuzovsky",
+ "kind": "control-journal",
+ "saved": "2026-11-05T20:15:36.327Z",
+ "data": {
+  "site": "https://fsb-helper-ru.github.io/fsb-helper-kutuzovsky/",
+  "keys": [
+   {
+    "id": "J3EK9NJA",
+    "key": "FSB2-0A8DT-D6P98-0T20G-000FX-14PGP-38BQM-5NT2Y-X30PG-Q38BT-86GM7-8BHMC-2T2RD-306HG-F8BMH-63CBZ-ERDTS-5454K-JXCW3-X01HH-Y0A3K-3TA8N-PZFJJ-6A1W6-B34ZG-ZDSKH-WKVNS-WSK2J-SEFAE-VWTPQ-TRSX2-XFX5V-N8Q23-HZF1D-XXE10-0M0J0",
+    "name": "Валентин Ситарук",
+    "plan": "pro",
+    "exp": "",
+    "iat": "2026-11-05",
+    "note": "",
+    "revoked": true,
+    "created": 1793909421170
+   },
+   {
+    "id": "MJHK8FK9",
+    "key": "FSB2-0AJA6-D1YD4-0T20G-000CX-14PGP-38BVM-CET64-D1C10-T29X3-06GPQ-8BSM5-RT60T-MZP19-658ZV-SWT6G-K7N3D-QGAWJ-1FB0J-K4NKA-0RMP4-E7PYX-FNARH-640QX-F147M-ZBSFS-VM0HD-08XB2-QTSWB-C95FB-E4TJA-TNR0P-7QFZ5-0QTKG",
+    "name": "Ванюша Гремис",
+    "plan": "pro",
+    "exp": "",
+    "iat": "2026-11-05",
+    "note": "",
+    "revoked": false,
+    "created": 1793907954742
+   }
+  ],
+  "policy": {
+   "required": true,
+   "from": "2026-11-04",
+   "grace": 0,
+   "msg": "Активируйте Ключь у Владельца",
+   "contact": "#griezslav"
+  }
+ }
+}
