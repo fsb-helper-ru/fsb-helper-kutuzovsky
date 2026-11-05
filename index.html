@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ФСБ-помощник · Кутузовский — скачать для Windows</title>
+<meta name="description" content="Неофициальный игровой RP-помощник для сотрудников ФСБ на сервере «Кутузовский» игры «Россия Онлайн»: ситуации по шагам, законы, бланки, таймеры, панель поверх игры. Бесплатно, работает без интернета.">
+<meta name="color-scheme" content="dark light">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="ФСБ-помощник · Кутузовский">
+<meta property="og:description" content="Неофициальный RP-помощник для ФСБ на сервере «Кутузовский»: ситуации, законы, бланки, таймеры — поверх игры.">
+<style>
+:root{--bg:#0b1326;--panel:#111c36;--panel2:#16234a;--line:#24345f;--text:#e9eef9;--muted:#a7b3cf;--gold:#d4a948;--gold2:#f0c766;--ongold:#16130a;--warn:#ffb84d;--ok:#5fd39a}
+@media (prefers-color-scheme:light){:root{--bg:#f4f6fb;--panel:#fff;--panel2:#eef2fb;--line:#d6deef;--text:#13203f;--muted:#4f5d7d;--gold:#8a5f00;--gold2:#8a5f00;--ongold:#fff;--warn:#9a5a00;--ok:#16794a}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+a{color:var(--gold2)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+header.top{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;gap:12px;min-height:60px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:750;text-decoration:none;color:var(--text)}
+nav.links{margin-left:auto;display:flex;gap:16px;flex-wrap:wrap}
+nav.links a{color:var(--muted);text-decoration:none;font-size:.92em}
+nav.links a:hover,nav.links a:focus-visible{color:var(--text)}
+.hero{padding:56px 0 32px}
+.badge{display:inline-block;border:1px solid var(--warn);color:var(--warn);border-radius:12px;padding:4px 12px;font-size:.84em;font-weight:600}
+h1{font-size:clamp(1.9rem,4.6vw,3rem);line-height:1.12;margin:16px 0 12px;letter-spacing:-.01em}
+.lead{font-size:1.12em;color:var(--muted);max-width:760px;margin:0 0 24px}
+.cta{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:10px;border-radius:14px;padding:13px 20px;font-weight:700;text-decoration:none;border:1px solid var(--line);color:var(--text);background:var(--panel2);min-height:48px}
+.btn.main{background:var(--gold);border-color:var(--gold);color:var(--ongold);font-size:1.08em;padding:15px 24px}
+.btn.main:hover{filter:brightness(1.08)}
+.btn:focus-visible,a:focus-visible{outline:3px solid var(--gold2);outline-offset:2px}
+.btn small{font-weight:500;opacity:.85}
+.meta{color:var(--muted);font-size:.9em;margin-top:14px}
+section{padding:30px 0;border-top:1px solid var(--line)}
+h2{font-size:1.5em;margin:0 0 16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px}
+.card h3{margin:8px 0 6px;font-size:1.06em}
+.card p{margin:0;color:var(--muted);font-size:.95em}
+.ic{color:var(--gold2)}
+.steps{counter-reset:s;list-style:none;padding:0;display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.steps li{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 16px 16px 58px;position:relative}
+.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:16px;top:14px;width:30px;height:30px;border-radius:50%;background:var(--gold);color:var(--ongold);font-weight:800;display:grid;place-items:center}
+ul.plain{padding-left:1.2em;margin:0} ul.plain li{margin:.35em 0}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+table{width:100%;border-collapse:collapse;font-size:.92em}
+td{border-top:1px solid var(--line);padding:10px 8px;vertical-align:top}
+code{font-family:ui-monospace,Consolas,monospace;font-size:.92em}
+code.h{word-break:break-all}
+pre{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:12px;overflow:auto;font-size:.9em}
+.warnbox{border:1px solid var(--warn);border-radius:14px;padding:12px 16px;background:color-mix(in srgb,var(--warn) 9%,transparent)}
+footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--muted);font-size:.9em}
+@media (max-width:600px){nav.links{display:none} .btn{width:100%;justify-content:center} .hero{padding-top:30px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap"><a class="brand" href="#"><svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><path d="M17 2l13 5v9c0 8-5.5 13.5-13 16C9.5 29.5 4 24 4 16V7z" fill="#12234a" stroke="#d4a948" stroke-width="1.8"/><path d="M17 8l7 3v5c0 4.5-3 8-7 9.5C13 24 10 20.5 10 16v-5z" fill="#d4a948"/></svg><span>ФСБ-помощник · Кутузовский</span></a>
+<nav class="links" aria-label="Разделы страницы"><a href="#features">Что умеет</a><a href="#install">Установка</a><a href="#safety">Безопасность</a><a href="#check">SHA-256</a><a href="#news">Что нового</a></nav></div></header>
+<main>
+<div class="wrap hero">
+  <span class="badge">Неофициальный игровой RP-помощник. Не является официальной программой или юридическим источником</span>
+  <h1>Помощник сотрудника ФСБ для сервера «Кутузовский»</h1>
+  <p class="lead">Ситуации по шагам, законы с поиском, бланки, таймеры задержания и дежурства — в одном окне и поверх игры «Россия Онлайн» по клавише Insert. Бесплатно, работает без интернета.</p>
+  <div class="cta">
+    <a class="btn main" href="https://github.com/fsb-helper-ru/fsb-helper-kutuzovsky/releases/latest/download/FSB-Helper-Setup.exe"><svg class="ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>Скачать для Windows <small>· 143 МБ</small></a>
+    <a class="btn" href="https://github.com/fsb-helper-ru/fsb-helper-kutuzovsky/releases/latest/download/FSB-Helper-Portable.exe">Портативная версия без установки <small>· 142 МБ</small></a>
+  </div>
+  <p class="meta">Версия 3.2.0 · 5 ноября 2026 · Windows 10 и 11 (64-бит) · <a href="FSB-Helper-Kutuzovsky.html" download>HTML-версия для браузера</a> (2,5 МБ) · <a href="https://github.com/fsb-helper-ru/fsb-helper-kutuzovsky/releases">все выпуски</a></p>
+</div>
+
+<section id="who"><div class="wrap"><h2>Для кого это</h2>
+<div class="two">
+  <div class="card"><h3>Новичкам ФСБ</h3><p>Короткий мастер при первом запуске, блок «Что сделать сейчас?», пояснения в каждом разделе и уроки с тестами. Не нужно держать в голове устав и кодексы.</p></div>
+  <div class="card"><h3>Опытным сотрудникам</h3><p>Режим «Профи» без подсказок, быстрый поиск по статьям, бланки за минуту, таймеры и готовые фразы поверх игры.</p></div>
+</div></div></section>
+
+<section id="features"><div class="wrap"><h2>Что умеет</h2><div class="grid"><article class="card"><svg class="ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36z"/></svg><h3>Ситуации по шагам</h3><p>Задержание, обыск, проверка документов, «чьё это дело» — что делать, что сказать, на что сослаться. Можно пройти по одному шагу.</p></article><article class="card"><svg class="ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg><h3>Законы и поиск</h3><p>Закон о ФСБ, УК, КоАП, процессуальный кодекс, законы ведомств и правила сервера. Ссылки кликабельны, поиск — мгновенный.</p></article><article class="card"><svg class="ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><h3>Кто за что отвечает</h3><p>ФСБ, МВД, СК, прокуратура, ГИБДД — выдержки из их законов. И быстрый ответ: дело ваше или его надо передать.</p></article><article class="card"><svg class="ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg><h3>Бланки</h3><p>Протокол, рапорт, постановления, доклад о смене. Время вводится как удобно, основания — списком, перед выгрузкой — проверка.</p></article><article class="card"><svg class="ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/></svg><h3>Таймеры</h3><p>Задержание с процессуальным временем и паузами, дежурство с докладами, свои таймеры. Из таймера — сразу протокол.</p></article><article class="card"><svg class="ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg><h3>Поверх игры</h3><p>Панель открывается клавишей Insert прямо в игре (оконный режим или «окно без рамки»). Текст копируется — вставьте T → Ctrl+V.</p></article><article class="card"><svg class="ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.42 10.92a1 1 0 0 0-.02-1.84L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.83l8.57 3.91a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg><h3>Учёба</h3><p>Уроки, тесты, работа над ошибками, словарь. Режимы «Новичок» с пояснениями и компактный «Профи».</p></article><article class="card"><svg class="ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h.01"/><path d="M8.5 16.43a5 5 0 0 1 7 0"/><path d="M2 8.82a15 15 0 0 1 4.17-2.65"/><path d="M10.66 5c4.01-.36 8.14.9 11.34 3.76"/><path d="M16.85 11.25a10 10 0 0 1 2.22 1.68"/><path d="M5 13a10 10 0 0 1 5.24-2.76"/><line x1="2" x2="22" y1="2" y2="22"/></svg><h3>Без интернета</h3><p>Всё работает офлайн. В сеть программа ходит только за проверкой обновлений на этом сайте — это можно выключить.</p></article></div></div></section>
+
+<section id="install"><div class="wrap"><h2>Установка — 3 шага</h2>
+<ol class="steps">
+  <li><b>Скачайте</b> файл <code>FSB-Helper-Setup.exe</code> кнопкой «Скачать для Windows» выше.</li>
+  <li><b>Запустите его.</b> Windows может показать «Система Windows защитила ваш компьютер» — у файла нет платной подписи. Нажмите «Подробнее» → «Выполнить в любом случае». Права администратора не нужны.</li>
+  <li><b>Готово.</b> Значок появится у часов Windows, ярлык — на рабочем столе. В игре нажмите <b>Insert</b> (игра — в оконном режиме или «окно без рамки»).</li>
+</ol>
+<p class="meta">Без установки: скачайте портативную версию и положите в любую папку — рядом появится папка с программой и вашими данными. Удалить — просто удалить папку. Обновления приходят внутри программы: «Настройки → Обновить сейчас».</p>
+</div></section>
+
+<section id="safety"><div class="wrap"><h2>Безопасность и приватность</h2>
+<div class="two"><div class="card"><ul class="plain">
+  <li>Ничего не вводит в игру и не читает её память: текст копируется в буфер обмена, вставляете вы сами.</li>
+  <li>Все данные (профиль, бланки, отметки) хранятся только на вашем компьютере.</li>
+  <li>В интернет обращается только за проверкой обновлений на этом сайте; это выключается в настройках.</li>
+</ul></div><div class="card"><ul class="plain">
+  <li>Обновления подписаны цифровой подписью (Ed25519): программа проверяет подпись и контрольную сумму перед установкой.</li>
+  <li>Ставится в папку пользователя без прав администратора; удаляется через «Параметры → Приложения».</li>
+  <li>Игровые документы в программе — ролевые. Тексты норм — рабочие редакции; при расхождении с форумом сервера прав форум.</li>
+</ul></div></div></div></section>
+
+<section id="check"><div class="wrap"><h2>Проверка файла (SHA-256)</h2>
+<p class="warnbox">Файл не имеет коммерческой цифровой подписи; сверяйте SHA-256 и скачивайте только с официальной страницы проекта: <a href="https://fsb-helper-ru.github.io/fsb-helper-kutuzovsky/">https://fsb-helper-ru.github.io/fsb-helper-kutuzovsky/</a></p>
+<table><tbody><tr><td><code>FSB-Helper-Setup.exe</code><br><small>143 МБ</small></td><td><code class="h">f2475e7ecea60a14cbce5b72701dfbd8e296726f0567004e77743bc2c6f76402</code></td></tr><tr><td><code>FSB-Helper-Portable.exe</code><br><small>142 МБ</small></td><td><code class="h">31c3cbb347a608c741ebde8a13eec87959502bb325ec3b2d14dbdd83191513bb</code></td></tr><tr><td><code>FSB-Helper-Kutuzovsky.html</code><br><small>2,5 МБ</small></td><td><code class="h">470f727e28f7532b74755209cda11a509927103f4af5fe96196403eeae155257</code></td></tr></tbody></table>
+<p>Как проверить: откройте PowerShell в папке со скачанным файлом и выполните</p>
+<pre>Get-FileHash .\FSB-Helper-Setup.exe -Algorithm SHA256</pre>
+<p class="meta">Строка Hash должна совпасть с таблицей выше. Тот же список — в файле <a href="SHA256SUMS.txt">SHA256SUMS.txt</a>.</p>
+</div></section>
+
+<section id="news"><div class="wrap"><h2>Что нового в 3.2.0</h2><p class="meta" style="margin-top:-8px">Выпуск от 5 ноября 2026</p><ul class="plain"><li>Мастер первого запуска и главный блок «Что сделать сейчас?» с карточкой «Продолжить».</li><li>Законы по группам с редакцией и статусом; «Кто за что отвечает» — выдержки из норм со ссылками.</li><li>Быстрый вопрос «Ситуация моя или передавать?» по номеру статьи УК.</li><li>«Провести меня по шагам» в ситуациях: по одному шагу, сводка и рапорт со сводкой.</li><li>Бланки: единый ввод времени (930, 09:30), ночная смена, «Нормативные основания», проверка перед выгрузкой.</li><li>Из таймера задержания — сразу протокол, из дежурства — «Доклад о смене».</li><li>В статьях — «простыми словами», «что нельзя делать», «следующий шаг»; в поиске — «В бланк» и «Изучить в уроке».</li><li>Защита данных: копия перед обновлением формата, предупреждение при сбое сохранения, выбор при правке в двух вкладках.</li><li>Кнопка «Учёба» в нижнем меню телефона; везде одинаково — «тест».</li><li>Портативная версия без установки.</li></ul></div></section>
+</main>
+<footer><div class="wrap">
+<p><b>ФСБ-помощник · Кутузовский</b> — неофициальный игровой RP-помощник. Не является официальной программой игры, сервера или организации и не является юридическим источником.</p>
+<p><a href="https://github.com/fsb-helper-ru/fsb-helper-kutuzovsky">Исходные файлы на GitHub</a> · <a href="https://github.com/fsb-helper-ru/fsb-helper-kutuzovsky/releases">Выпуски</a> · <a href="SHA256SUMS.txt">SHA256SUMS.txt</a></p>
+</div></footer>
+</body>
+</html>
