@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="fsb-app" content="kutuzovsky">
-<meta name="fsb-app-version" content="3.2.0">
+<meta name="fsb-app-version" content="3.3.0">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; font-src data:; media-src data: blob:; connect-src https://fsb-helper-ru.github.io; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="dark light">
@@ -37,7 +37,7 @@
   color-scheme:light;
   --bg:#eef1f7; --bg2:#e6eaf3; --panel:#ffffff; --panel2:#f3f5fa; --panel3:#e7ecf6;
   --line:#d3dbea; --line2:#e4e9f3; --side1:#ffffff; --side2:#f6f8fc; --top:rgba(238,241,247,.86);
-  --text:#121a2e; --muted:#4a5875; --dim:#586684;
+  --text:#121a2e; --muted:#4a5875; --dim:#515f7e;
   --shadow:0 1px 2px rgba(20,32,70,.06),0 6px 20px rgba(20,32,70,.07);
   --shadow-lg:0 24px 60px rgba(20,32,70,.28);
   --ok-t:#0c6a4a; --warn-t:#855400; --bad-t:#a3261e; --blue-t:#1b4aa6; --purple-t:#5a3cc0; --org-t:#a2480d;
@@ -50,7 +50,7 @@
     color-scheme:light;
     --bg:#eef1f7; --bg2:#e6eaf3; --panel:#ffffff; --panel2:#f3f5fa; --panel3:#e7ecf6;
     --line:#d3dbea; --line2:#e4e9f3; --side1:#ffffff; --side2:#f6f8fc; --top:rgba(238,241,247,.86);
-    --text:#121a2e; --muted:#4a5875; --dim:#586684;
+    --text:#121a2e; --muted:#4a5875; --dim:#515f7e;
     --shadow:0 1px 2px rgba(20,32,70,.06),0 6px 20px rgba(20,32,70,.07);
     --ok-t:#0c6a4a; --warn-t:#855400; --bad-t:#a3261e; --blue-t:#1b4aa6; --purple-t:#5a3cc0; --org-t:#a2480d;
     --link:#1d54b8; --gold:#b98a10; --accent-t:var(--a3);
@@ -1361,6 +1361,26 @@ html[data-mode=pro] .purpose{display:none}
 .guide-sum{white-space:pre-wrap;font:inherit;font-size:.9em;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:8px 0}
 @media (prefers-reduced-motion:reduce){.guide-bar i{transition:none}}
 
+/* ===== ключ активации 3.3 ===== */
+.lic-live{min-height:1.3em;font-size:.9em;margin:2px 0 6px;color:var(--muted)}
+.lic-live.ok{color:var(--ok-t)}
+.lic-live.bad{color:var(--bad-t)}
+.lic-where{display:flex;gap:10px;align-items:flex-start;border:1px solid rgba(var(--ar),.4);background:rgba(var(--ar),.08);border-radius:12px;padding:10px 12px;margin:10px 0;font-size:.92em}
+.lic-where .i{flex:none;margin:.15em 0 0;color:var(--accent-t)}
+.lic-box.in-modal{width:auto;padding:0;border:0;background:transparent;box-shadow:none}
+.lic-box.in-modal h3{display:flex;align-items:center;gap:8px;margin:0 0 8px}
+.lic-box.in-modal textarea{width:100%;margin:6px 0;font:.85em ui-monospace,Consolas,monospace;border-radius:10px;border:1px solid var(--line2);background:var(--panel2);color:var(--text);padding:10px}
+.lic-box .btn.gold,.liccard .btn.gold{background:linear-gradient(180deg,#f2cf72,#d4a948);color:#1a1405;border-color:#d4a948}
+.liccard .kv{margin:8px 0}
+.liccard .row.sb b .i{color:inherit}
+.licbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 14px;background:linear-gradient(90deg,rgba(var(--ar),.22),rgba(var(--ar),.08));border-bottom:1px solid rgba(var(--ar),.55);font-size:.92em}
+.licbar .i{width:16px;height:16px;margin:0 6px 0 0;vertical-align:-3px;color:var(--accent-t)}
+.licbar .grow{flex:1}
+.licbar.bad{background:linear-gradient(90deg,rgba(var(--badr),.25),rgba(var(--badr),.08));border-bottom-color:rgba(var(--badr),.55)}
+.licbar.bad .i{color:var(--bad-t)}
+.updprog{height:6px;border-radius:99px;background:var(--line);overflow:hidden}
+.updprog i{display:block;height:100%;background:var(--accent);transition:width .3s}
+
 </style>
 </head>
 <body>
@@ -1546,6 +1566,9 @@ function normalizeState(p) {
     /* ключ активации (пока ключи выключены, поле просто пустое) */
     const lc = S.license;
     S.license = lc && typeof lc === "object" && isStr(lc.key) && lc.key.length < 900 && isStr(lc.id) && lc.id.length < 40 ? { key: lc.key, id: lc.id, name: isStr(lc.name) ? lc.name.slice(0, 80) : "", exp: isStr(lc.exp) ? lc.exp.slice(0, 12) : "", plan: isStr(lc.plan) ? lc.plan.slice(0, 20) : "", at: isNum(lc.at) ? lc.at : 0 } : null;
+    S.licRevoked = Array.isArray(S.licRevoked) ? S.licRevoked.filter(x => isStr(x) && /^[A-Za-z0-9]{4,16}$/.test(x)).slice(0, 5000) : [];
+    { const p = S.licPolicy; S.licPolicy = p && typeof p === "object" ? { required: p.required === true, from: isStr(p.from) && /^\d{4}-\d{2}-\d{2}$/.test(p.from) ? p.from : "", grace: Number.isInteger(p.grace) ? Math.max(0, Math.min(30, p.grace)) : 3, msg: isStr(p.msg) ? p.msg.slice(0, 300) : "", contact: isStr(p.contact) ? p.contact.slice(0, 120) : "", ts: isNum(p.ts) ? p.ts : 0 } : null; }
+    S.licBarHid = isStr(S.licBarHid) ? S.licBarHid.slice(0, 20) : "";
     S.lastUpdCheck = isNum(S.lastUpdCheck) ? S.lastUpdCheck : 0;
     S.seenVer = isStr(S.seenVer) ? S.seenVer.slice(0, 30) : "";
     S.set.ovHideAfterCopy = S.set.ovHideAfterCopy !== false;
@@ -3404,6 +3427,7 @@ const DG = (function () {
   function paperTex(tint) {
     if (PAPER[tint]) return PAPER[tint];
     const c = mk(PW, PH), x = c.getContext("2d"), r = rng("paper-" + tint);
+    if (tint === "secure") return (PAPER[tint] = securePaper());
     const base = tint === "cream" ? [249, 244, 229] : tint === "plain" ? [255, 255, 255] : [253, 252, 249];
     x.fillStyle = "rgb(" + base.join(",") + ")"; x.fillRect(0, 0, PW, PH);
     if (tint !== "plain") {
@@ -3426,6 +3450,86 @@ const DG = (function () {
       x.fillStyle = g; x.fillRect(0, 0, PW, PH);
     }
     return (PAPER[tint] = c);
+  }
+
+  /* «Защищённая» бумага, как у настоящих бланков строгой отчётности: светло-зелёный фон, тонкая гильош-сетка
+     из волн, розетки, рамка с узором и микротекст по краю. Всё нарисовано кодом и ИГРОВОЕ — не копия настоящих бланков. */
+  const SGREEN = (a) => "rgba(28,112,72," + a + ")";
+  /* гильош: n тонких замкнутых кривых r(t) = R + A·sin(k·t + сдвиг) — вместе они сплетаются в «сетчатое» кольцо */
+  function guilloche(x, cx, cy, R, A, k, n, a, lw) {
+    x.lineWidth = lw; x.strokeStyle = SGREEN(a);
+    const steps = Math.max(480, Math.round(k * 24));
+    for (let j = 0; j < n; j++) {
+      const ph = j * TAU / n; x.beginPath();
+      for (let s = 0; s <= steps; s++) {
+        const t = s / steps * TAU, rr = R + A * Math.sin(k * t + ph);
+        const px = cx + rr * Math.cos(t), py = cy + rr * Math.sin(t);
+        s ? x.lineTo(px, py) : x.moveTo(px, py);
+      }
+      x.closePath(); x.stroke();
+    }
+  }
+  function securePaper() {
+    const c = mk(PW, PH), x = c.getContext("2d"), r = rng("paper-secure");
+    x.fillStyle = "rgb(240,247,239)"; x.fillRect(0, 0, PW, PH);
+    /* лёгкая неравномерность бумаги */
+    const img = x.getImageData(0, 0, PW, PH), d = img.data;
+    for (let i = 0; i < d.length; i += 4) { const n = (r() - 0.5) * 5; d[i] += n * 0.9; d[i + 1] += n; d[i + 2] += n * 0.9; }
+    x.putImageData(img, 0, 0);
+    /* гильош-сетка: два встречных семейства тонких волн дают «муаровый» узор */
+    x.lineWidth = 0.7;
+    for (let fam = 0; fam < 2; fam++) {
+      x.strokeStyle = SGREEN(fam ? 0.075 : 0.09);
+      for (let y0 = -40; y0 < PH + 40; y0 += 9) {
+        x.beginPath();
+        for (let px = 0; px <= PW; px += 6) {
+          const py = y0 + Math.sin(px / (fam ? 46 : 61) + y0 / 37) * (fam ? 7 : 9) + Math.sin(px / 173 + y0 / 90) * 4;
+          px ? x.lineTo(px, py) : x.moveTo(px, py);
+        }
+        x.stroke();
+      }
+    }
+    /* гильош-розетки: большая под гербом в центре и малые медальоны по углам */
+    const cx = PW / 2, cy = PH * 0.47;
+    guilloche(x, cx, cy, 322, 20, 44, 12, 0.1, 0.65);
+    guilloche(x, cx, cy, 268, 12, 60, 8, 0.08, 0.55);
+    guilloche(x, cx, cy, 150, 46, 18, 14, 0.06, 0.55);
+    [[132, 140], [PW - 132, 140], [132, PH - 150], [PW - 132, PH - 150]].forEach(p => {
+      guilloche(x, p[0], p[1], 46, 10, 12, 6, 0.17, 0.6);
+      guilloche(x, p[0], p[1], 24, 8, 8, 5, 0.13, 0.55);
+    });
+    /* рамка: двойная линия и волна между ними */
+    const m = 34, w = PW - 2 * m, h = PH - 2 * m;
+    x.strokeStyle = SGREEN(0.42); x.lineWidth = 1.6; x.strokeRect(m, m, w, h);
+    x.lineWidth = 0.8; x.strokeRect(m + 12, m + 12, w - 24, h - 24);
+    x.strokeStyle = SGREEN(0.32); x.lineWidth = 0.7;
+    const band = (x0, y0, x1, y1) => {
+      const len = Math.hypot(x1 - x0, y1 - y0), ux = (x1 - x0) / len, uy = (y1 - y0) / len, nx = -uy, ny = ux;
+      for (let ph = 0; ph < 2; ph++) { x.beginPath(); for (let s = 0; s <= len; s += 3) { const o = Math.sin(s / 9 + ph * Math.PI) * 4.2; const px = x0 + ux * s + nx * o, py = y0 + uy * s + ny * o; s ? x.lineTo(px, py) : x.moveTo(px, py); } x.stroke(); }
+    };
+    const b = m + 6; band(b, b, PW - b, b); band(PW - b, b, PW - b, PH - b); band(PW - b, PH - b, b, PH - b); band(b, PH - b, b, b);
+    /* микротекст по краю рамки: каждая строка обрезана своим отрезком, углы остаются чистыми */
+    x.fillStyle = SGREEN(0.5); x.font = "bold 7px " + SANS; x.textBaseline = "middle";
+    const micro = "ФСБ РО · КУТУЗОВСКИЙ · ИГРОВОЙ ДОКУМЕНТ · RP · ";
+    const line = (len) => { let s = ""; while (x.measureText(s).width < len + 40) s += micro; return s; };
+    const run = (tx, ty, rot, len) => {
+      x.save(); x.translate(tx, ty); x.rotate(rot); x.beginPath(); x.rect(0, -6, len, 12); x.clip(); x.fillText(line(len), 0, 0); x.restore();
+    };
+    const i0 = m + 34;                                   /* отступ от угла: строки не заходят друг на друга */
+    run(i0, m + 25, 0, PW - 2 * i0);
+    run(i0, PH - m - 25, 0, PW - 2 * i0);
+    run(m + 25, PH - i0, -Math.PI / 2, PH - 2 * i0);
+    run(PW - m - 25, i0, Math.PI / 2, PH - 2 * i0);
+    return c;
+  }
+  /* дополнительные водяные знаки защищённой бумаги: повторяющаяся диагональная надпись */
+  function secureWatermarks(x) {
+    x.save(); x.fillStyle = "rgba(28,112,72,0.045)"; x.font = "bold 30px " + SANS; x.textAlign = "center"; x.textBaseline = "middle";
+    for (let row = 0; row < 9; row++) for (let col = 0; col < 3; col++) {
+      const cx = 210 + col * 410 + (row % 2) * 205, cy = 150 + row * 195;
+      x.save(); x.translate(cx, cy); x.rotate(-0.52); x.fillText("ИГРОВОЙ ДОКУМЕНТ", 0, 0); x.restore();
+    }
+    x.restore();
   }
 
   /* ---------- примитивы ---------- */
@@ -3731,7 +3835,10 @@ const DG = (function () {
   Flow.prototype.newPage = function () {
     const c = mk(PW * this.sc, PH * this.sc), x = c.getContext("2d");
     x.scale(this.sc, this.sc); x.drawImage(paperTex(this.o.tint || "white"), 0, 0);
-    if (this.o.watermark !== false) emblem(x, PW / 2, PH * 0.47, 600, "rgba(27,37,64,0.04)", { fill: true, lw: 3.2 });
+    if (this.o.watermark !== false) {
+      if (this.o.tint === "secure") { secureWatermarks(x); emblem(x, PW / 2, PH * 0.47, 560, "rgba(28,112,72,0.07)", { fill: true, lw: 3.2 }); }
+      else emblem(x, PW / 2, PH * 0.47, 600, "rgba(27,37,64,0.04)", { fill: true, lw: 3.2 });
+    }
     this.cur = { c, x, i: this.pages.length }; this.pages.push(this.cur); this.y = M.t;
   };
   Flow.prototype.room = function () { return PH - M.b - this.y; };
@@ -3897,9 +4004,15 @@ const DG = (function () {
     });
     const n = f.pages.length;
     f.pages.forEach((p, i) => {
-      const x = p.x; x.save(); x.textAlign = "center"; x.textBaseline = "alphabetic";
-      x.font = fnt(25, false, false, SERIF); x.fillStyle = "#33363f"; x.fillText("стр. " + (i + 1) + (n > 1 ? " из " + n : ""), PW / 2, PH - 88);
-      x.font = fnt(16, false, false, SANS); x.fillStyle = "#8b90a0"; x.fillText(FOOT, PW / 2, PH - 52); x.restore();
+      const x = p.x, sec = f.o.tint === "secure"; x.save(); x.textAlign = "center"; x.textBaseline = "alphabetic";
+      /* на защищённой бумаге подписи внизу поднимаются внутрь рамки, чтобы не лечь на микротекст */
+      x.font = fnt(25, false, false, SERIF); x.fillStyle = "#33363f"; x.fillText("стр. " + (i + 1) + (n > 1 ? " из " + n : ""), PW / 2, PH - (sec ? 104 : 88));
+      x.font = fnt(16, false, false, SANS); x.fillStyle = sec ? "#5f7266" : "#8b90a0"; x.fillText(FOOT, PW / 2, PH - (sec ? 74 : 52));
+      if (sec && f.o.serial) {                           /* «номер бланка» красной краской, как у бланков строгой отчётности — игровой (серия RP) */
+        x.textAlign = "left"; x.font = 'bold 21px "Consolas","Liberation Mono","Courier New",monospace'; x.fillStyle = "rgba(178,30,38,0.85)";
+        x.fillText(f.o.serial, M.l - 40, PH - 104);
+      }
+      x.restore();
     });
     return { pages: f.pages, anchors: f.anchors, scale: f.sc, info: doc.info || {} };
   }
@@ -4416,7 +4529,7 @@ function tickApp(app) { readTick(app); tickDet(app); tickDuty(app); tickTimers(a
    история поиска, горячие клавиши.
    ================================================================ */
 
-const APP_VERSION = "3.2.0";
+const APP_VERSION = "3.3.0";
 
 /* ---------- инструменты (единый список для меню, главной и палитры) ---------- */
 const TOOLS = [
@@ -5476,10 +5589,10 @@ V.qaAll = function (app) {
 };
 
 /* ================= НАСТРОЙКИ ================= */
-const SET_TABS = [["profile", "user", "Профиль и время"], ["ui", "palette", "Вид и режим"], ["hints", "bulb", "Подсказки"], ["keys", "keyboard", "Горячие клавиши"], ["overlay", "monitor", "Оверлей"], ["data", "backup", "Данные и копии"], ["docs", "book-marked", "Мои документы"]];
+const SET_TABS = [["profile", "user", "Профиль и время"], ["ui", "palette", "Вид и режим"], ["hints", "bulb", "Подсказки"], ["keys", "keyboard", "Горячие клавиши"], ["overlay", "monitor", "Оверлей"], ["lic", "key-round", "Ключ активации"], ["data", "backup", "Данные и копии"], ["docs", "book-marked", "Мои документы"]];
 V.settings = function (app, tab) {
   tab = SET_TABS.some(t => t[0] === tab) ? tab : "profile";
-  const body = { profile: setProfile, ui: setUI, hints: setHints, keys: setKeys, overlay: setOverlay, data: setData, docs: setDocs }[tab](app);
+  const body = { profile: setProfile, ui: setUI, hints: setHints, keys: setKeys, overlay: setOverlay, lic: setLic, data: setData, docs: setDocs }[tab](app);
   return `<h1>${ico("sliders")}Настройки</h1>
   ${memOnly ? `<div class="card bad"><b>${ico("alert")}Браузер не даёт сохранять данные.</b><p class="small">Возможно, открыта приватная вкладка или запрещены данные сайтов. Пока вкладка открыта, всё работает, но после закрытия настройки пропадут. Откройте файл в обычном окне Chrome или Edge.</p></div>` : ""}
   <div class="tabs2" role="tablist">${SET_TABS.map(t => `<button role="tab" class="tab2 ${t[0] === tab ? "on" : ""}" data-go="settings/${t[0]}" aria-selected="${t[0] === tab}">${ico(t[1])}<span>${t[2]}</span></button>`).join("")}</div>
@@ -7655,17 +7768,23 @@ function bkNewDoc(type, sample) {
   const doc = {
     type, d: { unit: "Управление ФСБ РО", city: "г. Москва", date: bkToday(), no: sample ? t.prefix + "-0001" : bkNextNo(type), rank: p.rank || "", title: p.title || "", fio: p.fio || "", idn: p.callsign || "" },
     stamps: [{ id: "st" + Date.now() + "a", kind: "seal", x: 0.6, y: 0.8, rot: -8, sc: 1, page: 0, auto: true }],
-    sig: { style: "scrawl", seed: 0, color: "#1b2f86" }, paper: { tint: "white", watermark: true }
+    sig: { style: "scrawl", seed: 0, color: "#1b2f86" }, paper: { tint: "secure", watermark: true }
   };
   bkApplyPreset(doc, t.presets[0].d);
   if (sample) { doc.d.rank = "Полковник ФСБ"; doc.d.title = "Начальник управления"; doc.d.fio = "Дмитрий Орлов"; doc.d.idn = "47606"; }
   return doc;
 }
+/* игровой «номер бланка» для защищённой бумаги: постоянный для документа (из типа и рег. номера), серия RP */
+function bkSerial(doc) {
+  let h = 2166136261; const k = doc.type + "|" + (doc.d.no || "") + "|" + (doc.d.date || "");
+  for (let i = 0; i < k.length; i++) { h ^= k.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
+  return "Серия RP № " + String(h % 10000000).padStart(7, "0");
+}
 function bkBuild(doc) {
   const blocks = bkInjectExtras(doc, BKBY[doc.type].build(doc));
   /* штампы «секретно / срочно» ставятся в верхнем поле — оставляем для них место, чтобы не закрывать шапку */
   if ((doc.stamps || []).some(s => { const d = DG.STAMPBY[s.kind]; return d && d.g === "top"; })) blocks.unshift({ k: "gap", h: 100 });
-  return { blocks, info: { unit: doc.d.unit }, opts: { tint: doc.paper.tint, watermark: doc.paper.watermark } };
+  return { blocks, info: { unit: doc.d.unit }, opts: { tint: doc.paper.tint, watermark: doc.paper.watermark, serial: bkSerial(doc) } };
 }
 function bkTitleOf(x) { const t = BKBY[x.type]; return t ? t.t : "Документ"; }
 function bkBrief(x) { const d = x.d; return d.topic || d.subject || d.sub || d.who || d.object || d.kind || ""; }
@@ -8042,7 +8161,7 @@ V.blanks = function (app, type, sub) {
   }
   if (doc) bkUpgradeDoc(doc);
   if (!doc) return `<div class="card bad">${ico("alert")} Такого бланка нет (возможно, шаблон был удалён). <a class="ref" data-go="blanks">К списку бланков</a></div>`;
-  doc.stamps = doc.stamps || []; doc.sig = Object.assign({ style: "scrawl", seed: 0, color: "#1b2f86" }, doc.sig); doc.paper = Object.assign({ tint: "white", watermark: true }, doc.paper);
+  doc.stamps = doc.stamps || []; doc.sig = Object.assign({ style: "scrawl", seed: 0, color: "#1b2f86" }, doc.sig); doc.paper = Object.assign({ tint: "secure", watermark: true }, doc.paper);
   app.ui.bk = { key: type === "e" ? key : type, doc, savedId, sel: null, tab: "form", res: null, tried: false, at: savedId ? 0 : (doc.ts || 0), dirty: false, touched: false, from: pf ? pf.from : "", norm: {} };
   app.afterOnce = fresh && !app.mini ? a => { try { history.replaceState(null, "", "#/blanks/" + type); } catch (e) { } a.route = "blanks/" + type; bkMount(a); } : bkMount;
   return bkEditorHTML(app);
@@ -8059,7 +8178,7 @@ function bkEditorHTML(app) {
   const bk = app.ui.bk, doc = bk.doc, t = BKBY[doc.type], d = doc.d, name = bkName(doc);
   const grp = (title, f) => `<div class="bk-pal"><div class="tiny dim">${title}</div><div>${DG.STAMPS.filter(f).map(s => `<button class="chip" data-act="bk-st-add" data-id="${s.id}">${s.name}</button>`).join("")}</div></div>`;
   const stl = doc.stamps.map(s => { const def = DG.STAMPBY[s.kind]; return def ? `<button class="chip ${bk.sel === s.id ? "on" : ""}" data-act="bk-st-sel" data-id="${s.id}">${esc(def.name)}</button>` : ""; }).join("");
-  const sigs = [["scrawl", "Роспись"], ["script", "Прописью"], ["none", "Без подписи"]], tints = [["white", "Белая"], ["cream", "Кремовая"], ["plain", "Чистая"]];
+  const sigs = [["scrawl", "Роспись"], ["script", "Прописью"], ["none", "Без подписи"]], tints = [["secure", "Защищённая (зелёная)"], ["white", "Белая"], ["cream", "Кремовая"], ["plain", "Чистая"]];
   const fld = (k, label, ph, extra) => `<div class="bk-f" data-fk="${k}" data-req><label>${label} <i class="rq" data-tip="Обязательное поле">*</i></label><input type="text" data-bind="bk-f" data-k="${k}" value="${esc(d[k] || "")}" placeholder="${esc(ph)}" autocomplete="off"></div>`;
   const fld2 = (k, label, ph) => `<div class="bk-f" data-fk="${k}"><label>${label}</label><input type="text" data-bind="bk-f" data-k="${k}" value="${esc(d[k] || "")}" placeholder="${esc(ph)}" autocomplete="off"></div>`;
   return `${crumbs(app, [{ t: "Бланки", go: "blanks" }, { t: esc(name) }])}
@@ -8095,7 +8214,7 @@ function bkEditorHTML(app) {
       ${grp("Печати", s => s.shape === "round")}${grp("Секретность и срочность", s => s.g === "top")}${grp("Резолюции и отметки", s => s.g === "low" || s.g === "mid" || s.g === "in")}
       <div class="tiny dim gap">На бумаге сейчас:</div><div data-bk-stlist>${stl || '<span class="tiny dim">пока ничего</span>'}</div><div class="gap" data-bk-sel>${bkSelHTML(bk)}</div></section>
     <section class="card bk-sec"><h3><b>5</b> Бумага</h3><div>${tints.map(s => `<span class="chip ${doc.paper.tint === s[0] ? "on" : ""}" data-act="bk-paper" data-v="${s[0]}">${s[1]}</span>`).join("")}</div>
-      <label class="chk"><input type="checkbox" data-chg="bk-wm" ${doc.paper.watermark ? "checked" : ""}><div class="ct">Водяной знак (герб на фоне)</div></label></section>
+      <label class="chk"><input type="checkbox" data-chg="bk-wm" ${doc.paper.watermark ? "checked" : ""}><div class="ct">Водяные знаки (герб и надписи «Игровой документ» на фоне)</div></label></section>
    </div>
    <div class="bk-view">
     <div class="bk-issues" data-bk-issues></div>
@@ -9156,91 +9275,322 @@ const Ed25519 = (() => {
   return { verify };
 })();
 
-/* ---------- ключи активации ---------- */
+
+/* ================================================================
+   КЛЮЧИ АКТИВАЦИИ (версия 3.3)
+   • Ключ — подписанная владельцем запись: номер, кому, тариф, срок. Проверяется прямо в программе, без интернета.
+   • Формат FSB2 — буквы и цифры без путаницы: регистр, пробелы, переносы строк, «O/0» и «I/1» не мешают;
+     встроенная контрольная сумма отличает опечатку от чужого ключа. Старые ключи «FSBK.…» тоже принимаются.
+   • Ключ не слетает: хранится в данных программы, в отдельной запасной копии и (в программе Windows) у оболочки.
+   • Требовать ключ или нет, решает владелец: флаг в подписанном version.json (или licenseEnabled в сборке).
+   ================================================================ */
+const B32A = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
+const LIC_DAY0 = Date.UTC(2025, 0, 1), LIC_PLANS = ["std", "pro", "trial"];
+const LIC_PLAN_NAME = { std: "Обычный", pro: "Расширенный", trial: "Пробный" };
+const LIC_SIGN_PREFIX = new TextEncoder().encode("FSB2|");
+const LIC_KEY2 = "fsb_helper_kutuzovsky_lic";          // запасная копия ключа (переживает сброс основных данных)
+const licDayIso = d => new Date(LIC_DAY0 + d * 86400000).toISOString().slice(0, 10);
+const licToday = () => { const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); };
+const licDays = (a, b) => Math.round((Date.parse(b + "T00:00:00Z") - Date.parse(a + "T00:00:00Z")) / 86400000);
+const licDate = iso => iso ? iso.split("-").reverse().join(".") : "";
+function licB32enc(u8) {
+  let bits = 0, val = 0, out = "";
+  for (const b of u8) { val = (val << 8) | b; bits += 8; while (bits >= 5) { out += B32A[(val >>> (bits - 5)) & 31]; bits -= 5; } val &= (1 << bits) - 1; }
+  if (bits > 0) out += B32A[(val << (5 - bits)) & 31];
+  return out;
+}
+function licB32dec(s, n) {
+  const out = new Uint8Array(n); let bits = 0, val = 0, o = 0;
+  for (let i = 0; i < s.length && o < n; i++) {
+    const v = B32A.indexOf(s[i]); if (v < 0) return null;
+    val = (val << 5) | v; bits += 5;
+    if (bits >= 8) { out[o++] = (val >>> (bits - 8)) & 255; bits -= 8; val &= (1 << bits) - 1; }
+  }
+  return o === n ? out : null;
+}
+function licCrc16(u8) { let c = 0xFFFF; for (const b of u8) { c ^= b << 8; for (let k = 0; k < 8; k++) c = c & 0x8000 ? ((c << 1) ^ 0x1021) & 0xFFFF : (c << 1) & 0xFFFF; } return c; }
+const licNative = () => (typeof NATIVE !== "undefined" && NATIVE && NATIVE.license) ? NATIVE.license : null;
+
 const LIC = {
   revoked: [],
-  PREFIX: "FSBK",
-  required() { return !!(typeof SITE !== "undefined" && SITE.licenseEnabled); },
-  /* разбор и проверка подписи ключа: { ok, why, data } */
+  PREFIX: "FSB2",
+  _cache: { key: "", res: null },
+  policy() {
+    const p = (typeof S !== "undefined" && S.licPolicy) || {};
+    return { required: p.required === true, from: p.from || "", grace: Number.isInteger(p.grace) ? p.grace : 3, msg: p.msg || "", contact: p.contact || "" };
+  },
+  /* ключ обязателен: так решил владелец (в подписанном описании обновлений) или так собрана программа */
+  required() {
+    if (typeof SITE !== "undefined" && SITE.licenseEnabled) return true;
+    const p = LIC.policy(); return p.required && (!p.from || licToday() >= p.from);
+  },
+  /* владелец назначил дату, с которой понадобится ключ, — до неё только предупреждаем */
+  upcoming() { const p = LIC.policy(); return !LIC.required() && p.required && p.from && licToday() < p.from ? p.from : ""; },
+  /* ключ из любого текста: сообщение целиком, лишние пробелы, переносы, тире */
+  extract(text) {
+    const t = String(text || ""), up = t.toUpperCase(), i = up.indexOf("FSB2");
+    if (i >= 0) {
+      let s = "";
+      for (const ch of up.slice(i + 4)) {
+        if (/[\s\-_.·—–]/.test(ch)) continue;
+        const c = ch === "O" ? "0" : (ch === "I" || ch === "L") ? "1" : ch === "U" ? "V" : ch;
+        if (B32A.indexOf(c) < 0) break;
+        s += c;
+      }
+      return { kind: 2, s };
+    }
+    const m = t.replace(/\s+/g, "").match(/FSBK\.([A-Za-z0-9_-]{8,600})\.([A-Za-z0-9_-]{80,120})/);
+    return m ? { kind: 1, m } : null;
+  },
+  format(s) { return "FSB2-" + s.match(/.{1,5}/g).join("-"); },
+  /* разбор и проверка подписи: { ok, why, data, canon } */
   async parse(key) {
+    const raw = String(key || "");
+    if (LIC._cache.key === raw && LIC._cache.res) return LIC._cache.res;
+    const res = await LIC._parse(raw);
+    LIC._cache = { key: raw, res };
+    return res;
+  },
+  async _parse(key) {
     try {
-      const t = String(key || "").replace(/\s+/g, ""), m = t.match(/^FSBK\.([A-Za-z0-9_-]{8,600})\.([A-Za-z0-9_-]{80,120})$/);
-      if (!m) return { ok: false, why: "format" };
-      if (!SITE.licensePubKey) return { ok: false, why: "nokey" };
-      const body = b64d(m[1]);
-      if (!(await Ed25519.verify(b64d(m[2]), body, b64d(SITE.licensePubKey)))) return { ok: false, why: "sig" };
-      const d = JSON.parse(new TextDecoder().decode(body));
-      if (!d || d.v !== 1 || typeof d.id !== "string" || d.app !== "fsb-helper-kutuzovsky") return { ok: false, why: "format" };
-      return { ok: true, data: d };
+      const x = LIC.extract(key);
+      if (!x) return { ok: false, why: "format" };
+      if (typeof SITE === "undefined" || !SITE.licensePubKey) return { ok: false, why: "nokey" };
+      const pub = b64d(SITE.licensePubKey);
+      if (x.kind === 1) {                                       // старый формат FSBK.<json>.<подпись>
+        const body = b64d(x.m[1]);
+        if (!(await Ed25519.verify(b64d(x.m[2]), body, pub))) return { ok: false, why: "sig" };
+        const d = JSON.parse(new TextDecoder().decode(body));
+        if (!d || d.v !== 1 || typeof d.id !== "string" || d.app !== "fsb-helper-kutuzovsky") return { ok: false, why: "format" };
+        return { ok: true, data: { v: 1, id: d.id, name: String(d.name || ""), plan: String(d.plan || "std"), exp: /^\d{4}-\d{2}-\d{2}$/.test(d.exp || "") ? d.exp : "", iat: String(d.iat || "") }, canon: "FSBK." + x.m[1] + "." + x.m[2] };
+      }
+      if (x.s.length < 20) return { ok: false, why: x.s.length ? "short" : "format" };
+      const head = licB32dec(x.s.slice(0, 20), 12);
+      if (!head || head[0] !== 2) return { ok: false, why: "typo" };
+      const n = head[11]; if (n > 60) return { ok: false, why: "typo" };
+      const total = 12 + n + 64 + 2, need = Math.ceil(total * 8 / 5);
+      if (x.s.length < need) return { ok: false, why: "short" };
+      const all = licB32dec(x.s.slice(0, need), total); if (!all) return { ok: false, why: "typo" };
+      const body = all.subarray(0, 12 + n), sig = all.subarray(12 + n, 12 + n + 64);
+      if (licCrc16(all.subarray(0, total - 2)) !== (all[total - 2] | (all[total - 1] << 8))) return { ok: false, why: "typo" };
+      const msg = new Uint8Array(LIC_SIGN_PREFIX.length + body.length); msg.set(LIC_SIGN_PREFIX); msg.set(body, LIC_SIGN_PREFIX.length);
+      if (!(await Ed25519.verify(sig.slice(), msg, pub))) return { ok: false, why: "sig" };
+      const iat = body[7] | (body[8] << 8), exp = body[9] | (body[10] << 8);
+      const data = { v: 2, id: licB32enc(body.subarray(1, 6)), plan: LIC_PLANS[body[6]] || "std", iat: licDayIso(iat), exp: exp ? licDayIso(exp) : "", name: n ? new TextDecoder().decode(body.subarray(12, 12 + n)) : "" };
+      return { ok: true, data, canon: LIC.format(x.s.slice(0, need)) };
     } catch (e) { return { ok: false, why: "format" }; }
   },
-  /* текущее состояние: off | missing | valid | expired | revoked | bad */
+  /* состояние сохранённого ключа: none | bad | revoked | expired | grace | valid (+ left — сколько дней осталось) */
   async status() {
-    if (!LIC.required()) return { state: "off" };
-    const k = S.license && S.license.key; if (!k) return { state: "missing" };
+    const k = S.license && S.license.key;
+    if (!k) return { state: "none" };
     const r = await LIC.parse(k); if (!r.ok) return { state: "bad", why: r.why };
     const d = r.data;
-    if (LIC.revoked.includes(d.id)) return { state: "revoked", data: d };
-    if (d.exp && Date.now() > Date.parse(d.exp + "T23:59:59Z")) return { state: "expired", data: d };
+    if (LIC.revoked.indexOf(d.id) >= 0) return { state: "revoked", data: d };
+    if (d.exp) {
+      const left = licDays(licToday(), d.exp), g = LIC.policy().grace;
+      if (left < 0) return { state: -left <= g ? "grace" : "expired", data: d, left, graceLeft: g + left };
+      return { state: "valid", data: d, left, soon: left <= 7 };
+    }
     return { state: "valid", data: d };
   },
-  async activate(key) {
+  blocked(st) { return LIC.required() && ["none", "bad", "revoked", "expired"].indexOf(st.state) >= 0; },
+  async activate(key, opt) {
+    opt = opt || {};
     const r = await LIC.parse(key); if (!r.ok) return r;
-    if (LIC.revoked.includes(r.data.id)) return { ok: false, why: "revoked" };
-    if (r.data.exp && Date.now() > Date.parse(r.data.exp + "T23:59:59Z")) return { ok: false, why: "expired", data: r.data };
-    S.license = { key: String(key).replace(/\s+/g, ""), id: r.data.id, name: r.data.name || "", exp: r.data.exp || "", plan: r.data.plan || "", at: Date.now() };
-    save(); return { ok: true, data: r.data };
+    const d = r.data;
+    if (LIC.revoked.indexOf(d.id) >= 0) return { ok: false, why: "revoked", data: d };
+    if (d.exp && licDays(licToday(), d.exp) < -LIC.policy().grace) return { ok: false, why: "expired", data: d };
+    S.license = { key: r.canon, id: d.id, name: d.name || "", exp: d.exp || "", plan: d.plan || "", at: (S.license && S.license.key === r.canon && S.license.at) || Date.now(), v: d.v };
+    save(); LIC.backup();
+    if (!opt.silent) logAct("set", "Ключ активации принят: " + d.id, "settings/lic");
+    return { ok: true, data: d };
   },
-  remove() { S.license = null; save(); },
-  WHY: { format: "Ключ записан неверно. Скопируйте его целиком, вместе с «FSBK».", sig: "Ключ не подходит к этой программе (подпись не совпала).", nokey: "В этой версии не задан открытый ключ проверки.", revoked: "Этот ключ отозван владельцем.", expired: "Срок действия ключа закончился." }
+  /* запасные копии ключа: отдельная запись в браузере и (в программе Windows) файл настроек оболочки */
+  backup() {
+    const k = S.license && S.license.key;
+    try { if (k) localStorage.setItem(LIC_KEY2, JSON.stringify({ key: k, at: Date.now() })); else localStorage.removeItem(LIC_KEY2); } catch (e) { }
+    const nat = licNative(); if (nat) { try { nat.set(k || ""); } catch (e) { } }
+  },
+  /* ключ пропал из основных данных (сброс, импорт старой копии) — возвращаем из запасных мест */
+  async restore() {
+    if (S.license && S.license.key) { LIC.backup(); return false; }
+    let k = "";
+    try { const j = JSON.parse(localStorage.getItem(LIC_KEY2) || "null"); if (j && typeof j.key === "string") k = j.key; } catch (e) { }
+    const nat = licNative();
+    if (!k && nat) { try { const r = await nat.get(); if (r && typeof r.key === "string") k = r.key; } catch (e) { } }
+    if (!k) return false;
+    const r = await LIC.activate(k, { silent: true });
+    if (r.ok) logAct("set", "Ключ активации восстановлен из запасной копии", "settings/lic");
+    return !!r.ok;
+  },
+  remove() { S.license = null; save(); LIC.backup(); logAct("set", "Ключ активации убран с этого компьютера", "settings/lic"); },
+  setRevoked(list) {
+    if (!Array.isArray(list)) return;
+    const v = list.filter(x => typeof x === "string" && /^[A-Za-z0-9]{4,16}$/.test(x)).slice(0, 5000);
+    if (v.join(",") === LIC.revoked.join(",")) return;
+    LIC.revoked = v; S.licRevoked = v; saveLater(); licCheck();
+  },
+  setPolicy(p) {
+    if (!p || typeof p !== "object") return;
+    const n = { required: p.required === true, from: /^\d{4}-\d{2}-\d{2}$/.test(p.from || "") ? p.from : "", grace: Number.isInteger(p.grace) ? Math.max(0, Math.min(30, p.grace)) : 3, msg: typeof p.msg === "string" ? p.msg.slice(0, 300) : "", contact: typeof p.contact === "string" ? p.contact.slice(0, 120) : "" };
+    const a = JSON.stringify(n), b = JSON.stringify(Object.assign({}, S.licPolicy || {}, { ts: undefined }));
+    S.licPolicy = Object.assign(n, { ts: Date.now() }); saveLater();
+    if (a !== b) licCheck();
+  },
+  describe(d, st) {
+    const parts = ["номер " + d.id];
+    if (d.name) parts.push("выдан: " + d.name);
+    parts.push("тариф: " + (LIC_PLAN_NAME[d.plan] || d.plan));
+    parts.push(d.exp ? "до " + licDate(d.exp) : "бессрочный");
+    return parts.join(" · ");
+  },
+  WHY: {
+    format: "Это не похоже на ключ. Скопируйте его целиком — он начинается с «FSB2-».",
+    short: "Ключ обрезан. Скопируйте его целиком, до последнего символа.",
+    typo: "В ключе опечатка. Не перепечатывайте ключ вручную — скопируйте и вставьте его.",
+    sig: "Этот ключ не подходит к программе: его выдал не владелец проекта или он изменён.",
+    nokey: "В этой версии не задан открытый ключ проверки.",
+    revoked: "Этот ключ отозван владельцем. Если это ошибка — напишите ему.",
+    expired: "Срок действия ключа закончился. Попросите у владельца новый ключ."
+  }
 };
 
-/* ---------- экран «Нужен ключ» (показывается только если ключи включены в сборке) ---------- */
-const LICSTATE = { st: null, busy: false };
+/* ---------- экран «Нужен ключ» (только если владелец включил обязательный ключ) ---------- */
+const LICSTATE = { st: null };
+let licSeq = 0;
 async function licCheck() {
-  if (!LIC.required()) { const g = document.getElementById("lic-gate"); if (g) g.remove(); return; }
-  const st = await LIC.status(); LICSTATE.st = st;
+  const my = ++licSeq, st = await LIC.status();
+  if (my !== licSeq) return LICSTATE.st;                    // пока считали, пришёл более свежий вызов — его результат главнее
+  const changed = JSON.stringify(st) !== JSON.stringify(LICSTATE.st); LICSTATE.st = st;
+  try { APPS.forEach(licBanner); } catch (e) { }
+  /* открытые страницы с ключом перерисовываем, если состояние поменялось */
+  if (changed) try { APPS.forEach(a => { if (!a.mini && /^settings\/(lic|about)/.test(a.route || "") && !a.root.querySelector(".modal.on")) paint(a, true); }); } catch (e) { }
+  if (st.state === "valid" && st.soon) notify("warn", "Скоро закончится срок ключа", "Ключ действует до " + licDate(st.data.exp) + ". Попросите у владельца продление заранее.", "settings/lic", "lic-soon-" + st.data.exp);
   let g = document.getElementById("lic-gate");
   const rootEl = document.getElementById("root");
-  if (st.state === "valid") { if (g) g.remove(); if (rootEl) rootEl.inert = false; return; }
+  if (!LIC.blocked(st)) { if (g) g.remove(); if (rootEl) rootEl.inert = false; return st; }
   const keep = g && g.querySelector("#lic-key") ? g.querySelector("#lic-key").value : "";
   if (!g) {
     g = document.createElement("div"); g.id = "lic-gate"; g.setAttribute("role", "dialog"); g.setAttribute("aria-modal", "true"); g.setAttribute("aria-label", "Ключ активации"); document.body.appendChild(g);
     g.addEventListener("click", e => { const b = e.target.closest("[data-act]"); const f = b && ACT[b.getAttribute("data-act")]; if (f) f(APPS[0], b, e); });
-    g.addEventListener("keydown", e => { if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) { e.preventDefault(); ACT["lic-activate"](); } e.stopPropagation(); });
+    g.addEventListener("keydown", e => { if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) { e.preventDefault(); ACT["lic-activate"](APPS[0], g.querySelector("[data-act='lic-activate']")); } e.stopPropagation(); });
+    g.addEventListener("input", e => { if (e.target && e.target.id === "lic-key") licLive(e.target); });
   }
   if (rootEl) rootEl.inert = true;
-  const why = { missing: "Чтобы пользоваться помощником, нужен ключ активации. Его выдаёт владелец проекта.", bad: "Сохранённый ключ не подошёл. Введите ключ ещё раз.", expired: "Срок действия вашего ключа закончился. Попросите у владельца новый ключ.", revoked: "Ваш ключ отозван владельцем. Если это ошибка — напишите ему." }[st.state] || "Нужен ключ активации.";
-  const contact = SITE.contact ? `<p class="muted">Где взять ключ: <b>${esc(SITE.contact)}</b></p>` : "";
+  const why = { none: "Чтобы пользоваться помощником, нужен ключ активации. Его выдаёт владелец проекта.", bad: "Сохранённый ключ не подошёл. Введите ключ ещё раз.", expired: "Срок действия вашего ключа закончился. Попросите у владельца новый ключ.", revoked: "Ваш ключ отозван владельцем. Если это ошибка — напишите ему." }[st.state] || "Нужен ключ активации.";
   g.innerHTML = `<div class="lic-box"><div class="lic-ico">${ico("key-round")}</div><h1>Нужен ключ активации</h1><p>${esc(why)}</p>
-    <label for="lic-key" class="muted">Вставьте ключ целиком (начинается с «FSBK.»)</label>
-    <textarea id="lic-key" rows="4" spellcheck="false" autocomplete="off" placeholder="FSBK.…">${esc(keep)}</textarea>
-    <div class="lic-err" id="lic-err" role="alert"></div>
-    <div class="row"><button class="btn primary" data-act="lic-activate">${ico("check")}Активировать</button><button class="btn" data-act="lic-paste">${ico("clipboard-paste")}Вставить из буфера</button></div>${contact}
-    <p class="muted small">Ключ проверяется на вашем компьютере, без интернета. Игровые данные никуда не отправляются.</p></div>`;
-  setTimeout(() => { const t = g.querySelector("#lic-key"); if (t && !keep) t.focus(); }, 30);
+    ${licWhereHTML()}
+    ${licFormHTML(keep)}
+    <p class="muted small">Ключ проверяется на вашем компьютере, без интернета. После активации он сохраняется и не слетает при обновлениях.</p></div>`;
+  iconize(g, document);
+  setTimeout(() => { const t = g.querySelector("#lic-key"); if (t) { if (keep) licLive(t); else t.focus(); } }, 30);
+  return st;
 }
-function licInit() {
-  if (!LIC.required()) return;
-  licCheck(); setInterval(licCheck, 60000);
+function licWhereHTML() {
+  const p = LIC.policy(), c = p.contact || (typeof SITE !== "undefined" ? SITE.contact : "");
+  return p.msg || c ? `<div class="lic-where">${ico("info")}<div>${p.msg ? esc(p.msg) : ""}${c ? `${p.msg ? "<br>" : ""}Где взять ключ: <b>${esc(c)}</b>` : ""}</div></div>` : "";
 }
-ACT["lic-activate"] = async () => {
-  const t = document.getElementById("lic-key"), err = document.getElementById("lic-err"); if (!t) return;
+function licFormHTML(val) {
+  return `<label for="lic-key" class="muted">Вставьте ключ целиком (начинается с «FSB2-»)</label>
+    <textarea id="lic-key" rows="3" spellcheck="false" autocomplete="off" autocapitalize="characters" placeholder="FSB2-XXXXX-XXXXX-…">${esc(val || "")}</textarea>
+    <div class="lic-live" id="lic-live" role="status" aria-live="polite"></div>
+    <div class="row"><button class="btn primary gold" data-act="lic-activate">${ico("check")}Активировать</button><button class="btn" data-act="lic-paste">${ico("clipboard-paste")}Вставить из буфера</button></div>`;
+}
+/* проверка прямо во время ввода: сразу видно, верный ли ключ и что в нём */
+let licLiveT = 0;
+function licLive(t) {
+  clearTimeout(licLiveT);
+  licLiveT = setTimeout(async () => {
+    const box = t.ownerDocument.getElementById("lic-live"); if (!box) return;
+    const v = t.value.trim(); if (v.length < 8) { box.className = "lic-live"; box.textContent = ""; return; }
+    const r = await LIC.parse(v);
+    if (!r.ok) { box.className = "lic-live bad"; box.textContent = LIC.WHY[r.why] || "Ключ не подошёл."; return; }
+    const d = r.data, rev = LIC.revoked.indexOf(d.id) >= 0, left = d.exp ? licDays(licToday(), d.exp) : null;
+    if (rev) { box.className = "lic-live bad"; box.textContent = LIC.WHY.revoked; return; }
+    if (left !== null && left < -LIC.policy().grace) { box.className = "lic-live bad"; box.textContent = "Ключ настоящий, но его срок закончился " + licDate(d.exp) + "."; return; }
+    box.className = "lic-live ok"; box.textContent = "✔ Ключ верный: " + LIC.describe(d) + (left !== null && left >= 0 ? " (осталось дней: " + left + ")" : "") + ". Нажмите «Активировать».";
+  }, 120);
+}
+/* мягкие предупреждения в верхней полосе: скоро конец срока, льготные дни, скоро понадобится ключ */
+function licBanner(app) {
+  const st = LICSTATE.st || { state: "none" }, root = app.root, old = root.querySelector(".licbar");
+  const up = LIC.upcoming(), today = licToday();
+  let html = "", tone = "", kind = "";
+  if (st.state === "grace") { tone = "bad"; kind = "grace"; html = `<span>${ico("alert")}<b>Срок ключа закончился ${esc(licDate(st.data.exp))}.</b> Программа будет работать ещё дней: ${Math.max(0, st.graceLeft)}.</span>`; }
+  else if (st.state === "valid" && st.soon) { tone = "warn"; kind = "soon"; html = `<span>${ico("clock")}<b>Ключ действует до ${esc(licDate(st.data.exp))}</b> — осталось дней: ${st.left}. Попросите продление заранее.</span>`; }
+  else if (up && st.state !== "valid") { tone = "warn"; kind = "up"; html = `<span>${ico("key-round")}<b>С ${esc(licDate(up))} программа будет просить ключ активации.</b>${LIC.policy().msg ? " " + esc(short(LIC.policy().msg, 90)) : ""}</span>`; }
+  const show = html && S.licBarHid !== today + kind;
+  if (!show) { if (old) old.remove(); return; }
+  let bar = old;
+  if (!bar) { bar = app.doc.createElement("div"); bar.className = "licbar"; const m = root.querySelector(".main"); if (m) m.insertBefore(bar, m.firstChild); else return; }
+  bar.classList.toggle("bad", tone === "bad");
+  bar.innerHTML = html + `<span class="grow"></span><button class="btn sm" data-go="settings/lic">${ico("key-round")}Ключ</button><button class="btn sm ghost" data-act="lic-bar-hide" data-kind="${kind}" aria-label="Скрыть до завтра">${ico("x")}</button>`;
+  iconize(bar, app.doc);
+}
+async function licInit() {
+  LIC.revoked = Array.isArray(S.licRevoked) ? S.licRevoked.slice() : [];
+  try { await LIC.restore(); } catch (e) { }
+  await licCheck();
+  setInterval(licCheck, 10 * 60000);
+}
+ACT["lic-bar-hide"] = (app, el) => { S.licBarHid = licToday() + (el.getAttribute("data-kind") || ""); saveLater(); APPS.forEach(licBanner); };
+ACT["lic-activate"] = async (app, el) => {
+  const scope = (el && el.closest(".lic-box, .modal, #page")) || document;
+  const t = scope.querySelector("#lic-key"), live = scope.querySelector("#lic-live"); if (!t) return;
   const r = await LIC.activate(t.value);
-  if (!r.ok) { if (err) err.textContent = LIC.WHY[r.why] || "Ключ не подошёл."; return; }
-  toast(APPS[0], "Ключ принят. Спасибо!"); await licCheck(); try { repaintAll(); } catch (e) { }
+  if (!r.ok) { if (live) { live.className = "lic-live bad"; live.textContent = LIC.WHY[r.why] || "Ключ не подошёл."; } t.focus(); return; }
+  if (app && app.root.querySelector(".modal.on")) closeModal(app);
+  toast(app || APPS[0], "Ключ принят ✔ " + LIC.describe(r.data));
+  await licCheck(); try { repaintAll(); } catch (e) { }
 };
-ACT["lic-paste"] = async () => {
-  try { const s = await (NATIVE ? Promise.reject() : navigator.clipboard.readText()); const t = document.getElementById("lic-key"); if (t) { t.value = s; t.focus(); } }
-  catch (e) { const t = document.getElementById("lic-key"), err = document.getElementById("lic-err"); if (t) t.focus(); if (err) err.textContent = "Браузер не дал прочитать буфер — вставьте ключ в поле вручную (Ctrl+V)."; }
+ACT["lic-paste"] = async (app, el) => {
+  const scope = (el && el.closest(".lic-box, .modal, #page")) || document, t = scope.querySelector("#lic-key"), live = scope.querySelector("#lic-live");
+  try { const s = await navigator.clipboard.readText(); if (t) { t.value = s; t.focus(); licLive(t); } }
+  catch (e) { if (t) t.focus(); if (live) { live.className = "lic-live"; live.textContent = "Вставьте ключ в поле сочетанием Ctrl+V."; } }
 };
-ACT["lic-remove"] = app => { confirmBox(app, "Убрать ключ с этого компьютера? Программа попросит ключ заново.", "Убрать", () => { LIC.remove(); licCheck(); repaintAll(); }, true); };
-/* карточка «Ключ активации» для раздела «О программе»: пока ключи выключены, её не видно */
+ACT["lic-open"] = app => {
+  openModal(app, `<div class="lic-box in-modal"><h3>${ico("key-round")}Ввести ключ активации</h3>${licWhereHTML()}${licFormHTML("")}<p class="muted small">Ключ проверяется на этом компьютере, без интернета.</p></div>`);
+  const t = app.root.querySelector(".modal.on #lic-key");
+  if (t) { t.addEventListener("input", () => licLive(t)); setTimeout(() => t.focus(), 30); }
+};
+ACT["lic-copy"] = app => { if (S.license && S.license.key) copyText(app, S.license.key); };
+ACT["lic-remove"] = app => { confirmBox(app, "Убрать ключ с этого компьютера? " + (LIC.required() ? "Программа сразу попросит ключ заново." : "Его можно будет ввести снова в любой момент."), "Убрать", async () => { LIC.remove(); await licCheck(); repaintAll(); }, true); };
+
+/* раздел «Настройки → Ключ активации» */
+function setLic(app) {
+  const st = LICSTATE.st || { state: S.license ? "checking" : "none" }, d = st.data, req = LIC.required(), up = LIC.upcoming(), l = S.license;
+  let card;
+  if (st.state === "checking") card = `<div class="card liccard"><b>${ico("key-round")}Проверяю ключ…</b></div>`;
+  else if (st.state === "valid" || st.state === "grace") {
+    card = `<div class="card ${st.state === "grace" ? "bad" : st.soon ? "warn" : "ok"} liccard"><div class="row sb"><b>${ico(st.state === "grace" ? "alert" : "circle-check")}${st.state === "grace" ? "Срок ключа закончился — идут льготные дни" : "Ключ активен"}</b><span class="tag">${esc(LIC_PLAN_NAME[d.plan] || d.plan)}</span></div>
+      <div class="kv"><b>Номер ключа</b><span class="mono">${esc(d.id)}</span>${d.name ? `<b>Выдан</b><span>${esc(d.name)}</span>` : ""}
+      <b>Действует</b><span>${d.exp ? "до " + esc(licDate(d.exp)) + (st.left >= 0 ? ` <span class="muted">(осталось дней: ${st.left})</span>` : "") : "бессрочно"}</span>
+      ${l && l.at ? `<b>Активирован</b><span>${esc(fmtDate(l.at))}</span>` : ""}</div>
+      <div class="row gap"><button class="btn sm" data-act="lic-open">${ico("key-round")}Ввести другой ключ</button><button class="btn sm" data-act="lic-copy">${ico("copy")}Скопировать мой ключ</button><button class="btn sm ghost" data-act="lic-remove">${ico("trash-2")}Убрать с этого компьютера</button></div></div>`;
+  } else if (st.state === "none") {
+    card = `<div class="card ${req ? "bad" : "hl"} liccard"><b>${ico("key-round")}Ключ не введён</b><p class="small" style="margin:6px 0">${req ? "Без ключа программа не работает." : up ? "Сейчас программа работает без ключа. С " + esc(licDate(up)) + " понадобится ключ — введите его заранее." : "Сейчас программа работает без ключа. Если владелец выдал вам ключ — введите его, он сохранится и пригодится, когда ключи станут обязательными."}</p>
+      <button class="btn gold" data-act="lic-open">${ico("key-round")}Ввести ключ</button></div>`;
+  } else {
+    const why = st.state === "bad" ? LIC.WHY[st.why] || "Сохранённый ключ не подошёл." : LIC.WHY[st.state];
+    card = `<div class="card bad liccard"><b>${ico("alert")}${st.state === "revoked" ? "Ключ отозван" : st.state === "expired" ? "Срок ключа закончился" : "Ключ не подошёл"}</b><p class="small" style="margin:6px 0">${esc(why)}</p>
+      <div class="row gap"><button class="btn gold" data-act="lic-open">${ico("key-round")}Ввести новый ключ</button><button class="btn sm ghost" data-act="lic-remove">${ico("trash-2")}Убрать старый ключ</button></div></div>`;
+  }
+  return `<h2>${ico("key-round")}Ключ активации</h2>
+  ${card}
+  ${licWhereHTML()}
+  <div class="card small"><b>Как это устроено</b><ul style="margin:6px 0 0;padding-left:1.2em;line-height:1.55">
+    <li>Ключ проверяется на этом компьютере, без интернета. Никакие данные никуда не отправляются.</li>
+    <li>Ключ сохраняется в данных программы и в отдельной запасной копии — он не слетает при обновлении${NATIVE ? " и переустановке (если при удалении не выбирать «удалить мои данные»)" : ""}.</li>
+    <li>Чтобы перенести ключ на другой компьютер, нажмите «Скопировать мой ключ» и введите его там.</li>
+    <li>Ключ можно вставлять как угодно: с пробелами, переносами строк, маленькими буквами — программа поймёт.</li></ul></div>`;
+}
+/* карточка для раздела «О программе» */
 function licCard() {
-  if (!LIC.required() || !S.license) return "";
-  const l = S.license;
-  return `<h2>Ключ активации</h2><div class="card"><div class="kv"><b>Номер ключа</b><span>${esc(l.id)}</span>${l.name ? `<b>Выдан</b><span>${esc(l.name)}</span>` : ""}<b>Действует до</b><span>${l.exp ? esc(l.exp) : "без срока"}</span></div>
-  <div class="row" style="margin-top:8px"><button class="btn" data-act="lic-remove">${ico("trash-2")}Убрать ключ с этого компьютера</button></div></div>`;
+  const st = LICSTATE.st; if (!st || st.state === "none") return "";
+  const d = st.data;
+  return `<h2>Ключ активации</h2><div class="card"><div class="kv">${d ? `<b>Номер ключа</b><span>${esc(d.id)}</span>${d.name ? `<b>Выдан</b><span>${esc(d.name)}</span>` : ""}<b>Действует</b><span>${d.exp ? "до " + esc(licDate(d.exp)) : "бессрочно"}</span>` : `<b>Состояние</b><span>ключ не подошёл</span>`}</div>
+  <div class="row" style="margin-top:8px"><button class="btn sm" data-go="settings/lic">${ico("key-round")}Открыть раздел «Ключ активации»</button></div></div>`;
 }
 
 /* ================================================================
@@ -9267,7 +9617,7 @@ const UPD = {
     if (!UPD.configured()) { NSET.upd = { status: "off" }; updateChanged(); return NSET.upd; }
     NSET.upd = { status: "checking" }; updateChanged();
     try {
-      const r = await fetch(SITE.updateUrl, { cache: "no-store", credentials: "omit", referrerPolicy: "no-referrer" });
+      const r = await fetch(SITE.updateUrl + (SITE.updateUrl.indexOf("?") < 0 ? "?" : "&") + "t=" + Date.now(), { cache: "no-store", credentials: "omit", referrerPolicy: "no-referrer" });   // метка времени: в обход кэша сайта, обновление видно сразу
       if (!r.ok) throw new Error("HTTP " + r.status);
       const text = await r.text(); if (text.length > 262144) throw new Error("big");
       const m = JSON.parse(text); if (!m || typeof m.p !== "string" || typeof m.s !== "string") throw new Error("format");
@@ -9280,7 +9630,8 @@ const UPD = {
       const c = UPD.cmp(p.version, APP_VERSION);
       if (!(c > 0)) NSET.upd = { status: "uptodate", version: APP_VERSION, latest: p.version, lastCheck: Date.now() };
       else NSET.upd = { status: "available", version: p.version, notes: Array.isArray(p.notes) ? p.notes.slice(0, 20).map(x => String(x).slice(0, 300)) : [], released: String(p.released || "").slice(0, 20), lastCheck: Date.now(), web: SITE.mode === "web" };
-      if (Array.isArray(p.revoked)) LIC.revoked = p.revoked.filter(x => typeof x === "string").slice(0, 2000);
+      if (Array.isArray(p.revoked)) LIC.setRevoked(p.revoked);
+      if (p.lic && typeof p.lic === "object") LIC.setPolicy(p.lic);
     } catch (e) {
       NSET.upd = { status: "error", why: e && e.message === "sig" ? "подпись обновления не подошла" : "нет связи с сайтом обновлений" };
     }
@@ -9309,7 +9660,11 @@ const UPD = {
   },
   start() {
     if (!UPD.configured()) return;
-    if (S.set.updAuto !== false) { setTimeout(() => { if (S.set.updAuto !== false) UPD.check(false); }, 5000); setInterval(() => { if (S.set.updAuto !== false) UPD.check(false); }, 6 * 3600 * 1000); }
+    /* проверяем сразу после запуска, потом каждые 10 минут, а также когда появилась сеть или окно снова открыли */
+    const auto = () => S.set.updAuto !== false, busy = () => NSET.upd && (NSET.upd.status === "checking" || NSET.upd.status === "downloading");
+    const maybe = () => { if (auto() && !busy() && Date.now() - (S.lastUpdCheck || 0) > 9 * 60000) UPD.check(false); };
+    if (auto()) { setTimeout(() => { if (auto()) UPD.check(false); }, 4000); setInterval(maybe, 10 * 60000); }
+    try { window.addEventListener("online", () => setTimeout(maybe, 1500)); document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") maybe(); }); } catch (e) { }
     if (SITE.mode === "web" && "serviceWorker" in navigator && location.protocol === "https:") { try { navigator.serviceWorker.register("sw.js").catch(() => { }); } catch (e) { } }
   }
 };
@@ -9557,11 +9912,11 @@ function setOverlay(app) {
   <div class="card">${chk("autostart", "Запускать вместе с Windows", "Программа стартует свёрнутой в трей и сразу готова к работе")}
     ${chk("startHidden", "Запускать свёрнутой (только значок у часов)", "Иначе при каждом запуске открывается большое окно")}
     ${chk("closeToTray", "Крестик на большом окне сворачивает в трей", "Оверлей продолжает работать. Выход — правой кнопкой по значку у часов или кнопка ниже")}
-    <div class="row gap"><button class="btn" data-act="app-data">${ico("folder-open")}Папка с данными</button><button class="btn" data-act="app-logs">${ico("file-text")}Журнал программы</button><button class="btn danger" data-act="app-quit">${ico("power")}Закрыть программу совсем</button></div></div>
+    <div class="row gap"><button class="btn" data-act="app-shortcut">${ico("monitor")}Ярлык на рабочий стол</button><button class="btn" data-act="app-data">${ico("folder-open")}Папка с данными</button><button class="btn" data-act="app-logs">${ico("file-text")}Журнал программы</button><button class="btn danger" data-act="app-quit">${ico("power")}Закрыть программу совсем</button></div></div>
   <h2>${ico("refresh-cw")}Обновления</h2>
   ${updateCardHTML()}
   <details class="acc"><summary><span>${ico("settings2")}Расширенно</span></summary><div class="in">
-    ${chk("updates.check", "Проверять обновления автоматически", "Раз в несколько часов, только если у программы задан адрес сайта обновлений")}
+    ${chk("updates.check", "Проверять обновления автоматически", "При запуске и каждые 10 минут: новая версия появится вскоре после выхода. Проверяется только маленький файл version.json на сайте проекта")}
     <label>Адрес сайта обновлений (необязательно)</label><input type="text" data-bind="ns-upd-url" value="${esc(st.updates.urlOverride || "")}" placeholder="${esc(upd.configured ? "задан в программе" : "https://ваш-сайт/version.json")}" autocomplete="off"><div class="tiny dim">Менять не нужно, если владелец уже прописал адрес. Только https.</div></div></details>`;
 }
 function setOverlayWeb(app) {
@@ -9582,6 +9937,13 @@ ACT["hud-test"] = () => { if (NATIVE) NATIVE.overlay("hud-test"); };
 ACT["ov-reset"] = app => { if (NATIVE) { NATIVE.overlay("reset-pos"); toast(app, "Размер и положение панели сброшены", "ok"); } };
 ACT["hud-corner"] = (app, el) => nsetPatch({ hud: { corner: el.getAttribute("data-v") } }).then(() => NATIVE.overlay("hud-test"));
 ACT["app-data"] = () => { if (NATIVE) NATIVE.app("open-data"); };
+ACT["app-shortcut"] = async (app) => {
+  if (!NATIVE) return;
+  let r = null; try { r = await NATIVE.app("shortcut"); } catch (e) { r = { ok: false, why: String(e && e.message || e) }; }
+  if (r && r.ok) toast(app, "Ярлык «ФСБ-помощник» — на рабочем столе и в меню «Пуск»", "ok");
+  else if (r && r.why) toast(app, "Ярлык не создан: " + r.why, "warn");
+  else toast(app, "Эта версия программы не умеет создавать ярлык — обновите её", "warn");
+};
 ACT["app-logs"] = () => { if (NATIVE) NATIVE.app("open-logs"); };
 ACT["app-quit"] = app => confirmBox(app, "Закрыть программу совсем? Горячие клавиши и панель перестанут работать до следующего запуска.", "Закрыть", () => NATIVE.app("quit"), true);
 ACT["hk-reset"] = (app, el) => { const id = el.getAttribute("data-id"); const d = NSET.info && NSET.info.defaults; if (d && d[id] !== undefined) nsetPatch({ hotkeys: { [id]: d[id] } }, "Стандартная клавиша возвращена"); };
@@ -9624,6 +9986,7 @@ ACT["hk-cap"] = (app, el) => {
 };
 
 /* ================= ОБНОВЛЕНИЯ (внешний вид; сама работа — в update.js и в оболочке) ================= */
+const canSelfInstall = () => !!(NATIVE && NATIVE.update && NATIVE.update.install && !(NSET.info && NSET.info.portable));
 function updateCardHTML() {
   const u = NSET.upd || { status: "idle" }, inf = NSET.info || {};
   const ver = (NATIVE && inf.htmlVersion) || APP_VERSION;
@@ -9635,17 +9998,19 @@ function updateCardHTML() {
     case "downloading": cls = "hl"; body = `<p class="small" style="margin:6px 0 0">Скачиваю и проверяю обновление…</p>`; break;
     case "ready": cls = "ok"; body = `<p class="small" style="margin:6px 0 0">${ico("check")}Обновление до ${esc(u.version)} установлено.</p>`; break;
     case "uptodate": body = `<p class="small muted" style="margin:6px 0 0">${ico("check")}У вас самая новая версия.${u.skipped ? " (Версия " + esc(u.latest) + " ранее не запустилась и пропущена.)" : ""}</p>`; break;
-    case "need-installer": cls = "warn"; body = `<p style="margin:6px 0 4px"><b>Вышла версия ${esc(u.version)}, для неё нужна новая программа целиком.</b></p><p class="small muted">Скачайте свежий установщик с сайта проекта и запустите — ваши данные сохранятся.</p>${u.installer && u.installer.url ? `<button class="btn gold" data-act="upd-installer">${ico("download")}Скачать установщик</button>` : ""}`; break;
+    case "need-installer": cls = "ok"; body = `<p style="margin:6px 0 4px"><b>Доступна версия ${esc(u.version)}</b> — обновляется программа целиком.</p>${(u.notes || []).length ? `<ul class="small" style="margin:0 0 8px;padding-left:1.1em">${u.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul>` : ""}${canSelfInstall() ? `<p class="small muted">Программа сама скачает установщик с сайта проекта, проверит его и перезапустится. Ваши данные и ключ сохранятся.</p><button class="btn gold" data-act="upd-install">${ico("download")}Обновить сейчас</button>` : `<p class="small muted">Скачайте свежий установщик с сайта проекта и запустите — ваши данные сохранятся.</p>${u.installer && u.installer.url ? `<button class="btn gold" data-act="upd-installer">${ico("download")}Скачать установщик</button>` : ""}`}`; break;
+    case "installer-downloading": cls = "hl"; body = `<p class="small" style="margin:6px 0 4px">Скачиваю новую программу ${esc(u.version || "")}… ${u.progress | 0}%</p><div class="updprog"><i style="width:${u.progress | 0}%"></i></div>`; break;
+    case "installing": cls = "hl"; body = `<p class="small" style="margin:6px 0 0">${ico("check")}Установщик проверен и запущен. Программа закроется и через несколько секунд откроется уже новой версии.</p>`; break;
     case "rolled-back": cls = "warn"; body = `<p class="small" style="margin:6px 0 0">${ico("alert")}Версия ${esc(u.bad || "")} не запустилась, программа вернула прежнюю (${esc(u.version || "")}).</p>`; break;
     case "error": cls = "warn"; body = `<p class="small" style="margin:6px 0 0">${ico("alert")}Не получилось: ${esc(u.why || "ошибка")}.</p>`; break;
     default: body = `<p class="small muted" style="margin:6px 0 0">Нажмите «Проверить», чтобы узнать, есть ли новая версия.</p>`;
   }
   const canCheck = NATIVE ? true : (typeof UPD !== "undefined" && UPD.configured());
   return `<div class="card ${cls}" data-upd><div class="row sb"><div><b>${ico("refresh-cw")}Версия ${esc(ver)}</b>${NATIVE && inf.htmlSource === "updated" ? ` <span class="tag">обновлена</span>` : ""}<div class="tiny muted">${u.lastCheck ? "Последняя проверка: " + fmtDate(u.lastCheck) + " " + fmtTime(u.lastCheck) : "Ещё не проверялось"}</div></div>
-    <div class="row gap">${canCheck ? `<button class="btn sm" data-act="upd-check" ${u.status === "checking" || u.status === "downloading" ? "disabled" : ""}>${ico("refresh-cw")}Проверить</button>` : ""}${u.canRollback ? `<button class="btn sm ghost" data-act="upd-rollback" data-tip="Вернуть версию, которая была до обновления">${ico("undo")}Откатить</button>` : ""}</div></div>${body}${!NATIVE && canCheck ? `<label class="chk" style="margin-top:8px"><input type="checkbox" data-chg="set-bool" data-k="updAuto" ${S.set.updAuto !== false ? "checked" : ""}><div class="ct"><b>Проверять обновления при запуске</b><small>Программа обращается только к странице проекта на GitHub, без ваших данных. Если выключить — только по кнопке «Проверить».</small></div></label>` : ""}</div>`;
+    <div class="row gap">${canCheck ? `<button class="btn sm" data-act="upd-check" ${["checking", "downloading", "installer-downloading", "installing"].indexOf(u.status) >= 0 ? "disabled" : ""}>${ico("refresh-cw")}Проверить</button>` : ""}${u.canRollback ? `<button class="btn sm ghost" data-act="upd-rollback" data-tip="Вернуть версию, которая была до обновления">${ico("undo")}Откатить</button>` : ""}</div></div>${body}${NATIVE && !(NATIVE.update && NATIVE.update.install) && !(inf.portable) ? `<p class="tiny muted" style="margin:8px 0 0">Вышла новая программа Windows с обновлением в один клик. Чтобы её получить, один раз скачайте установщик с сайта: <a class="ref" data-act="upd-installer">скачать</a>. Данные и ключ сохранятся.</p>` : ""}${!NATIVE && canCheck ? `<label class="chk" style="margin-top:8px"><input type="checkbox" data-chg="set-bool" data-k="updAuto" ${S.set.updAuto !== false ? "checked" : ""}><div class="ct"><b>Проверять обновления при запуске</b><small>Программа обращается только к странице проекта на GitHub, без ваших данных. Если выключить — только по кнопке «Проверить».</small></div></label>` : ""}</div>`;
 }
 function updateChanged() {
-  if (NSET.upd && Array.isArray(NSET.upd.revoked) && typeof LIC !== "undefined") { LIC.revoked = NSET.upd.revoked; if (LIC.required()) licCheck(); }
+  if (NSET.upd && typeof LIC !== "undefined") { if (Array.isArray(NSET.upd.revoked)) LIC.setRevoked(NSET.upd.revoked); if (NSET.upd.lic) LIC.setPolicy(NSET.upd.lic); }
   APPS.forEach(a => {
     updateBanner(a);
     if (!a.mini && /^settings\/(overlay|about)/.test(a.route || "") && !a.ui.cap) { try { paint(a, true); } catch (e) { } }
@@ -9654,11 +10019,13 @@ function updateChanged() {
 /* плашка «Доступно обновление» поверх страницы */
 function updateBanner(app) {
   const root = app.root, u = NSET.upd || {}, old = root.querySelector(".updbar");
-  const show = (u.status === "available" || u.status === "need-installer" || u.status === "downloading" || u.status === "rolled-back") && !(app._updHidden === u.version + u.status);
+  const show = ["available", "need-installer", "downloading", "installer-downloading", "installing", "rolled-back"].indexOf(u.status) >= 0 && !(app._updHidden === u.version + u.status);
   if (!show) { if (old) old.remove(); return; }
   const html = u.status === "available" ? `<span>${ico("refresh-cw")}<b>Доступна версия ${esc(u.version)}</b>${u.notes && u.notes[0] ? " — " + esc(short(u.notes[0], 70)) : ""}</span><span class="grow"></span><button class="btn sm gold" data-act="upd-apply">Обновить сейчас</button><button class="btn sm ghost" data-act="upd-later" aria-label="Позже">Позже</button>`
     : u.status === "downloading" ? `<span>${ico("download")}Скачиваю обновление…</span>`
-      : u.status === "need-installer" ? `<span>${ico("alert")}<b>Версия ${esc(u.version)}</b> требует новой программы целиком</span><span class="grow"></span><button class="btn sm gold" data-act="upd-installer">Скачать</button><button class="btn sm ghost" data-act="upd-later">Позже</button>`
+      : u.status === "installer-downloading" ? `<span>${ico("download")}Скачиваю новую программу ${esc(u.version || "")}… ${u.progress | 0}%</span>`
+      : u.status === "installing" ? `<span>${ico("check")}Устанавливаю обновление — программа сейчас перезапустится</span>`
+      : u.status === "need-installer" ? `<span>${ico("refresh-cw")}<b>Доступна версия ${esc(u.version)}</b>${u.notes && u.notes[0] ? " — " + esc(short(u.notes[0], 60)) : ""}</span><span class="grow"></span>${canSelfInstall() ? `<button class="btn sm gold" data-act="upd-install">Обновить сейчас</button>` : `<button class="btn sm gold" data-act="upd-installer">Скачать</button>`}<button class="btn sm ghost" data-act="upd-later">Позже</button>`
         : `<span>${ico("alert")}Версия ${esc(u.bad || "")} не запустилась — возвращена прежняя</span><span class="grow"></span><button class="btn sm ghost" data-act="upd-later">Понятно</button>`;
   let bar = old; if (!bar) { bar = app.doc.createElement("div"); bar.className = "updbar"; const m = root.querySelector(".main"); if (m) m.insertBefore(bar, m.firstChild); else return; }
   bar.innerHTML = html; iconize(bar, app.doc);
@@ -9667,6 +10034,7 @@ ACT["upd-later"] = app => { const u = NSET.upd || {}; app._updHidden = u.version
 ACT["upd-check"] = app => { if (NATIVE) { NATIVE.update.check().then(s => { if (s) { NSET.upd = s; updateChanged(); } }); NSET.upd = Object.assign({}, NSET.upd, { status: "checking" }); updateChanged(); } else if (typeof UPD !== "undefined") UPD.check(true); };
 ACT["upd-apply"] = app => { if (NATIVE) { NATIVE.update.apply().then(s => { if (s) { NSET.upd = s; updateChanged(); } }); NSET.upd = Object.assign({}, NSET.upd, { status: "downloading" }); updateChanged(); } else if (typeof UPD !== "undefined") UPD.apply(); };
 ACT["upd-rollback"] = app => confirmBox(app, "Вернуть версию, которая была до последнего обновления?", "Откатить", () => { if (NATIVE) NATIVE.update.rollback().then(r => { if (r && r.ok) APPS.forEach(a => toast(a, "Возвращена версия " + r.version, "ok")); }); }, false);
+ACT["upd-install"] = app => { if (!canSelfInstall()) return ACT["upd-installer"](); NATIVE.update.install().then(s => { if (s) { NSET.upd = s; updateChanged(); } }); NSET.upd = Object.assign({}, NSET.upd, { status: "installer-downloading", progress: 0 }); updateChanged(); };
 ACT["upd-installer"] = () => { const u = NSET.upd || {}; const url = (u.installer && u.installer.url) || (typeof SITE !== "undefined" && SITE.downloadUrl) || ""; if (url) { if (NATIVE) NATIVE.external(url); else window.open(url, "_blank", "noopener"); } };
 
 /* ================================================================
