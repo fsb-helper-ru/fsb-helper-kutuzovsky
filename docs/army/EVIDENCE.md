@@ -91,6 +91,7 @@ GREEN:     tools/evidence/e2e_update_from361.log (19 ok) + e2e_update со ст�
 RED:       первый прогон поймал расхождение: локальная сборка сайта несла lic.json из устаревшей копии репозитория (номер 1794064696 против живого 1794091947) — исправлено (pull перед сборкой; тест всегда сверяет с живым), см. N-20
 GREEN:     tools/evidence/live_chain_GREEN.log (37 ok, 08.11 12:47)
 Повторно:  вторая, независимо написанная проверка tools/live_check.js (27 проверок, другой набор утверждений: формат записей и Map из verifyList, pulse↔lic, inbox 5 записей, перенос отозванных ключей, поиск закрытых ключей в site/ и Центре) — 27 ok (tools/army_logs/live_check.txt, 13:12)
+После выкладки (08.11 13:59, main f64baa8, Pages success): t_live_chain 37 ok (tools/army_logs/live_chain_after_deploy.txt) — живой version.json 4.0.0/minShell 7/pages, установщик выпуска v4.0.0 = version.json, 3.6.1 читает новый манифест; live_check 27 ok (tools/army_logs/live_check_after_deploy.txt)
 Не проверено из песочницы: выдача github.io и ntfy.sh (прокси) — 🟦 владелец после публикации; эмуляторы: e2e_relay 78, e2e_requests 47, e2e_ccfaults 23, e2e_update 19 (+19 с настоящей 3.6.1), t_cc_faction 37
 Уровень:   2   Статус: PASS
 
