@@ -1,6 +1,6 @@
 # EVIDENCE.md — реестр доказательств модуля «Армия» (4.0.0)
 
-Правила: PASS = повторяемый автотест + RED до исправления (или мутация, на которой тест падает) + 3 зелёных прогона.
+Правила: PASS = повторяемый автотест + RED до исправления (или мутация, на которой тест падает) + зелёный прогон. Владелец 08.11 разрешил ОДИН сквозной прогон на финальной сборке вместо трёх (ранние прогоны приведены для справки).
 🟦 — только ручная проверка владельца (игра/Windows). ❓ — не проверено, причина указана.
 Команды: `export SP=/home/claude/fsb-project NODE_PATH=$(npm root -g) LANG=C.UTF-8 LC_ALL=C.UTF-8`; тесты оболочки — из `shell/test`, страницы — из `tools`.
 Логи: `tools/evidence/*.log`, мутации: `tools/evidence/mutations_*.md`. Нумерация E-1xx, чтобы не путать с реестром 3.6.1.
@@ -33,16 +33,16 @@ GREEN:     3/3 прогона 37 ok (tools/evidence/ccfaction_GREEN_run1..3.log)
 [E-103] Утверждение: «Контент Армии целостен и связан с ядром: 40 документов с источником/датой/SHA-256 и статусом; 34 ситуации, 13 бланков (в т. ч. protocol/shiftrep/report, которые открывает ядро), банк ≥150 с одним верным ответом и ссылкой на норму; все ссылки [[…]] и маршруты кнопок существуют; все 34 образца бланков собираются с шапкой ВС РО; таймер задержания → протокол (имя, время, заметка о часе), караул → доклад о смене (пост, время), сводка ситуации → рапорт с нормами; разделы who/uk/force/base/units/matrix/nav/diag/about открываются; база считает окно по МСК и ставит таймер; справочник отделов и навигатор редактируются и переживают перезапуск; поиск и подсказки армейские»
 Метод:     tools/t_army_content.js (82 проверки; страница с локального http — см. N-17) + экран «Самопроверка» (armyDiag) в самой программе
 Команда:   cd tools && node t_army_content.js
-RED:       мутации A1 (висячая ссылка в ситуации) и A6 (состояние пакета не сохраняется) — tools/evidence/mutations_army.md
-GREEN:     3/3 прогона 82 ok (tools/evidence/army_content_GREEN_run1..3.log — финальный батч 08.11)
+RED:       мутации M1 (висячая ссылка в ситуации) и M6 (состояние пакета не сохраняется) — tools/evidence/mutations_army.md
+GREEN:     финальный одиночный прогон 08.11 (решение владельца: один сквозной прогон вместо трёх) — 82 ok (tools/army_logs/regress_logs/t_army_content.log); ранее 07–08.11: 82 ok ×3 (army_content_GREEN_run1..2 и ручные), одно падение из-за хранилища file:// (N-17, исправлено переходом на http)
 Код:       packs/army/* (pack.js, content_*.js, views.js, theme.css), src/engine.js (packState, packNormState), src/ui_views3.js (охрана чужих инструментов), src/learn2.js (TOPIC_DOC), src/dash.js, src/blanks*.js, src/ui_views2.js (lawProvHTML)
 Уровень:   3   Статус: PASS
 
 [E-104] Утверждение: «Экзамен Армии: 50 вопросов за 40 минут, без подсказок и счётчика верных; состав 14 сложных / 18 по нормам / 10 ситуаций / 8 динамических из базы УК; вопросы не повторяются; сдан от 95 % без округления (48 из 50 — сдан, 47 — нет, 46/48 — сдан); уход в законы/раздел пакета/горячие клавиши пакета спрашивает и при подтверждении аннулирует; новая попытка — новый набор (ни одного статического повтора); окно неактивно >3 с — вопрос заменяется; перезапуск программы возвращает в экзамен; время вышло — результат с «без ответа 47»; после экзамена разделы открыты; динамические вопросы «буква В» говорят о военной полиции»
 Метод:     tools/t_army_exam.js (32 проверки, сценарий 3.6.1 t_exam.js адаптирован под 50/40/95 и разделы пакета)
 Команда:   cd tools && node t_army_exam.js
-RED:       мутации A2 (30 вопросов) и A3 (порог 90 %) — tools/evidence/mutations_army.md
-GREEN:     3/3 прогона 32 ok (tools/evidence/army_exam_GREEN_run1..3.log)
+RED:       мутации M2 (30 вопросов) и M3 (порог 90 %) — tools/evidence/mutations_army.md
+GREEN:     финальный прогон 08.11 — 32 ok (tools/army_logs/regress_logs/t_army_exam.log); ранее 32 ok ×3 (army_exam_GREEN_run1..2, ручной), одно падение по N-17
 Код:       packs/army/pack.js (quizModes exam n:50, exam {n:50,min:40,pass:95}, armyQuizPlan), packs/army/content_learn.js (dynQuestion), ядро quiz2.js без изменений
 Уровень:   3   Статус: PASS
 
@@ -51,16 +51,16 @@ GREEN:     3/3 прогона 32 ok (tools/evidence/army_exam_GREEN_run1..3.log)
 [E-105] Утверждение: «В сборке Армии нет кода/данных пакета ФСБ и наоборот (маркеры пакетов, meta fsb-app-pack, своя тема только у Армии, корпуса 40/19); у Армии нет калькулятора срока и ситуаций ФСБ, у ФСБ нет разделов Армии; меню, палитра, поиск, горячие клавиши, маршруты (чужой инструмент → список инструментов, чужой раздел → честная карточка «нет такого раздела»), хранилище (army_… / fsb_… рядом, данные не пересекаются даже в одном хранилище), копия другого модуля не загружается»
 Метод:     tools/t_isolation.js (38 проверок: статика двух сборок + поведение обеих страниц в одной вкладке локального сайта)
 Команда:   cd tools && node t_isolation.js
-RED:       мутации A4 (чужой инструмент открывается) и A5 (общий ключ хранения) — tools/evidence/mutations_army.md
-GREEN:     3/3 прогона 38 ok (tools/evidence/isolation_GREEN_run1..3.log)
+RED:       мутации M4 (чужой инструмент открывается) и M5 (общий ключ хранения) — tools/evidence/mutations_army.md
+GREEN:     финальный прогон 08.11 — 38 ok (tools/army_logs/regress_logs/t_isolation.log); ранее 38 ok ×3 (isolation_GREEN_run1..2, ручной), одно падение по N-17
 Код:       tools/build.py (--pack, <last> перед boot.js), packs/army/pack.js (storeKey), src/ui_views3.js, src/tools2.js, src/ui_views4.js (копия другого модуля)
 Уровень:   3   Статус: PASS
 
 [E-106] Утверждение: «В настоящей программе (Electron) фракцию определяет только ключ: ключ неизвестной фракции — вход закрыт с причиной; ключ Армии → app_army.html (аккаунт с faction=army, марка «Армия-помощник», свой файл настроек, панель поверх игры тоже армейская, нет kpz/ситуаций ФСБ, есть разделы Армии); выход и ключ ФСБ (старая запись без f) в той же программе → app.html со своими данными; вход паролем в аккаунт Армии возвращает её страницу с сохранёнными данными; перевыпуск ключа владельцем → вход закрыт с просьбой ввести новый ключ (rekeyed); «Закрыть программу» работает»
 Метод:     shell/test/e2e_faction.js (30 проверок, настоящий Electron + локальный сайт с lic.json трёх фракций)
 Команда:   cd shell/test && xvfb-run -a node e2e_faction.js
-RED:       мутации A7 (ключ Армии открывает страницу ФСБ) и A8 (общий файл настроек) — tools/evidence/mutations_army.md
-GREEN:     3/3 прогона 30 ok (tools/evidence/e2e_faction_GREEN_run1..3.log) + батчи 07.11 и 08.11
+RED:       мутации M7 (ключ Армии открывает страницу ФСБ) и M8 (общий файл настроек) — tools/evidence/mutations_army.md
+GREEN:     финальный прогон 08.11 — 30 ok (tools/army_logs/regress_logs/e2e_faction.log); ранее 30 ok ×4 (e2e_faction_GREEN_run1..2, батчи 07.11 и 08.11)
 Код:       shell/main.js (PAGES, curFaction, brand, storeFor/syncStore, retitle), shell/lib/auth.js, shell/signin.html, src/account.js (задержка 300 мс перед signOut — N-17)
 Уровень:   3   Статус: PASS
 
@@ -82,3 +82,18 @@ GREEN:     tools/evidence/fsb_visual_GREEN.log (финальный батч), ch
 GREEN:     tools/evidence/e2e_update_from361.log (19 ok) + e2e_update со старой 3.4.0 в батчах (19 ok)
 Код:       shell/lib/updater.js (pages, need-installer без обеих страниц, checkHtmlSanity по meta), shell/main.js (bundled: PAGES), tools/make_site.py (pages, minShell 7)
 Уровень:   2   Статус: PASS (живой сайт/GitHub — 🟦 после публикации)
+
+## Живая связка «сайт ↔ GitHub ↔ ключи ↔ программа» (этап 5)
+
+[E-109] Утверждение: «То, что реально опубликовано сейчас (ветка main = источник GitHub Pages), исправно и совместимо с обеими программами: lic.json подписан ключом из программы, 5 записей корректны (отпечатки, статус, фракция, kid), без открытых логинов/ключей; его принимают и библиотека 4.0.0, и ВЫПУЩЕННАЯ 3.6.1; канал заявок и контакты в списке = конфигу программы; pulse.json согласован (тот же номер); inbox.json — зашифрованные ответы; users.enc.json — зашифрованная копия; version.json 3.6.1 подписан, его app-3.6.1.html на сайте с совпадающим SHA-256; установщик выпуска v3.6.1 на GitHub загружен и его SHA-256 = version.json; последняя выкладка GitHub Pages = вершина main, состояние success. Новые файлы 4.0.0 согласованы: version.json (minShell 7, pages fsb/army с верными SHA-256), установщик 4.0.0 (SHA-256 = version.json = SHA256SUMS; внутри — те же байты страниц и main.js SHELL_API 7; site-config с теми же адресами и ключами), site/lic.json = живому (ключи переносятся без потерь), pulse.json 4.0.0 с тем же номером; оболочка 6 на новом version.json → «нужен установщик» со ссылкой на GitHub; оболочка 7 → «актуально»/«доступно»; в Центре — те же открытые ключи, канал и адрес сайта, закрытых ключей нет»
+Метод:     tools/t_live_chain.js (37 проверок; живые файлы через GitHub API, библиотеки auth.js/updater.js 4.0.0 и 3.6.1)
+Команда:   cd tools && node t_live_chain.js
+RED:       первый прогон поймал расхождение: локальная сборка сайта несла lic.json из устаревшей копии репозитория (номер 1794064696 против живого 1794091947) — исправлено (pull перед сборкой; тест всегда сверяет с живым), см. N-20
+GREEN:     tools/evidence/live_chain_GREEN.log (37 ok, 08.11)
+Не проверено из песочницы: выдача github.io и ntfy.sh (прокси) — 🟦 владелец после публикации; эмуляторы: e2e_relay 78, e2e_requests 47, e2e_ccfaults 23, e2e_update 19 (+19 с настоящей 3.6.1), t_cc_faction 37
+Уровень:   2   Статус: PASS
+
+## Финальный прогон 08.11 (одна сквозная проверка итоговой сборки 4.0.0)
+
+tools/army_logs/regress_final.txt: 43 набора — страница ФСБ 23 (t_core 50, t_v32 24, t_v32b 20, t_v32c 24, t_v32d 29, t_v32e 111, t_v32f 44, t_v32g 17, t_v34a 15, t_v361 15, t_bank 7, t_blanks 59, t_data 55, t_exam 42, t_monkey 6, t_native 40, t_resp 14, t_search35 24, t_shift 15, t_tpl 21, t_updater33 7, t_cc34 87, t_cc_faction 37), Армия 3 (82/32/38), оболочка 9 (auth 72, faction 34, main 96, settings 8, updater 31, updater_pages 13, requests 71, persist 26, reconcile 12), Electron 8 (e2e_electron 17, overlay 28, password 22, update 19, relay 78, ccfaults 23, requests 47 после правки ожидания «версия 3.6» → любая версия (N-19), faction 30). Все зелёные. Плюс: t_fsb_visual 0,0 % (кроме намеренно изменённого «О программе»), t_live_chain 37, e2e_update с настоящей 3.6.1 — 19, мутации M1–M8 — tools/evidence/mutations_army.md.
+

@@ -1,0 +1,45 @@
+t_core :: exit 0 :: 18s :: ИТОГО: ok 49, FAIL 1  → в панели 3 из сида + запись «Данные обновлены до версии» + 1 от сработавшего таймера
+t_v32 :: exit 0 :: 4s :: ИТОГО: 24 ok, 0 fail
+t_v32b :: exit 0 :: 59s :: ИТОГО: 77 ok, 0 fail
+t_v32c :: exit 0 :: 71s :: ИТОГО: ok 131, FAIL 0
+t_v32d :: exit 0 :: 17s :: ИТОГО: ok 29, FAIL 0
+t_v32e :: exit 0 :: 39s :: ИТОГО: ok 111, FAIL 0
+t_v32f :: exit 0 :: 17s :: ИТОГО: ok 44, FAIL 0
+t_v32g :: exit 0 :: 7s :: ИТОГО: ok 17, FAIL 0
+t_v34a :: exit 0 :: 11s :: ИТОГО: ok 19, FAIL 0
+t_v361 :: exit 0 :: 9s :: 15 ok, 0 fail
+t_bank :: exit 0 :: 2s :: ИТОГО: ok 7, FAIL 0
+t_blanks :: exit 0 :: 37s :: ИТОГО: ok 59, FAIL 0
+t_data :: exit 0 :: 33s :: ИТОГО: ok 55, FAIL 0
+t_exam :: exit 0 :: 34s :: ИТОГО: ok 42, FAIL 0
+t_monkey :: exit 0 :: 65s :: 6 ok, 0 fail
+t_native :: exit 0 :: 13s :: 40 ok, 0 fail
+t_resp :: exit 0 :: 125s :: ИТОГО: ok 14, FAIL 0
+t_search35 :: exit 0 :: 6s :: ИТОГО: ok 24, FAIL 0
+t_shift :: exit 0 :: 12s :: ИТОГО: ok 15, FAIL 0
+t_tpl :: exit 0 :: 14s :: ИТОГО: ok 21, FAIL 0
+t_updater33 :: exit 0 :: 0s :: ИТОГО: ok 7, FAIL 0
+t_cc34 :: exit 0 :: 45s :: 87 ok, 0 fail
+t_cc_faction :: exit 0 :: 9s :: 37 ok, 0 fail
+t_army_content :: exit 0 :: 34s :: ИТОГО: ok 82, FAIL 0
+t_army_exam :: exit 0 :: 35s :: ИТОГО: ok 32, FAIL 0
+t_isolation :: exit 0 :: 9s :: ИТОГО: ok 38, FAIL 0
+shell_auth_test :: exit 0 :: 1s :: ИТОГО: ok 72, FAIL 0
+shell_faction_test :: exit 0 :: 0s :: 34 ok, 0 fail
+shell_main_test :: exit 0 :: 15s :: 96 ok, 0 fail
+shell_settings_test :: exit 0 :: 0s :: ИТОГО: ok 8, FAIL 0
+shell_updater_test :: exit 0 :: 0s :: 31 ok, 0 fail
+shell_updater_pages_test :: exit 0 :: 1s :: 13 ok, 0 fail
+shell_requests_test :: exit 0 :: 0s :: ИТОГО: ok 71, FAIL 0
+shell_persist_test :: exit 0 :: 2s :: ИТОГО: ok 26, FAIL 0
+shell_reconcile_test :: exit 0 :: 0s :: ИТОГО: ok 12, FAIL 0
+e2e_electron :: exit 0 :: 34s :: 17 ok, 0 fail
+e2e_overlay :: exit 0 :: 23s :: ИТОГО: 28 ok, 0 fail
+e2e_password :: exit 0 :: 42s :: 22 ok, 0 fail
+e2e_update :: exit 0 :: 136s :: 19 ok, 0 fail
+e2e_relay :: exit 0 :: 175s :: ИТОГО: 78 ok, 0 fail
+e2e_ccfaults :: exit 0 :: 113s :: ИТОГО: 23 ok, 0 fail
+e2e_requests :: exit 1 :: 37s :: ИТОГО: 46 ok, 1 fail  → заявка появилась сама: ник, логин, версия
+e2e_faction :: exit 0 :: 31s :: 30 ok, 0 fail
+DONE 11:53:23
+e2e_requests rerun :: exit 0 :: ИТОГО: 47 ok, 0 fail
