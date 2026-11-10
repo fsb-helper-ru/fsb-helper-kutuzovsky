@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="fsb-app" content="kutuzovsky">
-<meta name="fsb-app-version" content="4.0.0">
+<meta name="fsb-app-version" content="4.1.0">
 <meta name="fsb-app-pack" content="army">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; font-src data:; media-src data: blob:; connect-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -42,7 +42,7 @@
   --shadow:0 1px 2px rgba(20,32,70,.06),0 6px 20px rgba(20,32,70,.07);
   --shadow-lg:0 24px 60px rgba(20,32,70,.28);
   --ok-t:#0c6a4a; --warn-t:#855400; --bad-t:#a3261e; --blue-t:#1b4aa6; --purple-t:#5a3cc0; --org-t:#a2480d;
-  --link:#1d54b8; --gold:#b98a10;
+  --link:#1d54b8; --gold:#8a6a0f;
   --accent-t:var(--a3);
   --glow1:rgba(var(--ar),.10); --glow2:rgba(74,134,234,.08);
 }
@@ -54,7 +54,7 @@
     --text:#121a2e; --muted:#4a5875; --dim:#515f7e;
     --shadow:0 1px 2px rgba(20,32,70,.06),0 6px 20px rgba(20,32,70,.07);
     --ok-t:#0c6a4a; --warn-t:#855400; --bad-t:#a3261e; --blue-t:#1b4aa6; --purple-t:#5a3cc0; --org-t:#a2480d;
-    --link:#1d54b8; --gold:#b98a10; --accent-t:var(--a3);
+    --link:#1d54b8; --gold:#8a6a0f; --accent-t:var(--a3);
   }
 }
 :root[data-accent="blue"]{--ar:74,134,234;--a1:#4a86ea;--a2:#7fb0ff;--a3:#2358b8;--on-accent:#fff}
@@ -1447,6 +1447,231 @@ html[data-mode=pro] .purpose{display:none}
 .updprog i{display:block;height:100%;background:var(--accent);transition:width .3s}
 
 /* ================================================================
+   4.1 «Удобство»: содержимое раньше слов, меню в одну строку, малое окно,
+   минимум 12 px, сворачиваемые подсказки, ширина текста, липкие фильтры.
+   Файл подключается последним и уточняет прежние правила.
+   ================================================================ */
+
+/* ---------- левое меню: пункт в одну строку, подсказка-описание при наведении ---------- */
+.nav a{padding:5px 11px;gap:11px;margin:1px 0;min-height:34px}
+.nav .nt b{font-size:.95em}
+.nav .nd{display:none}
+.nav .sect{margin:6px 0 1px;padding:0 11px}
+.nav .sect:first-child{margin-top:0}
+.nav .sect{font-size:.7em}
+.side{padding:12px 12px 10px}
+.side .brand{margin-bottom:4px}
+.brand small{font-size:.76em}
+.side .foot{display:none}   /* оговорка про неофициальность — на экране «О программе» и на сайте; в меню она только занимала место */
+.side .me{margin:8px 2px 0;padding:8px 10px}
+.side .me small{font-size:.8em}
+.side .modesw{margin-top:6px}
+.nav .nb{font-size:.72em}
+.nav{flex:1;min-height:0;overflow:auto;scrollbar-width:thin}
+
+/* ---------- нижняя панель (узкое окно): подписи читаемого размера ---------- */
+body.compact .bottomnav a{font-size:.72em;gap:2px}
+body.compact .bottomnav a .nt{overflow:hidden;text-overflow:ellipsis;max-width:100%}
+body.compact .bottomnav a[data-live="1"] .nb{display:none}
+
+/* ---------- мелкий текст: не меньше 12 px ---------- */
+.tiny{font-size:.78em}
+.bdg,.bk-dot,.pg,.sd-h{font-size:.72em}
+.tip{font-size:.8em}
+
+/* ---------- вводный абзац раздела: свёрнут до двух строк, «ещё» раскрывает ---------- */
+.page > .sub.clamp,.hero-s .sub.clamp{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+html[data-mode=pro] .page > .sub.clamp{-webkit-line-clamp:1}
+.sub-more{background:none;border:0;color:var(--accent-t);cursor:pointer;padding:3px 8px;margin:-10px 0 10px -8px;min-height:26px;border-radius:8px;font:inherit;font-size:.86em;font-weight:620}
+.sub-more:hover{text-decoration:underline}
+.page > .sub{margin-bottom:10px}
+
+/* ---------- пояснение раздела «что это / когда нужно / что получите» — сворачиваемое ---------- */
+details.purpose{display:block;margin:6px 0 14px;border:1px solid var(--line);border-radius:14px;background:var(--panel);overflow:hidden}
+details.purpose > summary{list-style:none;display:flex;align-items:center;gap:9px;padding:9px 12px;cursor:pointer;color:var(--muted);font-size:.9em;min-height:38px}
+details.purpose > summary::-webkit-details-marker{display:none}
+details.purpose > summary > .i{width:16px;height:16px;margin:0;color:var(--accent-t);flex:none}
+details.purpose > summary b{color:var(--text);font-weight:640;flex:none}
+details.purpose > summary .ps{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+details.purpose[open] > summary .ps{display:none}
+details.purpose .hs-more{margin-left:auto;display:grid;color:var(--dim);transition:transform .18s}
+details.purpose .hs-more .i{width:16px;height:16px;margin:0}
+details.purpose[open] .hs-more{transform:rotate(180deg)}
+details.purpose .hx{background:none;border:0;color:var(--dim);cursor:pointer;padding:4px;min-width:28px;min-height:28px;place-items:center;border-radius:8px;display:grid;flex:none}
+details.purpose .hx:hover{background:rgba(var(--ar),.12);color:var(--text)}
+details.purpose .hx .i{width:14px;height:14px;margin:0}
+details.purpose .pb{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1px;background:var(--line);border-top:1px solid var(--line)}
+details.purpose .pb > div{background:var(--panel);padding:10px 14px;display:flex;flex-direction:column;gap:3px;min-width:0}
+details.purpose .pb b{font-size:.72em;letter-spacing:.09em;text-transform:uppercase;color:var(--accent-t);font-weight:760}
+details.purpose .pb span{font-size:.88em;line-height:1.45;color:var(--muted)}
+
+/* ---------- подсказка-блок: сворачиваемая, заголовок в одну строку ---------- */
+details.hintbox{display:block;padding:0;margin:10px 0 14px;border-radius:0 var(--r) var(--r) 0}
+details.hintbox > summary{list-style:none;display:flex;align-items:center;gap:10px;padding:9px 12px 9px 12px;cursor:pointer;min-height:40px}
+details.hintbox > summary::-webkit-details-marker{display:none}
+details.hintbox > summary .hi{width:26px;height:26px;border-radius:8px}
+details.hintbox > summary .hi .i{width:15px;height:15px}
+details.hintbox > summary b{flex:1;min-width:0;font-size:.95em;font-weight:640;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+details.hintbox .hs-more{display:grid;color:var(--dim);transition:transform .18s}
+details.hintbox .hs-more .i{width:16px;height:16px;margin:0}
+details.hintbox[open] .hs-more{transform:rotate(180deg)}
+details.hintbox .hx{padding:4px;min-width:28px;min-height:28px}
+details.hintbox .hb{padding:0 14px 12px 48px;font-size:.92em;line-height:1.5;max-width:82ch}
+details.hintbox .hb > *:first-child{margin-top:0}
+@media (max-width:480px){details.hintbox .hb{padding-left:14px}}
+
+/* ---------- главная: компактное приветствие ---------- */
+.dhero{padding:16px 20px;border-radius:18px}
+.dhero h1{font-size:1.45em;margin:2px 0 4px}
+.dhero .sub{font-size:.95em;margin:0 0 8px}
+.dhero .eyebrow{margin-bottom:4px}
+.dclock{padding:8px 14px}
+.dclock b{font-size:1.7em}
+.dh-wm{width:150px;height:150px;right:-18px;bottom:-34px}
+.whatnow{padding:12px 16px}
+.whatnow .wn-h{margin-bottom:6px}
+.whatnow .wn-alt{margin-top:8px}
+@media (max-height:680px){
+  .dhero{padding:10px 16px;display:flex;align-items:center;gap:16px}
+  .dhero .sub,.dhero .eyebrow,.dh-wm{display:none}
+  .dhero h1{font-size:1.2em;margin:0}
+  .dhero .dh-main{flex:1;min-width:0}
+  .dclock{padding:4px 10px;flex:none}
+  .dclock b{font-size:1.25em}
+  .dclock span{display:none}
+  .whatnow .wn-alt{display:none}
+}
+
+/* ---------- узкое и невысокое окно ---------- */
+.tabs2{flex-wrap:wrap !important;overflow:visible !important;gap:2px 4px}
+.tab2{padding:8px 9px}
+@media (max-width:760px){.tab2{padding:7px 8px;font-size:.92em}.tab2 .i{width:15px;height:15px}}
+@media (max-width:760px){.page > h1{font-size:1.35em}}
+
+/* ---------- ширина текста: 60–80 знаков в строке ---------- */
+.page > .sub,.card > p,.card .small.muted,.ablk p,.ablk li,.step .st,.steps li,.lesson p,.lesson li,.about p,.set-text,.unit > p,.card > .small,.tiny.dim.gap{max-width:80ch}
+.steps,.lesson,.qa-a,.card.text{max-width:88ch}
+
+/* ---------- «Законы»: вопрос и поле в одну строку, ссылки рядом чипами ---------- */
+.qline{padding:10px 14px}
+.qline .ql-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.qline .ql-row label{flex:1 1 260px;min-width:0;cursor:text}
+.qline .ql-row .searchbox{flex:1 1 220px;max-width:340px;margin:0}
+.qline .wp-i{flex:none}
+.qline [data-who-res]:empty,.qline [data-hand-res]:empty{display:none}
+.qline [data-who-res],.qline [data-hand-res]{margin-top:8px}
+.lawlinks.chips{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 12px}
+.lawlinks.chips .chip{flex:0 1 auto;max-width:100%;min-width:0;white-space:normal;text-align:left;height:auto;min-height:32px}
+.lawlinks.chips .chip .i{width:15px;height:15px;margin-right:4px}
+
+/* ---------- редактор бланка: «Сохранить» главная, выгрузки группой ---------- */
+.bk-sep{width:1px;height:26px;background:var(--line);margin:0 4px;flex:none}
+@media (max-width:620px){.bk-sep{display:none}}
+
+/* ---------- флажки крупнее, поля с подписью ---------- */
+input[type=checkbox]{width:20px;height:20px}
+.chk{padding:9px 11px;min-height:40px}
+.chk input[type=checkbox]{margin-top:1px}
+
+/* ---------- светлая тема: звёзды темнее (контраст) ---------- */
+/* светлая тема: --gold затемнён до #8a6a0f в style.css (звёзды ★ читаются на белом, 4.6:1) */
+
+/* ---------- сетки без «сирот» ---------- */
+.infobox{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:620px){.infobox{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.qz-first,.ovempty{display:flex;align-items:center;gap:12px;width:100%;text-align:left;font:inherit;color:var(--text)}
+.qz-first .tt,.ovempty .tt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.qz-first .tt small,.ovempty .tt small{color:var(--muted);line-height:1.4}
+.qz-first > .i:last-child,.ovempty > .i:last-child{margin:0;color:var(--accent-t)}
+.ovempty{margin:0 0 12px}
+
+/* ---------- длинные страницы: фильтр остаётся сверху, кнопка «наверх» ---------- */
+.sticky-f{position:sticky;top:calc(var(--topH, 64px) + 6px);z-index:7;background:var(--bg);box-shadow:0 10px 18px -14px rgba(0,0,0,.6)}
+.sticky-f.card{margin-top:0}
+body.compact .sticky-f{position:static;box-shadow:none}
+.totop{position:fixed;right:22px;bottom:22px;z-index:25;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--top);backdrop-filter:blur(12px);color:var(--text);display:grid;place-items:center;cursor:pointer;box-shadow:var(--shadow);opacity:0;pointer-events:none;transform:translateY(8px);transition:opacity .18s,transform .18s}
+.totop.on{opacity:1;pointer-events:auto;transform:none}
+.totop .i{margin:0;width:18px;height:18px}
+body.compact .totop{bottom:84px;right:12px}
+
+/* ---------- оверлей: шапка не наезжает на таймер ---------- */
+.ovbar .ovt{min-width:0;flex:1 1 40px;display:inline-flex;align-items:center;gap:6px;overflow:hidden}
+.ovbar .ovt b{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ovbar .ovchips{flex:none;display:inline-flex;gap:4px}
+.ovbar:has(.ovchips:not(:empty)) .ovt b{display:none}   /* когда идёт таймер — вместо обрезанного названия только знак */
+
+/* ---------- верхняя панель: кнопки с понятными подсказками, без «⌘» ---------- */
+.iconbtn.pal-btn .kh2{display:inline-flex}
+@media (max-width:920px){.iconbtn.pal-btn .kh2{display:none}}
+
+/* ---------- анимация появления: короче и без прыжков у длинных страниц ---------- */
+.page.enter > *{animation-duration:.22s}
+.page.enter > *:nth-child(n+5){animation-delay:.08s}
+@media (prefers-reduced-motion:reduce){.page.enter > *{animation:none}.totop{transition:none}}
+
+/* ---------- «Учёба»: шесть плиток прогресса — ровно 3×2, без «сироты» ---------- */
+.lgrid{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:620px){.lgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* ---------- скорость: фон не перерисовывается при прокрутке (слой вместо background-attachment:fixed) ---------- */
+body{background-image:none !important;background-attachment:scroll !important;background-color:var(--bg)}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(1100px 520px at 85% -8%,var(--glow1),transparent 62%),radial-gradient(900px 480px at -8% 6%,var(--glow2),transparent 58%),var(--bg)}
+html[data-pack=army] body::before{background:var(--camo),radial-gradient(1100px 520px at 85% -8%,var(--glow1),transparent 62%),radial-gradient(900px 480px at -8% 6%,var(--glow2),transparent 58%),var(--bg)}
+body.pip::before,body.compact::before{background:var(--bg)}
+html[data-pack=army] body.pip::before,html[data-pack=army] body.compact::before{background:var(--camo),var(--bg)}
+
+/* ---------- экономный режим графики (Настройки → Вид): без размытия, теней, узора и анимаций — для слабых ПК ---------- */
+html[data-lowfx="1"] body::before{background:var(--bg) !important}
+html[data-lowfx="1"] .top,html[data-lowfx="1"] body.compact .bottomnav,html[data-lowfx="1"] .bk-bar,html[data-lowfx="1"] .totop,html[data-lowfx="1"] .pal .pbox,html[data-lowfx="1"] .np{backdrop-filter:none !important;-webkit-backdrop-filter:none !important}
+html[data-lowfx="1"] .top{background:var(--panel)}
+html[data-lowfx="1"] body.compact .bottomnav{background:var(--panel)}
+html[data-lowfx="1"] .card,html[data-lowfx="1"] .tile,html[data-lowfx="1"] .qtile,html[data-lowfx="1"] .dcard,html[data-lowfx="1"] .hero,html[data-lowfx="1"] .dhero,html[data-lowfx="1"] .btn,html[data-lowfx="1"] .side,html[data-lowfx="1"] .seg{box-shadow:none !important}
+html[data-lowfx="1"] .page.enter > *{animation:none !important}
+html[data-lowfx="1"] *{transition-duration:0s !important}
+html[data-lowfx="1"] .dhero,html[data-lowfx="1"] .hero,html[data-lowfx="1"] .whatnow{background-image:none !important}
+
+/* ---------- запись экрана ---------- */
+.rec-main{border-color:rgba(var(--ar),.35)}
+.rec-main.on{border-color:rgba(var(--badr),.6);background:linear-gradient(180deg,rgba(var(--badr),.1),transparent 70%),var(--panel)}
+.rec-dot{width:14px;height:14px;border-radius:50%;background:var(--bad);box-shadow:0 0 0 4px rgba(var(--badr),.25);animation:recblink 1.2s ease-in-out infinite;flex:none;margin:0 10px 0 4px}
+@keyframes recblink{50%{opacity:.35}}
+@media (prefers-reduced-motion:reduce){.rec-dot{animation:none}}
+.rec-main .timer{font-size:1.6em;font-variant-numeric:tabular-nums;color:var(--bad-t)}
+.rec-src{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px;margin-top:10px}
+.rec-s{display:flex;flex-direction:column;gap:6px;padding:8px;border:1px solid var(--line);border-radius:12px;background:var(--panel2);color:var(--text);cursor:pointer;font:inherit;text-align:left}
+.rec-s img,.rec-s .rec-ph{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:8px;background:var(--bg2);display:grid;place-items:center;color:var(--dim)}
+.rec-s .rec-ph .i{width:28px;height:28px;margin:0}
+.rec-s span{font-size:.86em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rec-s.on{border-color:var(--accent);box-shadow:0 0 0 2px rgba(var(--ar),.25)}
+.rec-pre{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;margin:10px 0 12px}
+.rec-p{display:flex;flex-direction:column;gap:3px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--panel2);color:var(--text);cursor:pointer;font:inherit;text-align:left}
+.rec-p small{color:var(--muted);line-height:1.35}
+.rec-p.on{border-color:var(--accent);background:rgba(var(--ar),.1)}
+.rec-p:disabled{opacity:.55;cursor:default}
+.rec-list{display:flex;flex-direction:column;gap:6px}
+.rec-f{display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid var(--line);border-radius:12px;background:var(--panel2)}
+.rec-fi{color:var(--accent-t);display:grid;flex:none}.rec-fi .i{margin:0;width:20px;height:20px}
+.rec-ft{flex:1;min-width:0}.rec-ft b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:.95em}.rec-ft small{color:var(--muted)}
+.tbadge.rec{background:rgba(var(--badr),.18);border-color:rgba(var(--badr),.5);color:var(--bad-t);font-variant-numeric:tabular-nums;font-weight:700}
+
+/* ---------- «Спросить» ---------- */
+.ask-box{padding:14px 16px}
+.searchbox.big{display:flex;align-items:center;gap:8px;padding:4px 4px 4px 12px}
+.searchbox.big .si{position:static;margin:0 2px 0 0;flex:none}
+.searchbox.big input{flex:1;font-size:1.05em;padding:10px 6px !important}
+.searchbox.big .btn{flex:none}
+.ask-a{margin-top:6px}
+.ask-main h3 a.ref{text-decoration:none}
+.ask-q{font-size:1.02em;line-height:1.6;margin:6px 0}
+.ask-q mark,.ask-a mark{background:rgba(var(--ar),.25);color:inherit;border-radius:4px;padding:0 2px}
+.ask-steps{margin:6px 0 4px;padding-left:1.3em}
+.ask-steps li{margin:4px 0}
+.ask-side{padding:12px 14px}
+.ask-side > b{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.ask-src{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:10px 0 4px}
+.ask-tag{font-size:.72em}
+
+/* ================================================================
    ТЕМА «АРМИЯ» (пакет army). Подключается ПОСЛЕ общих стилей и переопределяет только токены и углы.
    Палитра: тёмный хаки/олива + графит, латунные акценты, песок. Цифровой камуфляж — только едва заметной текстурой фона.
    Прямые углы, шевроны, звёзды, погон (полоса над заголовком). Оформление ФСБ эти стили не затрагивают: файл входит только в сборку Армии.
@@ -1573,6 +1798,7 @@ const ARMY_TOOLS = [
   { r: "tools/docs", ic: "pen", t: "Рапорты и шаблоны", d: "Заполнить и скопировать", k: "рапорт шаблон текст" },
   { r: "tools/cases", ic: "folder", t: "Журнал смены", d: "Кого задержали, кому передали, нарушения режима — сводка для доклада", k: "журнал дела смена задержания доклад сводка отчёт записи", live: () => (S.cases || []).some(c => c.ts >= ((S.shift && S.shift.since) || 0)) },
   { r: "tools/counters", ic: "hash", t: "Счётчики смены", d: "Проверки на КПП, досмотры, задержания, передачи — плюс одним нажатием", k: "счётчик счетчик смена итоги статистика проверки досмотры задержано" },
+  { r: "tools/rec", ic: "video", t: "Запись экрана", d: "Экран или окно игры со звуком — в MP4; «повтор» хранит последние минуты", k: "запись экрана видео повтор клип доказательство obs" },
   { r: "tools/overlay", ic: "window", t: "Окно поверх игры", d: "Панель поверх игры по клавише, мини-окно в браузере", k: "мини окно overlay оверлей pip панель hud" }
 ];
 
@@ -1582,6 +1808,7 @@ const ARMY_SECTIONS = [
   { r: "scn", ic: "compass", t: "Ситуации", k: "что делать пошагово сценарии кпп караул" },
   { r: "rules", ic: "flag", t: "Как не вылететь", d: "За что наказывают на сервере", k: "правила сервера наказания нарушения пго госорганизаций форт поставки" },
   { r: "laws", ic: "scale", t: "Законы", k: "статьи кодексы устав законодательство" },
+  { r: "ask", ic: "sparkle", t: "Спросить", d: "Вопрос словами — ответ из законов и ситуаций", k: "спросить вопрос помощник ответ ии ассистент" },
   { r: "who", ic: "users", t: "С кем взаимодействуем", d: "Армия, МВД, ФСБ, СК, прокуратура: кому передавать и кто нас проверяет — выдержки из законов", k: "ведомства компетенция передача кому передавать мвд фсб ск прокуратура" },
   { r: "uk", ic: "gavel", t: "УК: воинские статьи", d: "Глава 8 УК и статьи с буквой В (военная полиция); все буквы Ф, Р, В, С", k: "уголовный кодекс воинские преступления буква в дезертирство" },
   { r: "force", ic: "alert", t: "Сила и оружие: светофор", d: "Что можно, что нельзя и когда — по ст. 18, 30, 31 и ПК", k: "сила оружие стрелять смертельная соразмерно предупреждение" },
@@ -1744,8 +1971,16 @@ const PACK = {
   heroMark: '<path d="M4 15 17 4l13 11-3 2-10-8.5L7 17z"/><path d="M4 24 17 13l13 11-3 2-10-8.5L7 26z"/><path d="M17 27.5l1.4 2.9 3.2.4-2.3 2.2.6 3.2-2.9-1.5-2.9 1.5.6-3.2-2.3-2.2 3.2-.4z"/>',
   searchEx: "фз о вс 25",
   palSections: ["home", "scn", "rules", "laws", "who", "uk", "force", "base", "units", "matrix", "nav", "tools", "blanks", "learn", "favs", "history", "settings"],
-  goKeys: { KeyH: "home", KeyS: "scn", KeyR: "rules", KeyL: "laws", KeyT: "tools", KeyB: "blanks", KeyU: "learn", KeyF: "favs", KeyI: "history", KeyO: "settings", KeyW: "force", KeyA: "base" },
-  goHelp: [["G H", "Главная"], ["G S", "Ситуации"], ["G R", "Как не вылететь"], ["G L", "Законы"], ["G T", "Инструменты"], ["G B", "Бланки"], ["G U", "Учёба"], ["G F", "Избранное"], ["G W", "Светофор силы"], ["G A", "База и поставки"]]
+  /* 4.1: собственная группа меню модуля — разделы части видны сразу, а не только через поиск */
+  navExtra: { s: "Часть", items: [
+    { r: "force", ic: "alert", t: "Сила и оружие", d: "Светофор: можно · с условиями · нельзя", g: "W" },
+    { r: "base", ic: "shield", t: "База и поставки", d: "График, точки, лимиты, таймеры", g: "A" },
+    { r: "units", ic: "list", t: "Подразделения", d: "Справочник части и званий" },
+    { r: "matrix", ic: "grid", t: "Игра и закон", d: "Кнопка в планшете есть — право только по закону" }
+  ] },
+  askExamples: ["Можно ли стрелять по убегающему?", "Что делать на КПП, если нет пропуска?", "Кому передавать задержанного за угон?", "Когда можно покинуть территорию части?", "Что сказать при проверке документов?", "Сколько человек может быть на базе?"],
+  goKeys: { KeyH: "home", KeyS: "scn", KeyR: "rules", KeyL: "laws", KeyT: "tools", KeyB: "blanks", KeyU: "learn", KeyF: "favs", KeyI: "history", KeyO: "settings", KeyQ: "ask", KeyW: "force", KeyA: "base" },
+  goHelp: [["G H", "Главная"], ["G S", "Ситуации"], ["G R", "Как не вылететь"], ["G L", "Законы"], ["G Q", "Спросить"], ["G T", "Инструменты"], ["G B", "Бланки"], ["G U", "Учёба"], ["G F", "Избранное"], ["G W", "Светофор силы"], ["G A", "База и поставки"]]
 };
 
 /* ================================================================
@@ -1877,14 +2112,14 @@ const DEF = {
   det: null, detHistory: [],
   set: {
     lengthMin: 60, intervalMin: 15, sound: true, menu: "auto", detail: false, fontScale: 1, hourMin: 60, theme: "auto", accent: "gold",
-    mode: "novice", density: "auto", hotkeys: true, sideCollapsed: false, ovHideAfterCopy: true,
+    mode: "novice", density: "auto", hotkeys: true, sideCollapsed: false, ovHideAfterCopy: true, lowfx: false,
     hints: { tips: true, guide: true, welcome: true, reminders: true, tooltips: true }
   },
   lessons: {}, quiz: { best: 0, runs: 0, wrong: {}, last: null, att: [], todo: {}, cur: null }, userPhrases: [], phraseEdits: {},
   steps: {}, my: [], notes: {},
   docs: [], docWork: {}, docSeq: {},
   /* v3 */
-  hintOff: {}, searchHist: [], routes: [], quick: null, notifs: [], log: [], tpls: [], presets: [], timers: [], lastBackup: 0, since: 0,
+  hintOff: {}, hintSeen: {}, searchHist: [], askHist: [], routes: [], quick: null, notifs: [], log: [], tpls: [], presets: [], timers: [], lastBackup: 0, since: 0,
   /* v3.1 (добавлено без смены схемы: старые данные читаются как есть) */
   binds: [], slots: {}, bindPos: {}, activeBind: "", license: null, lastUpdCheck: 0, seenVer: "",
   /* v4: прогресс уроков и статей, мастер первого запуска */
@@ -1915,8 +2150,8 @@ function normalizeState(p) {
     const hs = (p.set && typeof p.set.hints === "object" && p.set.hints) || {};
     S.set.hints = {}; HINT_GROUPS.forEach(g => { S.set.hints[g] = hs[g] !== false; });
     delete S.set.compact; // прежний «компактный режим» (меню снизу) сброшен: по умолчанию меню слева
-    ["favs", "recent", "history", "posts", "detHistory", "userPhrases", "my", "docs", "searchHist", "routes", "notifs", "log", "tpls", "presets", "timers"].forEach(k => { if (!Array.isArray(S[k])) S[k] = []; });
-    ["lessons", "steps", "notes", "phraseEdits", "docWork", "docSeq", "hintOff"].forEach(k => { if (!S[k] || typeof S[k] !== "object" || Array.isArray(S[k])) S[k] = {}; });
+    ["favs", "recent", "history", "posts", "detHistory", "userPhrases", "my", "docs", "searchHist", "askHist", "routes", "notifs", "log", "tpls", "presets", "timers"].forEach(k => { if (!Array.isArray(S[k])) S[k] = []; });
+    ["lessons", "steps", "notes", "phraseEdits", "docWork", "docSeq", "hintOff", "hintSeen"].forEach(k => { if (!S[k] || typeof S[k] !== "object" || Array.isArray(S[k])) S[k] = {}; });
     S.docs = S.docs.filter(x => x && typeof x.id === "string" && typeof x.type === "string" && x.d && typeof x.d === "object").slice(0, 150);
     Object.keys(S.docWork).forEach(k => { const w = S.docWork[k]; if (!w || typeof w !== "object" || !w.d || typeof w.d !== "object") delete S.docWork[k]; });
     Object.keys(S.docSeq).forEach(k => { if (!(S.docSeq[k] >= 0)) S.docSeq[k] = 0; });
@@ -1936,6 +2171,7 @@ function normalizeState(p) {
     /* --- v3 --- */
     S.hintOff = Object.keys(S.hintOff).reduce((o, k) => { if (S.hintOff[k] === true) o[k] = true; return o; }, {});
     S.searchHist = S.searchHist.filter(q => isStr(q) && q.trim()).map(q => q.slice(0, 80)).slice(0, 12);
+    S.askHist = S.askHist.filter(q => isStr(q) && q.trim()).map(q => q.slice(0, 200)).slice(0, 10);
     S.routes = S.routes.filter(r => r && isStr(r.r) && r.r.length < 200 && isNum(r.t)).slice(0, 24);
     S.quick = Array.isArray(S.quick) ? S.quick.filter(isStr).slice(0, 12) : null;
     S.notifs = S.notifs.filter(n => n && isStr(n.id) && isStr(n.t) && isNum(n.ts)).map(n => ({ id: n.id, ts: n.ts, k: ["info", "ok", "warn", "alarm"].indexOf(n.k) >= 0 ? n.k : "info", t: n.t.slice(0, 120), x: isStr(n.x) ? n.x.slice(0, 300) : "", r: isStr(n.r) ? n.r : "", read: !!n.read, key: isStr(n.key) ? n.key.slice(0, 80) : undefined })).slice(0, 60);
@@ -1962,6 +2198,7 @@ function normalizeState(p) {
     S.lastUpdCheck = isNum(S.lastUpdCheck) ? S.lastUpdCheck : 0;
     S.seenVer = isStr(S.seenVer) ? S.seenVer.slice(0, 30) : "";
     S.set.ovHideAfterCopy = S.set.ovHideAfterCopy !== false;
+    S.set.lowfx = S.set.lowfx === true;
     S.lastBackup = isNum(S.lastBackup) ? S.lastBackup : 0;
     S.since = isNum(S.since) && S.since > 0 ? S.since : Date.now();
   }
@@ -3046,7 +3283,7 @@ const SCENARIOS = [
     summary: "Что известно о правилах Air Drop для Кутузовского — и чего в открытых источниках нет.",
     steps: [
       ["law", "В видимой части темы Кутузовского одно правило: **любые IC-союзы запрещены** — Demorgan 90–120 минут / выговор лидеру ([[base:2.1]])."],
-      ["warn", "График, зоны, допуск и роль Армии в теме форума инструменту не открылись (спойлеры/картинки). Значения в разделе «База» — настраиваемые; **не выдумывайте правила**, спросите куратора или прочитайте тему на форуме."],
+      ["warn", "График, зоны, допуск и роль Армии в программу не перенесены — они в теме форума (под спойлерами и на картинках). Значения в разделе «База» — настраиваемые; **не выдумывайте правила**, спросите куратора или прочитайте тему на форуме."],
       ["law", "Общие правила действуют всегда: видеофиксация ([[rules:7.4]]), фракционный транспорт ([[rules:7.3]]), запрет союзов именно на Air Drop (на Форте — один IC-союз у криминала, [[pf:4.1]]; при военном положении криминал объединяться может, [[pvp:3.1]])."],
       ["tip", "В сборке игры от 06.11.2026 упоминался «логотип на воздушном грузе» — это игровой объект Air Drop; обновления меняют механику, проверяйте раздел «История изменений» на вики."]
     ],
@@ -4081,7 +4318,11 @@ const LUCIDE = {
   "zap": '<path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/>',
   "zoom-in": '<circle cx="11" cy="11" r="8"/> <line x1="21" x2="16.65" y1="21" y2="16.65"/> <line x1="11" x2="11" y1="8" y2="14"/> <line x1="8" x2="14" y1="11" y2="11"/>',
   "zoom-out": '<circle cx="11" cy="11" r="8"/> <line x1="21" x2="16.65" y1="21" y2="16.65"/> <line x1="8" x2="14" y1="11" y2="11"/>',
-  "logo": '<path d="M12 2.5 4.5 5.5v6c0 4.7 3.2 8.4 7.5 10 4.3-1.6 7.5-5.3 7.5-10v-6z"/><path d="M12 7v9.5M9 11h6"/>'
+  "logo": '<path d="M12 2.5 4.5 5.5v6c0 4.7 3.2 8.4 7.5 10 4.3-1.6 7.5-5.3 7.5-10v-6z"/><path d="M12 7v9.5M9 11h6"/>',
+  "mic": '<path d="M12 19v3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><rect x="9" y="2" width="6" height="13" rx="3"/>',
+  "mic-off": '<path d="M12 19v3"/><path d="M15 9.34V5a3 3 0 0 0-5.68-1.33"/><path d="M16.95 16.95A7 7 0 0 1 5 12v-2"/><path d="M18.89 13.23A7 7 0 0 0 19 12v-2"/><path d="m2 2 20 20"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12"/>',
+  "disc": '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="2"/>',
+  "square-stop": '<rect x="6" y="6" width="12" height="12" rx="2"/>'
 };
 const ICON_ALIAS = {"home": "house", "shield": "shield-check", "doc": "file-text", "cap": "graduation-cap", "sliders": "sliders-horizontal", "chat": "message-square-text", "calc": "calculator", "window": "picture-in-picture-2", "book": "book-open", "alert": "triangle-alert", "print": "printer", "trash": "trash-2", "pen": "pen-line", "arrow": "arrow-right", "back": "arrow-left", "chev": "chevron-down", "chevr": "chevron-right", "rcw": "rotate-cw", "rccw": "rotate-ccw", "dice": "dices", "id": "id-card", "clip": "clipboard-list", "bolt": "zap", "bulb": "lightbulb", "flask": "flask-conical", "door": "door-open", "building": "building-2", "coin": "coins", "gear": "settings", "sparkle": "sparkles", "dashboard": "layout-dashboard", "filter": "list-filter", "checklist": "clipboard-check", "todo": "list-todo", "backup": "database-backup", "restore": "archive-restore", "help": "circle-help", "template": "layout-template", "ok": "circle-check", "warn": "circle-alert", "err": "circle-x", "mobile": "smartphone", "edit": "square-pen", "undo": "undo-2", "redo": "redo-2", "scroll": "scroll-text", "notebook": "notebook-pen", "share": "share-2", "external": "external-link", "alarm": "alarm-clock", "more": "ellipsis", "more-v": "ellipsis-vertical", "chev-up": "chevron-up", "chev-left": "chevron-left", "chev-ud": "chevrons-up-down", "arrow-ur": "arrow-up-right", "enter": "corner-down-left", "unlock": "lock-open", "settings2": "settings-2", "wand": "wand-sparkles", "grid": "layout-grid", "quote": "text-quote", "pointer": "mouse-pointer-2", "refresh": "refresh-cw", "theme-auto": "sun-moon", "columns": "columns-2", "rows": "rows-2", "square-check": "square-check-big", "text-input": "text-cursor-input", "maximize": "maximize-2", "minimize": "minimize-2", "bolt2": "bolt", "hourglass2": "hourglass", "scan": "scan-line", "arrow-ud": "arrow-up-down", "move-v": "move-vertical", "page-break": "separator-horizontal", "layout-panel": "layout-panel-left", "mouse": "mouse-pointer-click", "pie": "chart-pie", "bar-chart": "chart-no-axes-column", "stamp2": "stamp", "grip-v": "grip-vertical", "sidebar": "panel-left-open", "sidebar-close": "panel-left-close", "expand": "chevrons-up-down", "indent": "list-indent-increase", "scale-icon": "scale", "graduation": "graduation-cap"};
 
@@ -4857,22 +5098,32 @@ const APPS = [];
 let APPSEQ = 0;
 const VARS = {};          // значения полей {…}, введённые вручную (общие для окон)
 
-const NAV = [
+/* 4.1: меню собирается из общего списка и группы разделов пакета фракции (PACK.navExtra: у ФСБ — «Справочник», у Армии — «Часть»),
+   чтобы собственные разделы модуля были видны в меню, а не только через поиск и плитки */
+const NAV_BASE = [
   { s: "Помощник" },
   { r: "home", ic: "home", t: "Главная", d: "Ваша рабочая панель", g: "H" },
   { r: "scn", ic: "compass", t: "Ситуации", d: "Что делать — по шагам", g: "S" },
   { r: "rules", ic: "flag", t: "Как не вылететь", d: "За что наказывают", g: "R" },
   { r: "laws", ic: "scale", t: "Законы", d: "Статьи, правила, устав", g: "L" },
+  { r: "ask", ic: "sparkle", t: "Спросить", d: "Вопрос словами — ответ из законов и ситуаций со ссылками", g: "Q" },
+  { s: "@pack" },
   { s: "Работа" },
-  { r: "tools", ic: "toolbox", t: "Инструменты", bt: "Инструм.", d: "Таймеры, фразы, рапорты", g: "T" },
+  { r: "tools", ic: "toolbox", t: "Инструменты", bt: "Инструм.", d: "Таймеры, фразы, рапорты", g: "T" },   /* в нижнем меню телефона полное слово не помещается; диктору — полное (aria-label) */
   { r: "blanks", ic: "doc", t: "Бланки", d: "Документы со штампами", g: "B" },
   { s: "Развитие" },
   { r: "learn", ic: "cap", t: "Учёба", d: "Уроки, тесты, словарь", g: "U" },
   { r: "favs", ic: "star", t: "Избранное", d: "Всё, что вы отметили", g: "F" },
   { s: "Система" },
-  { r: "history", ic: "history", t: "История", d: "Журнал действий", g: "I" },
   { r: "settings", ic: "sliders", t: "Настройки", d: "Вид, подсказки, данные", g: "O" }
 ];
+const NAV = (() => {
+  const x = (typeof PACK !== "undefined" && PACK.navExtra && Array.isArray(PACK.navExtra.items) && PACK.navExtra.items.length) ? PACK.navExtra : null;
+  const out = [];
+  NAV_BASE.forEach(n => { if (n.s === "@pack") { if (x) { out.push({ s: x.s || "Разделы" }); x.items.forEach(i => out.push(Object.assign({}, i))); } } else out.push(n); });
+  return out;
+})();
+const NAV_ROUTES = new Set(NAV.filter(n => n.r).map(n => n.r));
 const BOTTOM_NAV = ["home", "scn", "learn", "tools", "blanks"];
 const MININAV = [
   { r: "scn", ic: "compass", t: "Ситуации" },
@@ -4883,21 +5134,20 @@ const MININAV = [
   { r: "laws", ic: "scale", t: "Законы" },
   { r: "favs", ic: "star", t: "Избранное" }
 ];
+/* 4.1: в оверлее шесть вкладок вместо девяти — подписи помещаются целиком; остальные разделы — плитками на главной оверлея */
 const MININAV_OV = [
-  { r: "home", ic: "zap", t: "Слоты" },
+  { r: "home", ic: "home", t: "Главная" },
   { r: "scn", ic: "compass", t: "Ситуации" },
   { r: "tools/det", ic: "timer", t: "Задержание", bt: "Задерж." },
-  { r: "tools/binder", ic: "layers", t: "Отыгровки", bt: "Отыгр." },
   { r: "tools/phrases", ic: "chat", t: "Фразы" },
-  { r: "tools/duty", ic: "clock", t: "Пост" },
-  { r: "rules", ic: "flag", t: "Правила" },
   { r: "laws", ic: "scale", t: "Законы" },
   { r: "favs", ic: "star", t: "Избранное", bt: "Избр." }
 ];
-const navItemHTML = n => `<a data-go="${n.r}" data-nav="${n.r}" ${n.d ? `data-tip="${esc(n.t + " — " + n.d)}"` : ""}><span class="ic">${ico(n.ic)}</span><span class="nt"><b>${n.t}</b>${n.d ? `<small class="nd">${n.d}</small>` : ""}</span>${n.r === "tools" ? '<i class="nb">идёт</i>' : ""}${n.g ? `<kbd class="gk">G ${n.g}</kbd>` : ""}</a>`;
+const navItemHTML = n => `<a data-go="${n.r}" data-nav="${n.r}" ${n.d ? `data-tip="${esc(n.d)}"` : ""}><span class="ic">${ico(n.ic)}</span><span class="nt"><b>${n.t}</b></span>${n.r === "tools" ? '<i class="nb">идёт</i>' : ""}${n.g ? `<kbd class="gk">G ${n.g}</kbd>` : ""}</a>`;
 const bottomItemHTML = n => `<a data-go="${n.r}" data-nav="${n.r}"${n.bt ? ` aria-label="${esc(n.t)}"` : ""}><span class="ic">${ico(n.ic)}</span><span class="nt">${n.bt || n.t}</span>${n.r === "tools" ? '<i class="nb">идёт</i>' : ""}</a>`;
 const navKey = route => {
   const h = route.split("/")[0];
+  if (NAV_ROUTES.has(h)) return h;
   if (h === "s") return "scn";
   if (h === "a" || h === "d" || h === "uk" || h === "who") return "laws";
   if (h === "search") return "home";
@@ -4940,9 +5190,9 @@ function buildShell(app) {
   const themeBtn = `<button class="iconbtn sq" data-act="theme-toggle" data-tip="Светлая / тёмная тема" aria-label="Сменить тему"><span class="th-ic-dark">${ico("sun")}</span><span class="th-ic-light">${ico("moon")}</span><span class="nvl">Тема</span></button>`;
   const topBtns = mini
     ? `<button class="iconbtn sq" data-act="back" title="Назад">${ico("back")}</button><button class="iconbtn sq" data-go="home" title="Главная">${ico("home")}</button>`
-    : `<button class="iconbtn pal-btn" data-act="palette" data-tip="Быстрый переход: разделы, бланки, статьи, действия" data-keys="Ctrl K">${ico("command")}<span class="nvl">Команды</span><kbd class="kh2">Ctrl K</kbd></button>
+    : `<button class="iconbtn pal-btn" data-act="palette" data-tip="Быстрый переход: разделы, бланки, статьи, действия" data-keys="Ctrl K" aria-label="Быстрый переход (Ctrl K)">${ico("zap")}<span class="nvl">Команды</span><kbd class="kh2">Ctrl K</kbd></button>
        <button class="iconbtn bellb" data-act="notif-toggle" data-tip="Уведомления" aria-label="Уведомления">${ico("bell")}<span class="nvl">Уведомления</span><i class="bdg hidden" data-bell></i></button>
-       <button class="iconbtn hide-m" data-act="open-overlay" data-tip="Мини-окно поверх игры">${ico("window")}<span class="nvl">Мини-окно</span></button>${themeBtn}<button class="iconbtn restore-left" data-act="menu-left" data-tip="Вернуть меню в левый столбик">${ico("menu")} Меню слева</button>`;
+       <button class="iconbtn hide-m" data-act="open-overlay" data-tip="Мини-окно поверх игры" aria-label="Открыть мини-окно поверх игры">${ico("window")}<span class="nvl">Мини-окно</span></button>${themeBtn}<button class="iconbtn restore-left" data-act="menu-left" data-tip="Вернуть меню в левый столбик" aria-label="Вернуть меню слева">${ico("menu")} Меню</button>`;
   const ovMode = mini && typeof IS_OVERLAY !== "undefined" && IS_OVERLAY && app.win === window;
   const bottom = mini ? (ovMode ? MININAV_OV : MININAV).map(n => bottomItemHTML(n)).join("")
     : BOTTOM_NAV.map(r => bottomItemHTML(NAV.find(n => n.r === r))).join("") + `<a data-act="more-menu" data-nav="more"><span class="ic">${ico("more")}</span><span class="nt">Ещё</span></a>`;
@@ -4955,8 +5205,10 @@ function buildShell(app) {
     <nav class="bottomnav" aria-label="Нижнее меню">${bottom}</nav>
     <div class="modal"><div class="box" role="dialog" aria-modal="true"></div></div>
     ${mini ? "" : `<div class="pal"><div class="pbox" role="dialog" aria-modal="true" aria-label="Быстрый переход"><div class="pin">${ico("command")}<input type="text" placeholder="Что открыть или сделать? Раздел, бланк, статья, действие…" autocomplete="off" spellcheck="false" aria-label="Быстрый переход"><kbd>Esc</kbd></div><div class="plist" role="listbox"></div><div class="pfoot"><span><kbd>↑</kbd><kbd>↓</kbd> выбрать</span><span><kbd>Enter</kbd> открыть</span><span><kbd>Esc</kbd> закрыть</span></div></div></div><div class="np pop" role="dialog" aria-label="Уведомления"></div><div class="tip" role="tooltip"></div>`}
-    <div class="toast" role="status" aria-live="polite"></div><div class="savefail" hidden role="alert"></div>`;
+    <div class="toast" role="status" aria-live="polite"></div><div class="savefail" hidden role="alert"></div>${mini ? "" : `<button class="totop" data-act="to-top" aria-label="Наверх" data-tip="Наверх">${ico("arrow-up")}</button>`}`;
   app.page = app.root.querySelector(".page");
+  /* 4.1: кнопка «наверх» на длинных страницах */
+  if (!mini) { const tt = app.root.querySelector(".totop"); let raf = 0; app.win.addEventListener("scroll", () => { if (raf) return; raf = app.win.requestAnimationFrame(() => { raf = 0; tt.classList.toggle("on", app.win.scrollY > 900); }); }, { passive: true }); }
   app.input = app.root.querySelector("[data-search]");
   bindTips(app); bindPalette(app);
   saveFailShow();
@@ -4964,7 +5216,7 @@ function buildShell(app) {
 /* сбой сохранения: полоса остаётся, пока запись не удастся; кнопка «Скачать копию» работает и без хранилища */
 function saveFailHTML() {
   const f = saveFail; if (!f) return "";
-  return `<div class="t">${ico("alert")} <b>Данные не сохраняются.</b> ${f.quota ? "Память браузера для этой страницы заполнена (часто из-за фото в бланках)." : "Браузер не разрешает сохранять данные (например, приватное окно или запрет в настройках)."} Всё, что вы делаете сейчас, пропадёт при закрытии вкладки. Скачайте копию — её можно загрузить обратно.</div><div class="row"><button class="btn gold sm" data-act="export">${ico("download")}Скачать копию</button>${f.quota ? `<button class="btn sm" data-go="settings/data">${ico("sliders")}Что занимает место</button>` : ""}</div>`;
+  return `<div class="t">${ico("alert")} <b>Данные не сохраняются.</b> ${f.quota ? "Память браузера для этой страницы заполнена (часто из-за фото в бланках)." : "Браузер не разрешает сохранять данные (например, приватное окно или запрет в настройках)."} Всё, что вы делаете сейчас, пропадёт при закрытии вкладки. Скачайте копию — её можно загрузить обратно.</div><div class="row"><button class="btn gold sm" data-act="export">${ico("download")}Сохранить копию в файл</button>${f.quota ? `<button class="btn sm" data-go="settings/data">${ico("sliders")}Что занимает место</button>` : ""}</div>`;
 }
 function saveFailShow() {
   APPS.forEach(a => {
@@ -4989,12 +5241,15 @@ function updateSide(app) {
 }
 
 /* ---------- отрисовка страницы ---------- */
+let PAINT_SEQ = 0, PAINT_NAV = true;   /* номер отрисовки и признак «это переход, а не перерисовка того же экрана» — для счётчика показов подсказок (ux.js hintSeen) */
 function paint(app, keepScroll) {
   const route = app.route || "home";
+  PAINT_SEQ++; PAINT_NAV = !keepScroll;
   let html = "";
   try { html = app.q.trim() ? V.search(app) : renderRoute(app, route); }
   catch (e) { console.error(e); html = `<div class="card bad"><h3>Ошибка отображения</h3><p class="small">${esc(e.message)}</p><button class="btn" data-go="home">На главную</button></div>`; }
   if (!app.mini && !app.q.trim()) { try { html = purposeInject(route, html); } catch (e) { console.error(e); } }
+  const t0 = performance.now();
   app.page.innerHTML = html;
   iconize(app.page, app.doc); iconizeText(app.page, app.doc);
   if (!app.mini) tipify(app.page);
@@ -5008,6 +5263,7 @@ function paint(app, keepScroll) {
   const on = app.root.querySelector(".bottomnav a.on"); if (on && on.scrollIntoView) { try { on.scrollIntoView({ inline: "center", block: "nearest" }); } catch (e) { } }
   if (!app.mini && !app.q.trim() && !keepScroll) trackRoute(route);
   afterPaint(app);
+  if (!keepScroll) watchPaintSpeed(app, t0);
   if (app.mini) { try { app.doc.title = PACK.name; } catch (e) { } } else updateBell(app);
 }
 /* доступность: кликабельные блоки получают фокус и роль кнопки */
@@ -5016,7 +5272,12 @@ function a11y(scope) {
     const tg = el.tagName; if (tg === "BUTTON" || tg === "INPUT" || tg === "LABEL" || tg === "SELECT" || tg === "TEXTAREA" || tg === "SUMMARY") return;
     if (el.hasAttribute("tabindex")) return;
     if (tg === "A") { if (el.getAttribute("href")) return; el.setAttribute("tabindex", "0"); el.setAttribute("role", "link"); return; }
-    el.setAttribute("tabindex", "0"); if (!el.hasAttribute("role")) el.setAttribute("role", "button");
+    el.setAttribute("tabindex", "0");
+    /* 4.1: строка-галочка (шаги ситуации, чек-лист задержания, «Первые шаги»): вся строка — флажок для экранного диктора,
+       внутренний квадратик — только картинка (без отдельной безымянной галочки) */
+    const box = el.classList.contains("chk") ? el.querySelector(':scope > input[type="checkbox"]') : null;
+    if (box) { box.setAttribute("aria-hidden", "true"); box.tabIndex = -1; if (!el.hasAttribute("role")) el.setAttribute("role", "checkbox"); el.setAttribute("aria-checked", box.checked ? "true" : "false"); return; }
+    if (!el.hasAttribute("role")) el.setAttribute("role", "button");
   });
 }
 /* «недавно использованные разделы»: запоминаем, что открывал пользователь */
@@ -5044,6 +5305,7 @@ function renderRoute(app, route) {
     case "settings": return V.settings(app, p[1]);
     case "about": return V.about(app);
     case "search": return V.home(app);
+    case "ask": return V.ask(app, p[1]);
     default:
       /* разделы пакета фракции (ФСБ: who, uk; Армия — свои). Чужой или неизвестный маршрут — честная карточка, не тихий переход */
       if (packRoute(p[0]) && typeof V[p[0]] === "function") return V[p[0]](app, p[1], p[2]);
@@ -5056,7 +5318,26 @@ function packRoute(head) {
   if ((PACK.extraRoutes || []).indexOf(head) >= 0) return true;
   return SECTIONS.some(x => x.r === head || x.r.indexOf(head + "/") === 0);
 }
+/* 4.1: длинные вводные абзацы раздела свёрнуты до двух строк (в режиме «Профи» — до одной); кнопка «ещё» раскрывает */
+function clampSubs(app) {
+  const page = app.page; if (!page || app.mini) return;
+  page.querySelectorAll(":scope > .sub, :scope > .hero-s .sub").forEach(p => {
+    if (p.dataset.clamped) return; p.dataset.clamped = "1";
+    p.classList.add("clamp");
+    if (p.scrollHeight > p.clientHeight + 2) { const b = app.doc.createElement("button"); b.className = "sub-more"; b.type = "button"; b.textContent = "ещё"; b.setAttribute("aria-expanded", "false"); b.addEventListener("click", () => { const open = p.classList.toggle("clamp"); b.textContent = open ? "ещё" : "свернуть"; b.setAttribute("aria-expanded", open ? "false" : "true"); }); p.after(b); }
+  });
+}
+/* 4.1: если отрисовка разделов стабильно медленная (слабый ПК, игра рядом) — один раз предлагаем экономный режим графики */
+let SLOW_PAINTS = 0;
+function watchPaintSpeed(app, t0) {
+  if (app.mini || S.set.lowfx || (S.hintOff && S.hintOff.lowfx)) return;
+  try { app.win.requestAnimationFrame(() => app.win.requestAnimationFrame(() => {
+    const dt = performance.now() - t0; SLOW_PAINTS = dt > 180 ? SLOW_PAINTS + 1 : 0;
+    if (SLOW_PAINTS >= 4) { SLOW_PAINTS = 0; S.hintOff.lowfx = true; save(); notify("info", "Программа подтормаживает?", "Включите экономный режим графики: без размытия и анимаций рисуется быстрее.", "settings/ui"); }
+  })); } catch (e) { }
+}
 function afterPaint(app) {
+  try { clampSubs(app); } catch (e) { console.error(e); }
   try { learnAfterPaint(app); } catch (e) { console.error(e); }
   tickApp(app);
   const f = app.afterOnce; app.afterOnce = null;
@@ -5189,7 +5470,7 @@ function bindEvents(app) {
     if (!el || !root.contains(el)) return;
     if (el.tagName === "A") e.preventDefault();
     const act = el.getAttribute("data-act");
-    if (act) { const fn = ACT[act]; if (fn) { fn(app, el, e); } return; }
+    if (act) { const fn = ACT[act]; if (fn) { fn(app, el, e); if (el.getAttribute("role") === "checkbox" && el.isConnected) { const cb = el.querySelector(":scope > input"); el.setAttribute("aria-checked", (cb ? cb.checked : el.classList.contains("done")) ? "true" : "false"); } } return; }
     const g = el.getAttribute("data-go");
     if (g) go(app, g);
   });
@@ -5217,7 +5498,7 @@ function bindEvents(app) {
   root.addEventListener("focusin", e => { if (e.target.hasAttribute && e.target.hasAttribute("data-search") && !app.mini) { renderSearchDrop(app); const sb = e.target.closest(".searchbox"); if (sb) sb.classList.toggle("has", !!e.target.value); } });
   root.addEventListener("keydown", e => {
     const t = e.target;
-    if ((e.key === "Enter" || e.key === " ") && t.getAttribute && t.getAttribute("role") === "button" && (t.hasAttribute("data-act") || t.hasAttribute("data-go"))) { if (e.key === " " && t.tagName === "INPUT") return; e.preventDefault(); t.click(); return; }
+    if ((e.key === "Enter" || e.key === " ") && t.getAttribute && (t.getAttribute("role") === "button" || t.getAttribute("role") === "checkbox") && (t.hasAttribute("data-act") || t.hasAttribute("data-go"))) { if (e.key === " " && t.tagName === "INPUT") return; e.preventDefault(); t.click(); return; }
     if ((e.key === "Enter") && t.getAttribute && t.getAttribute("role") === "link") { e.preventDefault(); t.click(); return; }
     if (e.key === "Escape") { if (root.querySelector(".modal.on")) { closeModal(app); return; } if (app.notifOpen) { ACT["notif-close"](app); return; } if (app.q) { ACT["clear-search"](app); } else if (t.hasAttribute && t.hasAttribute("data-search")) t.blur(); }
     if (e.key === "Enter" && t.hasAttribute("data-search")) {
@@ -5227,6 +5508,7 @@ function bindEvents(app) {
       if (r.num && r.arts.length === 1) go(app, "a/" + enc(r.arts[0].item.id));
     }
     if (e.key === "Enter" && t.hasAttribute("data-fill")) { e.preventDefault(); ACT["fill-copy"](app); }
+    if (e.key === "Enter" && t.getAttribute && t.getAttribute("data-bind") === "ask-q") { e.preventDefault(); ACT["ask-go"](app); }
   });
 }
 /* фильтр списков на странице (без перерисовки) */
@@ -5280,6 +5562,7 @@ function applyLook() {
       d.body.classList.toggle("menu-left", !isMini && S.set.menu === "left");
       d.body.classList.toggle("pip", isMini);
       const de = d.documentElement; de.setAttribute("data-mode", S.set.mode);
+      de.setAttribute("data-pack", PACK.id); de.setAttribute("data-lowfx", S.set.lowfx ? "1" : "0");   /* 4.1: фон по пакету и экономный режим графики */
       de.setAttribute("data-density", S.set.density === "auto" ? (S.set.mode === "pro" ? "compact" : "cozy") : S.set.density);
       d.body.classList.toggle("side-min", !isMini && !!S.set.sideCollapsed);
       HINT_GROUPS.forEach(g => de.toggleAttribute("data-no-" + g, S.set.hints[g] === false));
@@ -5293,7 +5576,8 @@ function syncOthers(except) { APPS.forEach(a => { if (a !== except && !a.q) { tr
 function repaintAll() { APPS.forEach(a => { try { paint(a, true); } catch (e) { } }); }
 
 /* ---------- ежесекундные таймеры (меняют только текст, не кнопки) ---------- */
-function tickApp(app) { readTick(app); tickDet(app); tickDuty(app); tickTimers(app); tickClock(app); tickBadges(app); updateSide(app); if (typeof ovChips === "function" && app.mini && IS_OVERLAY) ovChips(app); }
+function tickApp(app) { readTick(app); tickDet(app); tickDuty(app); tickTimers(app); tickClock(app); tickBadges(app); updateSide(app); if (typeof tickRec === "function") { try { tickRec(app); } catch (e) { } } if (typeof ovChips === "function" && app.mini && IS_OVERLAY) ovChips(app); }
+ACT["to-top"] = app => { try { app.win.scrollTo({ top: 0, behavior: "smooth" }); } catch (e) { app.win.scrollTo(0, 0); } };
 
 /* ================================================================
    ОБЩИЙ ОПЫТ: карта разделов, режимы «Новичок / Профи», подсказки,
@@ -5301,7 +5585,7 @@ function tickApp(app) { readTick(app); tickDet(app); tickDuty(app); tickTimers(a
    история поиска, горячие клавиши.
    ================================================================ */
 
-const APP_VERSION = "4.0.0";
+const APP_VERSION = "4.1.0";
 
 /* ---------- инструменты и разделы: списки задаёт пакет фракции (src/pack_fsb.js или packs/army/pack.js) ----------
    TOOLS — единый список для меню, главной и палитры; SECTIONS — все разделы для палитры, «недавнего» и избранного */
@@ -5335,6 +5619,7 @@ const HINTS = {
   "phrases.how": { g: "guide", t: "Фразы: как копировать" },
   "binder.how": { g: "guide", t: "Отыгровки: как это работает" },
   "overlay.how": { g: "guide", t: "Оверлей: как пользоваться" },
+  "rec.how": { g: "guide", t: "Запись экрана: как это работает" },
   "blanks.hub": { g: "guide", t: "Бланки: пошаговая схема" },
   "blanks.editor": { g: "guide", t: "Редактор бланка: 4 шага" },
   "blanks.custom": { g: "guide", t: "Свои шаблоны: как составить" },
@@ -5344,17 +5629,28 @@ const HINTS = {
   "data.how": { g: "guide", t: "Данные: как делать копию" }
 };
 const hintOn = id => S.set.mode === "novice" && S.set.hints[(HINTS[id] || {}).g || "tips"] !== false && !S.hintOff[id];
+/* 4.1: подсказка — сворачиваемый блок. Первые два показа раскрыт, дальше свёрнут в одну строку (содержимое — по нажатию);
+   крестик по-прежнему прячет подсказку насовсем. Счётчик показов — S.hintSeen (не растёт при перерисовке того же экрана). */
+const HINT_OPEN_TIMES = 2;
+function hintSeen(id) {
+  const k = String(id); S.hintSeen = S.hintSeen || {};
+  if (!hintSeen._paint || hintSeen._paint !== PAINT_SEQ) { hintSeen._paint = PAINT_SEQ; hintSeen._ids = {}; }
+  if (!hintSeen._ids[k]) { hintSeen._ids[k] = 1; if (PAINT_NAV && (S.hintSeen[k] || 0) < 99) { S.hintSeen[k] = (S.hintSeen[k] || 0) + 1; saveLater(); } }
+  return S.hintSeen[k] || 1;
+}
 function hintBox(id, html, opts) {
   if (!hintOn(id)) return "";
   opts = opts || {};
-  return `<div class="hintbox ${opts.cls || ""}" data-hint="${id}"><span class="hi">${ico(opts.ic || "bulb")}</span><div class="hb">${opts.title ? `<b>${esc(opts.title)}</b>` : ""}${html}</div><button class="hx" data-act="hint-off" data-id="${id}" data-tip="Скрыть эту подсказку" aria-label="Скрыть подсказку">${ico("x")}</button></div>`;
+  const open = hintSeen(id) <= HINT_OPEN_TIMES || opts.open;
+  const title = opts.title || (HINTS[id] && HINTS[id].t ? HINTS[id].t.replace(/^[^:]+:\s*/, "") : "Подсказка");
+  return `<details class="hintbox ${opts.cls || ""}" data-hint="${id}"${open ? " open" : ""}><summary><span class="hi">${ico(opts.ic || "bulb")}</span><b>${esc(title)}</b><span class="hs-more">${ico("chev")}</span><button class="hx" data-act="hint-off" data-id="${id}" data-tip="Скрыть эту подсказку насовсем" aria-label="Скрыть подсказку">${ico("x")}</button></summary><div class="hb">${html}</div></details>`;
 }
 /* текст только для новичков / только для профи */
 const nv = html => (S.set.mode === "novice" ? html : "");
 const pv = html => (S.set.mode === "pro" ? html : "");
 ACT["hint-off"] = (app, el) => {
   const id = el.getAttribute("data-id"); S.hintOff[id] = true; save();
-  const box = el.closest(".hintbox"); if (box) box.remove();
+  const box = el.closest(".hintbox,.purpose"); if (box) box.remove();
   toast(app, "Подсказка скрыта. Вернуть: Настройки → Подсказки");
 };
 ACT["hints-reset"] = app => { S.hintOff = {}; save(); logAct("set", "Скрытые подсказки возвращены", "settings/hints"); repaintAll(); toast(app, "Подсказки возвращены", "ok"); };
@@ -5569,10 +5865,10 @@ function bindPalette(app) {
 }
 
 /* ================= ГОРЯЧИЕ КЛАВИШИ ================= */
-const GO_KEYS = PACK.goKeys || { KeyH: "home", KeyS: "scn", KeyR: "rules", KeyL: "laws", KeyT: "tools", KeyB: "blanks", KeyU: "learn", KeyF: "favs", KeyI: "history", KeyO: "settings" };
+const GO_KEYS = Object.assign({ KeyQ: "ask" }, PACK.goKeys || { KeyH: "home", KeyS: "scn", KeyR: "rules", KeyL: "laws", KeyT: "tools", KeyB: "blanks", KeyU: "learn", KeyF: "favs", KeyI: "history", KeyO: "settings" });
 const KEYS_HELP = [
   ["Везде", [["Ctrl K", "Быстрый переход: разделы, бланки, статьи, действия"], ["/", "Поиск по приложению"], ["?", "Эта шпаргалка"], ["Esc", "Закрыть окно, палитру или поиск"]]],
-  ["Переходы · нажмите G, затем букву", PACK.goHelp || [["G H", "Главная"], ["G S", "Ситуации"], ["G R", "Как не вылететь"], ["G L", "Законы"], ["G T", "Инструменты"], ["G B", "Бланки"], ["G U", "Учёба"], ["G F", "Избранное"], ["G I", "История"], ["G O", "Настройки"]]],
+  ["Переходы · нажмите G, затем букву", PACK.goHelp || [["G H", "Главная"], ["G S", "Ситуации"], ["G R", "Как не вылететь"], ["G L", "Законы"], ["G Q", "Спросить"], ["G T", "Инструменты"], ["G B", "Бланки"], ["G U", "Учёба"], ["G F", "Избранное"], ["G I", "История"], ["G O", "Настройки"]]],
   ["Бланки", [["Ctrl S", "Сохранить документ"], ["Del", "Удалить выбранный штамп"], ["← ↑ → ↓", "Сдвинуть выбранный штамп (Shift — крупнее)"]]]
 ];
 function openKeysSheet(app) {
@@ -5834,6 +6130,7 @@ V.tool = function (app, name) {
     case "timers": return V.timers(app);
     case "cases": return V.cases(app);
     case "counters": return V.counters(app);
+    case "rec": return V.rec(app);
     default: return V.tools(app);
   }
 };
@@ -5860,7 +6157,7 @@ V.detIdle = function (app) {
   <p class="sub">Считает <b>процессуальный час</b> (${rich("[[pk:II-7]]")}), учитывает паузы по правилам (${rich("[[pk:II-7.1]]")}), ведёт 5 и 15 минут для прокурора и СК (${rich("[[pk:II-4.2]]")}) и держит перед глазами чек-лист.</p>
   <div class="card hl">
     <div class="field-row"><div><label>Кого задержали (имя или ID, необязательно)</label><input type="text" data-bind="det-draft" data-k="name" value="${esc(dr.name)}" placeholder="Например: Ivan Petrov #1234"></div>
-    <div><label>Статья / основание (необязательно)</label><input type="text" data-bind="det-draft" data-k="art" value="${esc(dr.art)}" placeholder="Например: УК 17.13"></div></div>
+    <div><label for="f-det-draft-art">Статья / основание (необязательно)</label><input id="f-det-draft-art" type="text" data-bind="det-draft" data-k="art" value="${esc(dr.art)}" placeholder="Например: УК 17.13"></div></div>
     <label class="chk" style="margin-top:8px"><input type="checkbox" data-chg="det-gov" ${dr.gov ? "checked" : ""}><div class="ct"><b>Задержанный — государственный служащий</b><small>Включится блок «прокурор и СК» с таймерами 5 и 15 минут</small></div></label>
     <div class="gap2"><button class="btn gold big" data-act="det-start">▶ Начать — человека только что задержали</button></div>
     <p class="small muted gap">Нажимайте в момент, когда реально ограничили свободу: час считается с этого времени (${rich("[[pk:II-7]]")} п. г).</p>
@@ -6066,7 +6363,7 @@ V.duty = function (app) {
     const dr = app.ui.dutyDraft = app.ui.dutyDraft || { post: S.profile.post || "", start: "" };
     return `${crumbs(app, [{ t: "Инструменты", go: "tools" }, { t: "Дежурство" }])}
     <h1>🕒 Дежурство</h1><p class="sub">Заступили на пост — нажмите «Заступить». Программа напомнит о докладе и подготовит текст.</p>
-    <div class="card hl"><div class="field-row"><div><label>Пост / объект</label><input type="text" data-bind="duty-draft" data-k="post" value="${esc(dr.post)}" placeholder="${esc(PACK.postPlaceholder || "Например: Здание ФСБ")}"></div>
+    <div class="card hl"><div class="field-row"><div><label for="f-duty-draft-post">Пост / объект</label><input id="f-duty-draft-post" type="text" data-bind="duty-draft" data-k="post" value="${esc(dr.post)}" placeholder="${esc(PACK.postPlaceholder || "Например: Здание ФСБ")}"></div>
       <div><label for="duty-start-t">Заступил в (чч:мм) — если раньше нажатия</label><input id="duty-start-t" type="text" inputmode="numeric" maxlength="6" autocomplete="off" data-bind="duty-draft" data-chg="duty-start-t" data-blur="duty-start-t" data-k="start" value="${esc(dr.start)}" placeholder="например 21:40 или 2140" aria-describedby="duty-start-e"><div class="bk-terr" id="duty-start-e" data-duty-terr role="alert"></div></div></div>
       <p class="small muted gap">Смена: ${st.lengthMin} мин, доклад каждые ${st.intervalMin} мин. Изменить можно в <a class="ref" data-go="settings">настройках</a>. В найденных законах таких сроков нет — подставьте значения из вашего устава.</p>
       <button class="btn gold big gap" data-act="duty-start">▶ Заступить на пост</button></div>
@@ -6128,7 +6425,7 @@ ACT["duty-edit"] = app => {
   const dt = S.duty; if (!dt) return; app.ui.dutyEdit = { post: dt.post || "", interval: String(dt.intervalMin), length: String(dt.lengthMin) };
   openModal(app, `<h3>${ico("settings2")}Параметры смены</h3>
     <label>Пост / объект</label><input type="text" data-bind="duty-edit" data-k="post" value="${esc(dt.post || "")}" autocomplete="off">
-    <div class="field-row"><div><label>Доклад каждые, минут</label><input type="number" min="1" max="120" inputmode="numeric" data-bind="duty-edit" data-k="interval" value="${dt.intervalMin}"></div><div><label>Длина смены, минут</label><input type="number" min="5" max="600" inputmode="numeric" data-bind="duty-edit" data-k="length" value="${dt.lengthMin}"></div></div>
+    <div class="field-row"><div><label for="f-duty-edit-interval">Доклад каждые, минут</label><input id="f-duty-edit-interval" type="number" min="1" max="120" inputmode="numeric" data-bind="duty-edit" data-k="interval" value="${dt.intervalMin}"></div><div><label for="f-duty-edit-length">Длина смены, минут</label><input id="f-duty-edit-length" type="number" min="5" max="600" inputmode="numeric" data-bind="duty-edit" data-k="length" value="${dt.lengthMin}"></div></div>
     <p class="tiny dim">Слоты, время которых уже прошло, будут считаться закрытыми — вы не получите «просроченных» докладов задним числом.</p>
     <div class="row gap2" style="justify-content:flex-end"><button class="btn ghost" data-act="modal-close">Отмена</button><button class="btn gold" data-act="duty-edit-ok">Применить</button></div>`);
 };
@@ -6174,8 +6471,8 @@ V.phrases = function (app) {
   const mine = (S.userPhrases || []);
   return `${crumbs(app, [{ t: "Инструменты", go: "tools" }, { t: "Фразы" }])}
   <h1>💬 Фразы</h1><p class="sub">Нажмите на фразу — она скопируется (звание и ФИО подставятся сами). Если в ней есть поля {в скобках}, программа спросит значения.</p>
-  <div class="tabs"><button class="tab ${!g ? "on" : ""}" data-act="phg" data-v="">Все</button>${PHRASE_GROUPS.map(x => `<button class="tab ${g === x.id ? "on" : ""}" data-act="phg" data-v="${x.id}">${x.title}</button>`).join("")}<button class="tab ${g === "fav" ? "on" : ""}" data-act="phg" data-v="fav" data-tip="Только избранные фразы" aria-label="Только избранные фразы">⭐</button><button class="tab ${g === "mine" ? "on" : ""}" data-act="phg" data-v="mine">Мои</button></div>
-  <div class="searchbox"><span class="si">${ico("search")}</span><input type="search" data-filter=".phlist" placeholder="Фильтр по тексту…" autocomplete="off"></div><div class="tiny dim gap" data-fcount></div>
+  <div class="sticky-f"><div class="tabs"><button class="tab ${!g ? "on" : ""}" data-act="phg" data-v="">Все</button>${PHRASE_GROUPS.map(x => `<button class="tab ${g === x.id ? "on" : ""}" data-act="phg" data-v="${x.id}">${x.title}</button>`).join("")}<button class="tab ${g === "fav" ? "on" : ""}" data-act="phg" data-v="fav" data-tip="Только избранные фразы" aria-label="Только избранные фразы">⭐</button><button class="tab ${g === "mine" ? "on" : ""}" data-act="phg" data-v="mine">Мои</button></div>
+  <div class="searchbox"><span class="si">${ico("search")}</span><input type="search" data-filter=".phlist" placeholder="Фильтр по тексту…" autocomplete="off"></div><div class="tiny dim gap" data-fcount></div></div>
   <div class="phlist">${list.map(p => phraseRow(p)).join("") || `<div class="card">Тут пока пусто.</div>`}</div>
   <h2>➕ Добавить свою фразу</h2>
   <div class="card"><textarea data-bind="ph-new" placeholder="Например: Гражданин, пройдите в служебный автомобиль, {причина}." style="min-height:70px">${esc(app.ui.phNew || "")}</textarea>
@@ -6206,7 +6503,7 @@ V.docs = function (app) {
   ${fields.some(k => (k in auto) === false) ? "" : ""}
   <p class="tiny dim gap">Подставляются автоматически: ${Object.keys(auto).map(k => "{" + k + "}").join(" ")} (профиль — в настройках).</p>
   <h2>Предпросмотр</h2><div class="card verb" data-t="doc-prev">${esc(fillTemplate(t.text, varsNow()))}</div>
-  <div class="row"><button class="btn gold big" data-act="doc-copy">📋 Копировать</button><button class="btn ghost" data-act="doc-clear">Очистить поля</button></div>`;
+  <div class="row"><button class="btn gold big" data-act="doc-copy">📋 Скопировать</button><button class="btn ghost" data-act="doc-clear">Очистить поля</button></div>`;
 };
 ACT["doc-open"] = (app, el) => { app.ui.doc = el.getAttribute("data-id"); paint(app); };
 ACT["doc-close"] = app => { app.ui.doc = null; paint(app); };
@@ -6295,7 +6592,7 @@ V.first = function (app) {
   <h1>🚀 Первые шаги новичка</h1>
   <p class="sub">Девять небольших дел — и вы готовы к первой смене. Нажмите на строку, когда сделали. Кнопка справа открывает нужный раздел.</p>
   <div class="card hl"><div class="row sb"><b>Готово: ${done} из ${n}</b>${done === n ? '<span class="tag ok">Всё сделано 🎉</span>' : ""}</div><div class="bar gap"><i style="width:${Math.round(done / n * 100)}%"></i></div></div>
-  <div class="card" style="padding:6px">${FIRST_STEPS.map((f, i) => { const on = !!S.steps["first:" + f.id]; return `<div class="chk ${on ? "done" : ""}" data-act="first-toggle" data-id="${f.id}"><input type="checkbox" ${on ? "checked" : ""} tabindex="-1"><div class="ct"><b>${i + 1}. ${esc(f.t)}</b><small>${esc(f.d)}</small></div>${f.go ? `<button class="btn sm" data-go="${esc(f.go)}">Открыть →</button>` : ""}</div>`; }).join("")}</div>`;
+  <div class="card" style="padding:6px">${FIRST_STEPS.map((f, i) => { const on = !!S.steps["first:" + f.id]; return `<div class="chk ${on ? "done" : ""}" data-act="first-toggle" data-id="${f.id}"><input type="checkbox" ${on ? "checked" : ""} tabindex="-1"><div class="ct"><b>${i + 1}. ${esc(f.t)}</b><small>${esc(f.d)}</small></div>${f.go ? `<button class="btn sm" data-go="${esc(f.go)}">Открыть</button>` : ""}</div>`; }).join("")}</div>`;
 };
 ACT["first-toggle"] = (app, el) => {
   const k = "first:" + el.getAttribute("data-id");
@@ -6327,7 +6624,7 @@ V.settings = function (app, tab) {
   <div class="tabs2" role="tablist">${SET_TABS.filter(t => t[0] !== "acc" || accOn()).map(t => `<button role="tab" class="tab2 ${t[0] === tab ? "on" : ""}" data-go="settings/${t[0]}" aria-selected="${t[0] === tab}">${ico(t[1])}<span>${t[2]}</span></button>`).join("")}</div>
   ${body}`;
 };
-const setNum = (k, label, min, max, hint) => `<div><label>${label}</label><input type="number" inputmode="numeric" min="${min}" max="${max}" value="${S.set[k]}" data-chg="set-num" data-k="${k}" data-min="${min}" data-max="${max}"><div class="tiny dim">${hint}</div></div>`;
+const setNum = (k, label, min, max, hint) => `<div><label for="set-${k}">${label}</label><input id="set-${k}" type="number" inputmode="numeric" min="${min}" max="${max}" value="${S.set[k]}" data-chg="set-num" data-k="${k}" data-min="${min}" data-max="${max}" aria-describedby="set-${k}-h"><div class="tiny dim" id="set-${k}-h">${hint}</div></div>`;
 function setProfile(app) {
   const p = S.profile, st = S.set;
   const prof = (k, label, ph) => `<div><label>${label}</label><input type="text" data-bind="profile" data-k="${k}" value="${esc(p[k])}" placeholder="${esc(ph)}" autocomplete="off"></div>`;
@@ -6361,7 +6658,8 @@ function setUI(app) {
     <label style="margin-top:14px">Цвет акцента</label>
     <div class="swatches">${[["gold", "Золото", "#d4a948"], ["blue", "Синий", "#4a86ea"], ["green", "Зелёный", "#2fb98a"], ["red", "Красный", "#e0554b"], ["violet", "Фиолетовый", "#8d6cf0"]].map(a => `<button class="swatch ${(st.accent || "gold") === a[0] ? "on" : ""}" style="--c:${a[2]}" data-act="set-accent" data-v="${a[0]}" data-tip="${a[1]}" aria-label="${a[1]}"></button>`).join("")}</div>
     <label style="margin-top:14px">Размер текста</label>
-    <div class="chips">${fonts.map(f => `<button class="chip ${(st.fontScale || 1) === f[0] ? "on" : ""}" data-act="font" data-v="${f[0]}">${f[1]}</button>`).join("")}</div></div>
+    <div class="chips">${fonts.map(f => `<button class="chip ${(st.fontScale || 1) === f[0] ? "on" : ""}" data-act="font" data-v="${f[0]}">${f[1]}</button>`).join("")}</div>
+    <label class="chk" style="margin-top:14px"><input type="checkbox" data-chg="set-bool-look" data-k="lowfx" ${st.lowfx ? "checked" : ""}><div class="ct"><b>Экономный режим графики</b><small>Без размытия, теней, узора и анимаций. Включите, если программа подтормаживает рядом с игрой или на слабом компьютере.</small></div></label></div>
   <details class="acc" ${pro ? "open" : ""}><summary><span>${ico("settings2")}Расширенные настройки ${pro ? "" : '<span class="tag">для профи</span>'}</span></summary><div class="in">
     <label style="margin-top:0">Плотность интерфейса</label>
     <div class="chips">${dens.map(m => `<button class="chip ${(st.density || "auto") === m[0] ? "on" : ""}" data-act="set-density" data-v="${m[0]}">${m[1]}</button>`).join("")}</div>
@@ -6392,7 +6690,7 @@ function setData(app) {
   const raw = lsGet(KEY) || "", pre = lsGet(preKey()), auto = lsGet(KEY_AUTO);
   const tsOf = k => { const t = +lsGet(k + "_ts"); return t ? fmtDate(t) + " " + fmtTime(t) : "дата неизвестна"; };
   const lb = S.lastBackup ? fmtDate(S.lastBackup) + " " + fmtTime(S.lastBackup) : "ещё не делали";
-  return `${hintBox("data.how", `<p>Данные живут только в этом браузере. Нажмите «Скачать копию» — получите файл, который можно хранить в облаке или на флешке. «Загрузить копию» вернёт всё обратно. Перед любой заменой данных программа сама делает страховочную копию.</p>`, { title: "Как сделать резервную копию", ic: "database-backup" })}
+  return `${hintBox("data.how", `<p>Данные живут только в этом браузере. Нажмите «Сохранить копию в файл» — получите файл, который можно хранить в облаке или на флешке. «Открыть копию из файла» вернёт всё обратно. Перед любой заменой данных программа сама делает страховочную копию.</p>`, { title: "Как сделать резервную копию", ic: "database-backup" })}
   <h2>${ico("activity")}Состояние хранилища</h2>
   <div class="card"><div class="kv">
     <b>Сохранение</b><span>${memOnly ? '<span class="tag bad">только в памяти вкладки</span>' : '<span class="tag ok">работает</span>'}</span>
@@ -6400,12 +6698,12 @@ function setData(app) {
     <b>Версия структуры</b><span>v${S.v}</span>
     <b>Последняя копия в файл</b><span>${lb}</span></div></div>
   <h2>${ico("download")}Резервная копия</h2>
-  <div class="card"><div class="row"><button class="btn gold" data-act="export">${ico("download")}Скачать копию (всё)</button>
-    <label class="btn" style="margin:0;cursor:pointer">${ico("upload")}Загрузить копию<input type="file" accept=".json,application/json" data-chg="import" style="display:none"></label></div>
+  <div class="card"><div class="row"><button class="btn gold" data-act="export">${ico("download")}Сохранить копию в файл</button>
+    <label class="btn" style="margin:0;cursor:pointer">${ico("upload")}Открыть копию из файла<input type="file" accept=".json,application/json" data-chg="import" style="display:none"></label></div>
     <p class="tiny dim gap">В копию входят профиль, избранное, бланки и черновики, свои шаблоны, заметки, прогресс учёбы, настройки.</p></div>
   <h2>${ico("sliders")}Только настройки</h2>
   <div class="card"><p class="small muted">Вид, режим, подсказки, профиль и быстрые действия — без документов. Удобно перенести оформление на другой компьютер.</p>
-    <div class="row"><button class="btn" data-act="export-set">${ico("file-down")}Скачать настройки</button><label class="btn" style="margin:0;cursor:pointer">${ico("file-up")}Загрузить настройки<input type="file" accept=".json,application/json" data-chg="import-set" style="display:none"></label></div></div>
+    <div class="row"><button class="btn" data-act="export-set">${ico("file-down")}Сохранить настройки в файл</button><label class="btn" style="margin:0;cursor:pointer">${ico("file-up")}Открыть настройки из файла<input type="file" accept=".json,application/json" data-chg="import-set" style="display:none"></label></div></div>
   <h2>${ico("archive-restore")}Страховочные копии</h2>
   <div class="card">
     ${pre ? `<div class="row sb gap"><div><b>Состояние до обновления</b><div class="tiny muted">Данные в том виде, в каком они были до перехода на версию ${SCHEMA} · ${tsOf(preKey())} · ${fmtKB(pre.length * 2)}</div></div><div class="row"><button class="btn sm" data-act="restore-snap" data-k="pre">${ico("rotate-ccw")}Вернуть</button><button class="btn sm ghost" data-act="drop-snap" data-k="pre">${ico("trash")}Удалить</button></div></div>` : ""}
@@ -6803,8 +7101,11 @@ function learnAfterPaint(app) {
   const end = app.page.querySelector("[data-lend]");
   const markEnd = () => { const r = lpTouch(l.id); if (!r.end) { r.end = true; save(); updateLessonChecklist(app, l); const n = lessonNeed(l); if (n.ok) toast(app, "Всё прочитано — можно завершить урок ✔"); } };
   if (end && !e.end && app.win.IntersectionObserver) {
+    /* 4.1: «дочитано» — конец текста на экране ИЛИ уже выше экрана (пролистали дальше: к ссылкам или к кнопке «Завершить»,
+       в том числе одним прыжком — клавишей End или щелчком по кнопке внизу). Время чтения урока по-прежнему обязательно. */
     const io = new app.win.IntersectionObserver(es => {
-      if (es.some(x => x.isIntersecting)) { clearTimeout(app._endT); app._endT = setTimeout(markEnd, Math.max(0, need - (Date.now() - app._lessonT0))); }
+      const x = es[es.length - 1], top = x.rootBounds ? x.rootBounds.top : 0;
+      if (x.isIntersecting || x.boundingClientRect.bottom <= top) { clearTimeout(app._endT); app._endT = setTimeout(markEnd, Math.max(0, need - (Date.now() - app._lessonT0))); }
       else clearTimeout(app._endT);
     }, { threshold: 0.6 });
     io.observe(end); app._io = io;
@@ -7290,7 +7591,8 @@ function qzHub(app) {
   <h1>${ico("flask")}Тесты и практика</h1>
   <p class="sub">Проверка знаний по тем же статьям, что и в справочнике. Тест — это 10–30 вопросов с выбором ответа: после каждого вы сразу видите, верно ли, и получаете ссылку на статью. На экзамене подсказок нет — разбор в конце. Пока тест не доведён до конца, результат и ошибки не записываются.</p>
   ${qzBanner(app, true)}
-  <div class="infobox"><div><small>Лучший результат</small><b>${q.runs && q.best ? q.best + "%" : "—"}</b></div><div><small>Завершено попыток</small><b>${q.runs || 0}</b></div><div><small>Ошибок для повторения</small><b>${act.length}</b></div><div><small>Закреплено после ошибок</small><b>${fixedN}</b></div></div>
+  ${q.runs ? `<div class="infobox"><div><small>Лучший результат</small><b>${q.best ? q.best + "%" : "—"}</b></div><div><small>Завершено попыток</small><b>${q.runs}</b></div><div><small>Ошибок для повторения</small><b>${act.length}</b></div><div><small>Закреплено после ошибок</small><b>${fixedN}</b></div></div>`
+    : `<button class="card hl click qz-first" data-act="qz-start" data-mode="quick"><span class="wp-i">${ico("zap")}</span><span class="tt"><b>Ещё ни одного теста</b><small>Начните с «Быстрого старта» — ${qzMode("quick").n} вопросов, после каждого сразу видно, верно ли</small></span>${ico("arrow")}</button>`}
   ${(() => { const E = examStat(); return `<div class="card ${E.passTs ? "ok" : "hl"} small examst">${ico("shield-check")}<b>Экзамен:</b> ${E.passTs ? "сдан " + fmtDate(E.passTs) + " · лучший результат " + E.best + "%" : E.tries ? "пока не сдан · лучший результат " + E.best + "%, нужно " + EXAM_PASS + "%" + (E.annul ? " · аннулировано попыток: " + E.annul : "") : "ещё не сдавали — " + qzMode("exam").n + " вопросов за " + EXAM_MIN + " минут, без подсказок, справочник закрыт, сдан от " + EXAM_PASS + "%"}</div>`; })()}
   <h2>${ico("target")}Выберите тест</h2>
   <div class="tiles">${tile(M("quick"), "gold")}${tile(M("std"))}${tile(M("hard"))}${tile(M("final"))}${tile(M("exam"), "exam")}${tile(M("agency"))}${tile(M("practice"))}${errTile}</div>
@@ -7444,17 +7746,17 @@ V.timers = function (app) {
   <div class="chips">${TM_PRESETS.map(m => `<button class="chip" data-act="tm-quick" data-m="${m}">${ico("play")}${m} мин</button>`).join("")}</div>
   <h2>Свой таймер</h2>
   <div class="card"><div class="field-row">
-    <div><label>Название (необязательно)</label><input type="text" data-bind="tm-draft" data-k="name" value="${esc(dr.name)}" placeholder="Например: Кулдаун, Ждём группу" autocomplete="off"></div>
-    <div><label>Минуты</label><input type="number" min="0" max="5900" inputmode="numeric" data-bind="tm-draft" data-k="m" value="${esc(dr.m)}"></div>
-    <div><label>Секунды</label><input type="number" min="0" max="59" inputmode="numeric" data-bind="tm-draft" data-k="s" value="${esc(dr.s)}"></div></div>
+    <div><label for="f-tm-draft-name">Название (необязательно)</label><input id="f-tm-draft-name" type="text" data-bind="tm-draft" data-k="name" value="${esc(dr.name)}" placeholder="Например: Кулдаун, Ждём группу" autocomplete="off"></div>
+    <div><label for="f-tm-draft-m">Минуты</label><input id="f-tm-draft-m" type="number" min="0" max="5900" inputmode="numeric" data-bind="tm-draft" data-k="m" value="${esc(dr.m)}"></div>
+    <div><label for="f-tm-draft-s">Секунды</label><input id="f-tm-draft-s" type="number" min="0" max="59" inputmode="numeric" data-bind="tm-draft" data-k="s" value="${esc(dr.s)}"></div></div>
     <label class="chk" style="margin-top:6px"><input type="checkbox" data-chg="tm-rep" ${dr.rep ? "checked" : ""}><div class="ct"><b>Повторять</b><small>После сигнала отсчёт начнётся заново — удобно для напоминаний о докладах</small></div></label>
     <div class="row gap"><button class="btn gold" data-act="tm-create" data-run="1">${ico("play")}Создать и запустить</button><button class="btn" data-act="tm-create" data-run="0">${ico("plus")}Только создать</button></div></div>
   <h2>Ваши таймеры <span class="tag">${list.length}</span></h2>
   ${list.length ? list.map(card).join("") : `<div class="card"><p style="margin:0">Пока нет ни одного таймера. Выберите готовое время выше.</p></div>`}
   <h2>${ico("calc")}Калькуляторы времени</h2>
   <div class="tiles" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
-    <div class="card" style="margin:0"><b>Во сколько будет через…</b><div class="field-row gap"><div><label>Сейчас (чч:мм)</label><input type="text" inputmode="numeric" data-bind="tc-a" data-k="t" value="${esc((app.ui.tcA || {}).t || fmtTime(now))}" placeholder="чч:мм"></div><div><label>Прибавить, минут</label><input type="number" inputmode="numeric" data-bind="tc-a" data-k="m" value="${esc((app.ui.tcA || {}).m || "45")}"></div></div><div class="small gap" data-t="tc-a-out">${tcAText(app.ui.tcA || { t: fmtTime(now), m: "45" })}</div></div>
-    <div class="card" style="margin:0"><b>Сколько прошло между…</b><div class="field-row gap"><div><label>С (чч:мм)</label><input type="text" inputmode="numeric" data-bind="tc-b" data-k="a" value="${esc((app.ui.tcB || {}).a || "")}" placeholder="21:10"></div><div><label>До (чч:мм)</label><input type="text" inputmode="numeric" data-bind="tc-b" data-k="b" value="${esc((app.ui.tcB || {}).b || "")}" placeholder="22:05"></div></div><div class="small gap" data-t="tc-b-out">${tcBText(app.ui.tcB || {})}</div></div>
+    <div class="card" style="margin:0"><b>Во сколько будет через…</b><div class="field-row gap"><div><label for="f-tc-a-t">Сейчас (чч:мм)</label><input id="f-tc-a-t" type="text" inputmode="numeric" data-bind="tc-a" data-k="t" value="${esc((app.ui.tcA || {}).t || fmtTime(now))}" placeholder="чч:мм"></div><div><label for="f-tc-a-m">Прибавить, минут</label><input id="f-tc-a-m" type="number" inputmode="numeric" data-bind="tc-a" data-k="m" value="${esc((app.ui.tcA || {}).m || "45")}"></div></div><div class="small gap" data-t="tc-a-out">${tcAText(app.ui.tcA || { t: fmtTime(now), m: "45" })}</div></div>
+    <div class="card" style="margin:0"><b>Сколько прошло между…</b><div class="field-row gap"><div><label for="f-tc-b-a">С (чч:мм)</label><input id="f-tc-b-a" type="text" inputmode="numeric" data-bind="tc-b" data-k="a" value="${esc((app.ui.tcB || {}).a || "")}" placeholder="21:10"></div><div><label for="f-tc-b-b">До (чч:мм)</label><input id="f-tc-b-b" type="text" inputmode="numeric" data-bind="tc-b" data-k="b" value="${esc((app.ui.tcB || {}).b || "")}" placeholder="22:05"></div></div><div class="small gap" data-t="tc-b-out">${tcBText(app.ui.tcB || {})}</div></div>
   </div>
   <p class="tiny dim gap">${TOOLS.some(x => x.r === "tools/kpz") ? `Срок по статьям и лимит КПЗ — в <a class="ref" data-go="tools/kpz">калькуляторе срока</a>; процессуальный` : "Процессуальный"} час — в <a class="ref" data-go="tools/det">таймере задержания</a>.</p>`;
 };
@@ -7773,6 +8075,181 @@ ACT["favs-clear"] = app => confirmBox(app, "Убрать из избранног
 }, true);
 
 /* ================================================================
+   4.1 «СПРОСИТЬ» — офлайн-помощник по законам и ситуациям.
+   Это не нейросеть: вопрос разбирается на намерение и ключевые слова, ответ собирается ТОЛЬКО из текстов,
+   которые уже есть в программе (статьи, ситуации, быстрые ответы, словарь, фразы) — с цитатой и ссылкой на источник.
+   Ничего не выдумывает: если подходящего текста нет, так и говорит. Работает без интернета, мгновенно.
+   ================================================================ */
+
+/* ---------- разбор вопроса ---------- */
+const ASK_INTENTS = [
+  ["say", /(?:^|\s)(что|как)\s+(сказать|говорить|ответить|озвучить)|фраз[аыу]|реплик/],
+  ["define", /^(что такое|что значит|что означает|кто такой|кто такие|расшифр|как расшифров|что за)(?![а-яё])/],
+  ["who", /(?:^|\s)(кто|чь[еёя]|чьи|кому|какое ведомство|какой орган|подследствен)/],
+  ["article", /(какая|какой|что за)\s+стать|стать[яюие]\s+за|срок\s+за|сколько\s+(дают|дадут|сидеть|лет|месяцев)|что\s+грозит|наказани[ея]\s+за|звезд|звёзд|санкци/],
+  ["time", /сколько\s+(времени|минут|часов|длится|ждать)|как\s+долго|через\s+сколько|в\s+течени[еи]|срок\s+(хранени|ожидани|задержани)/],
+  ["howto", /^(что делать|как (действовать|правильно|оформить|провести|поступить|задержать|обыскать|передать|вызвать|заступить|доложить|написать|составить))|порядок|по шагам|алгоритм|инструкци/],
+  ["permission", /^(можно|могу|имею|вправе|разрешен|законно|допустимо|обязан|нужно ли|надо ли|должен ли)(?![а-яё])|можно ли|имею ли|вправе ли|могу ли|разрешено ли|законно ли/]
+];
+const ASK_LEAD = /^(скажи(те)?|подскажи(те)?|объясни(те)?|помоги(те)?|помощник|а|ну|слушай|вопрос)[,:\s]+/i;
+const ASK_FILLER = /(?<![а-яёa-z0-9])(ли|это|вот|вообще|например|пожалуйста|мне|нам|у нас|у меня|если|когда|то|же|бы|как|что|чем|кто|чей|чья|чьё|чье|где|куда|зачем|почему|какой|какая|какие|какое|сколько|можно|могу|нужно|надо|делать|сделать|быть|есть|будет|я|мы|он|она|они|его|её|их|такое|значит|означает)(?![а-яёa-z0-9])/g;
+
+function askParse(q) {
+  let s = norm(q).replace(/[«»"'()\[\]!?,;:]+/g, " ").replace(/\.(?!\d)/g, " ").replace(/\s+/g, " ").trim().replace(ASK_LEAD, "");
+  let intent = "generic";
+  for (const [k, re] of ASK_INTENTS) { if (re.test(s)) { intent = k; break; } }
+  let num = typeof parseArtNumber === "function" ? parseArtNumber(q) : null;
+  /* номер статьи внутри обычного вопроса («кто занимается статьёй 10.7?») — ищем статью с таким номером */
+  if (!num) { const m = s.match(/(?:^|\s)(\d{1,2}\.\d{1,2}(?:\.\d{1,2})?)(?=\s|$)/); if (m) { const n = m[1]; const docHint = /\bкоап\b/.test(s) ? "koap" : /\bук\b|уголовн/.test(s) || true ? "uk" : ""; const a = ART.get(docHint + ":" + n) || [...ART.values()].find(x => x.n === n); if (a) num = { n, doc: a.doc, soft: true }; } }
+  /* ключевые слова: убираем вопросные и служебные слова, оставляем суть («можно ли задержать за угон машины» → «задержать угон машины») */
+  const core = s.replace(ASK_FILLER, " ").replace(/\s+/g, " ").trim();
+  return { raw: q, s, core: core || s, intent, num };
+}
+
+/* лучшие предложения статьи под вопрос (по совпадению ключей слов), с подсветкой */
+function askQuote(text, qkeys, max) {
+  const sents = String(text || "").replace(/\s+/g, " ").split(/(?<=[.;!?])\s+(?=[А-ЯЁA-Z0-9«(])/).filter(x => x.trim().length > 12);
+  const scored = sents.map((t, i) => { const ks = new Set(words(t).map(key)); let n = 0; qkeys.forEach(k => { if (ks.has(k)) n++; }); return { t, i, n }; });
+  const hit = scored.filter(x => x.n > 0).sort((a, b) => b.n - a.n || a.i - b.i).slice(0, max || 2).sort((a, b) => a.i - b.i);
+  const pick = hit.length ? hit : scored.slice(0, 1);
+  return pick.map(x => short(x.t, 320));
+}
+function askMark(html, qkeys) {
+  if (!qkeys.length) return html;
+  try {
+    const re = new RegExp("(^|[^а-яёa-z0-9])((?:" + qkeys.filter(k => k.length >= 3).map(k => k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|") + ")[а-яёa-z]{0,6})", "gi");
+    return qkeys.filter(k => k.length >= 3).length ? html.replace(re, "$1<mark>$2</mark>") : html;
+  } catch (e) { return html; }
+}
+
+/* ---------- подбор ответа ---------- */
+function askAnswer(q) {
+  const P = askParse(q);
+  if (!P.core || P.core.length < 2) return { P, kind: "empty" };
+  const R = searchAll(P.core, {});
+  const best = Math.max(0, ...["arts", "scn", "qa", "gl", "ph"].map(k => (R[k][0] ? R[k][0].score : 0)));
+  const ok = (k, f) => R[k][0] && R[k][0].score >= best * (f || 0.55);
+  const qkeys = words(P.core).filter(w => !STOP.has(w)).map(key).filter(Boolean);
+  const out = { P, R, qkeys, srcs: [], kind: "", main: null, scn: null, qa: null, art: null, gl: null, ph: [] };
+  /* номер статьи → сама статья (и «чья» подсказка, если спрашивают кто/кому) */
+  if (P.num) {
+    const direct = P.num.soft ? ART.get((P.num.doc || "uk") + ":" + P.num.n) : null;
+    const a = direct ? { item: direct } : (R.arts.find(x => x.item.n === P.num.n) || R.arts[0]);
+    if (a) { out.kind = P.intent === "who" ? "who" : "art"; out.art = a.item; }
+  }
+  if (!out.kind) {
+    switch (P.intent) {
+      case "define": {
+        /* термин словаря: точное совпадение названия важнее любого счёта */
+        const term = (typeof GLOSSARY !== "undefined" ? GLOSSARY : []).find(g => { const t = norm(g.t); return t && (P.core === t || P.s.indexOf(t) >= 0 || words(t).every(w => P.core.indexOf(w) >= 0)); });
+        if (term) { out.kind = "gl"; out.gl = term; } else if (ok("gl", 0.3)) { out.kind = "gl"; out.gl = R.gl[0].item; } break;
+      }
+      case "say": if (R.ph.length) { out.kind = "ph"; out.ph = R.ph.slice(0, 4).map(x => x.item); } break;
+      case "howto": if (ok("scn", 0.5)) { out.kind = "scn"; out.scn = R.scn[0].item; } else if (ok("qa", 0.5)) { out.kind = "qa"; out.qa = R.qa[0].item; } break;
+      case "article": {
+        /* среди близких по счёту статей УК — базовая (короткий номер: 10.7, а не 10.7.1) */
+        const uks = R.arts.filter(x => x.item.doc === "uk").slice(0, 4);
+        if (uks.length) { const top = uks[0].score; const pick = uks.filter(x => x.score >= top * 0.85).sort((a, b) => a.item.n.length - b.item.n.length || b.score - a.score)[0]; out.kind = "art"; out.art = pick.item; }
+        break;
+      }
+      default: if (ok("qa", 0.6) || (R.qa[0] && R.qa[0].full)) { out.kind = "qa"; out.qa = R.qa[0].item; } else if (P.intent === "permission" && ok("scn", 0.8)) { out.kind = "scn"; out.scn = R.scn[0].item; }
+    }
+  }
+  if (!out.kind) {
+    if (R.arts[0]) { out.kind = "art"; out.art = R.arts[0].item; }
+    else if (R.scn[0]) { out.kind = "scn"; out.scn = R.scn[0].item; }
+    else if (R.qa[0]) { out.kind = "qa"; out.qa = R.qa[0].item; }
+    else if (R.gl[0]) { out.kind = "gl"; out.gl = R.gl[0].item; }
+    else if (R.ph[0]) { out.kind = "ph"; out.ph = R.ph.slice(0, 4).map(x => x.item); }
+    else out.kind = "none";
+  }
+  /* сопутствующее: ситуация и быстрый ответ рядом с найденной статьёй и наоборот */
+  if (!out.scn && R.scn[0] && ok("scn", 0.35)) out.scn = R.scn[0].item;
+  if (!out.qa && R.qa[0] && ok("qa", 0.45)) out.qa = R.qa[0].item;
+  if (!out.art && R.arts[0] && ok("arts", 0.35)) out.art = R.arts[0].item;
+  /* бланк по вопросу («как оформить рапорт», «протокол задержания»): шаблон, чьё название встречается в вопросе */
+  if (typeof BK !== "undefined" && (P.intent === "howto" || /оформ|бланк|составить|написать|заполнить|документ|протокол|рапорт|доклад|приказ|постановлен/.test(P.s))) {
+    const ck = new Set(qkeys); const b = BK.find(t => words(t.t || "").concat(words(t.kw || "")).some(w => w.length >= 4 && ck.has(key(w)))); if (b) out.blank = b;
+  }
+  /* «ещё по теме»: до шести ссылок, статьи — первыми; то, что уже показано в ответе, не повторяется */
+  const seen = new Set();
+  if (out.art && (out.kind === "art" || out.kind === "who")) seen.add("art:" + out.art.id);   /* статья показана только как главный ответ */
+  if (out.scn) seen.add("scn:" + out.scn.id);                                                  /* ситуация и быстрый ответ показаны всегда, если найдены */
+  if (out.qa) seen.add("qa:" + (out.qa.id || out.qa.t));
+  if (out.gl && out.kind === "gl") seen.add("gl:" + (out.gl.id || out.gl.t));
+  const add = (kind, item) => { const id = kind + ":" + (item.id || item.t); if (seen.has(id)) return; seen.add(id); out.srcs.push({ kind, item }); };
+  R.arts.slice(0, 4).forEach(x => add("art", x.item));
+  R.scn.slice(0, 2).forEach(x => add("scn", x.item));
+  R.qa.slice(0, 2).forEach(x => add("qa", x.item));
+  R.gl.slice(0, 1).forEach(x => add("gl", x.item));
+  out.srcs = out.srcs.slice(0, 6);
+  return out;
+}
+
+/* ---------- отрисовка ответа ---------- */
+function askSrcChip(s) {
+  if (s.kind === "art") { const a = s.item; return `<a class="chip" data-go="a/${esc(enc(a.id))}">${ico("scale")}${esc(artShort(a))}</a>`; }
+  if (s.kind === "scn") return `<a class="chip" data-go="s/${esc(s.item.id)}">${esc(s.item.icon || "")} ${esc(short(s.item.title, 40))}</a>`;
+  if (s.kind === "qa") return `<a class="chip" data-go="learn/qa">${ico("lightbulb")}${esc(short(s.item.q, 44))}</a>`;
+  if (s.kind === "gl") return `<a class="chip" data-go="learn/glossary">${ico("book")}${esc(s.item.t)}</a>`;
+  return "";
+}
+function askAnswerHTML(A) {
+  if (A.kind === "empty") return `<div class="card"><p class="small muted" style="margin:0">Напишите вопрос словами — например, «можно ли задержать за угон?» или «что делать при обыске».</p></div>`;
+  if (A.kind === "none") return `<div class="card warn"><b>${ico("search-x")}Не нашёл подходящего текста</b><p class="small">По словам «${esc(A.P.core)}» ничего нет ни в законах, ни в ситуациях. Попробуйте проще: одно-два ключевых слова («угон», «обыск»), номер статьи («17.3») — или откройте <a class="ref" data-go="scn">Ситуации</a>.</p><p class="tiny dim">Помощник отвечает только текстами программы и не придумывает ответы.</p></div>`;
+  const K = A.qkeys, parts = [];
+  const tag = t => `<span class="tag gold ask-tag">${t}</span>`;
+  if (A.kind === "who" && A.art) {
+    const v = typeof whoVerdict === "function" ? whoVerdict(A.art.n) : (typeof handVerdict === "function" ? handVerdict(A.art.n) : "");
+    parts.push(`<div class="card hl ask-main">${tag("Чьё дело")}<h3 style="margin:6px 0 4px">${esc(artShort(A.art))}</h3>${v || `<p class="small">${esc(short(A.art.t, 200))}</p>`}</div>`);
+  } else if (A.kind === "art" && A.art) {
+    const a = A.art, qs = askQuote(a.x || a.t, K, 2);
+    parts.push(`<div class="card hl ask-main">${tag("По статье")}<h3 style="margin:6px 0 4px"><a class="ref" data-go="a/${esc(enc(a.id))}">${esc(artShort(a))}</a> — ${esc(short(a.t, 120))}</h3>${qs.map(s => `<p class="ask-q">${askMark(esc(s), K)}</p>`).join("")}${a.p ? `<p class="small"><b>${esc(a.p)}</b>${a.w ? " · " + starsHTML(a.w) : ""}${a.m ? ` · подследственность: <b>${esc(a.m)}</b>` : ""}</p>` : ""}<div class="row gap"><button class="btn sm" data-go="a/${esc(enc(a.id))}">${ico("book-open")}Открыть статью целиком</button><button class="btn sm ghost" data-act="art-to-blank" data-id="${esc(a.id)}">${ico("file-text")}В бланк</button></div></div>`);
+  } else if (A.kind === "qa" && A.qa) {
+    parts.push(`<div class="card hl ask-main">${tag("Быстрый ответ")}<h3 style="margin:6px 0 4px">${esc(A.qa.q)}</h3><div class="ask-q">${rich(A.qa.a)}</div></div>`);
+  } else if (A.kind === "scn" && A.scn) {
+    const s = A.scn, steps = (s.steps || []).slice(0, 4);
+    parts.push(`<div class="card hl ask-main">${tag("Ситуация")}<h3 style="margin:6px 0 4px"><a class="ref" data-go="s/${esc(s.id)}">${esc(s.icon || "")} ${esc(s.title)}</a></h3><p class="small muted">${esc(s.summary || "")}</p><ol class="ask-steps">${steps.map(st => `<li>${rich(st[1])}</li>`).join("")}</ol>${(s.steps || []).length > 4 ? `<a class="ref" data-go="s/${esc(s.id)}">Все ${s.steps.length} шагов →</a>` : ""}</div>`);
+  } else if (A.kind === "gl" && A.gl) {
+    parts.push(`<div class="card hl ask-main">${tag("Термин")}<h3 style="margin:6px 0 4px">${esc(A.gl.t)}</h3><p>${rich(A.gl.d)}</p>${A.gl.ref ? `<a class="ref" data-go="${esc(A.gl.ref)}">Открыть →</a>` : ""}</div>`);
+  } else if (A.kind === "ph" && A.ph.length) {
+    parts.push(`<div class="card hl ask-main">${tag("Фразы")}<p class="small muted">Нажмите — скопируется, звание и имя подставятся сами.</p>${A.ph.map(p => phraseRow(p)).join("")}</div>`);
+  }
+  /* рядом: ситуация / быстрый ответ, если главный ответ другого вида */
+  const side = [];
+  if (A.kind !== "scn" && A.scn) side.push(`<div class="card ask-side"><b>${ico("compass")}Ситуация по шагам</b><div><a class="ref" data-go="s/${esc(A.scn.id)}">${esc(A.scn.icon || "")} ${esc(A.scn.title)}</a> — <span class="small muted">${esc(short(A.scn.summary || "", 110))}</span></div>${(A.scn.mistakes || []).length ? `<div class="small" style="margin-top:6px"><b class="bad-t">Чего нельзя:</b> ${rich(A.scn.mistakes[0])}</div>` : ""}</div>`);
+  if (A.kind !== "qa" && A.qa) side.push(`<div class="card ask-side"><b>${ico("lightbulb")}Быстрый ответ</b><div class="small"><b>${esc(A.qa.q)}</b></div><div class="small">${rich(A.qa.a)}</div></div>`);
+  if (A.kind === "scn" && (A.scn.mistakes || []).length) side.push(`<div class="card ask-side bad"><b>${ico("alert")}Чего нельзя</b><ul class="small">${A.scn.mistakes.slice(0, 3).map(m => `<li>${rich(m)}</li>`).join("")}</ul></div>`);
+  if (A.kind === "scn" && (A.scn.tools || []).length) side.push(`<div class="row gap">${A.scn.tools.map(t => `<button class="btn sm" data-go="${esc(t[0])}">${esc(t[1])}</button>`).join("")}</div>`);
+  if (A.blank) side.push(`<div class="card ask-side"><b>${ico("file-text")}Бланк</b><div class="row gap"><span class="small">${esc(A.blank.t)}</span><button class="btn sm gold" data-go="blanks/${esc(A.blank.id)}">${ico("pen")}Заполнить</button></div></div>`);
+  parts.push(side.join(""));
+  if (A.srcs.length) parts.push(`<div class="ask-src"><span class="tiny dim">Ещё по теме:</span>${A.srcs.map(askSrcChip).join("")}</div>`);
+  parts.push(`<p class="tiny dim">Ответ собран из текстов программы (законы, ситуации, быстрые ответы) — ничего не придумано. Это неофициальный справочник: при расхождении с форумом прав форум.</p>`);
+  return `<div class="ask-a">${parts.join("")}</div>`;
+}
+
+/* ---------- страница ---------- */
+const ASK_EXAMPLES = PACK.askExamples || ["Можно ли задержать за угон машины?", "Что делать при обыске?", "Сколько времени есть после задержания?", "Какая статья за сопротивление?", "Кто занимается статьёй 10.7?", "Что сказать при задержании?"];
+V.ask = function (app, arg) {
+  const q = app.ui.askQ || "";
+  const hist = (S.askHist || []).slice(0, 8);
+  let answer = "";
+  if (q.trim()) { const t0 = performance.now(); const A = askAnswer(q); A.ms = Math.round(performance.now() - t0); app.ui.askLast = A; answer = askAnswerHTML(A); }
+  return `<h1>${ico("sparkle")} Спросить</h1>
+  <p class="sub">Задайте вопрос словами, как в чате. Помощник найдёт статью, ситуацию или быстрый ответ и покажет цитату со ссылкой. Без интернета и без выдумок.</p>
+  <div class="card ask-box"><div class="searchbox big"><span class="si">${ico("sparkle")}</span><input type="search" data-bind="ask-q" data-key="ask-enter" value="${esc(q)}" placeholder="Например: можно ли задержать без оснований?" autocomplete="off" spellcheck="false" aria-label="Вопрос помощнику" ${q ? "" : "data-autofocus"}><button class="btn gold" data-act="ask-go">${ico("arrow")}Спросить</button></div>
+    ${q ? "" : `<div class="chips gap">${ASK_EXAMPLES.map(e => `<button class="chip" data-act="ask-ex" data-q="${esc(e)}">${esc(e)}</button>`).join("")}</div>`}</div>
+  ${answer}
+  ${hist.length && !q ? `<h2>${ico("history")}Недавние вопросы</h2><div class="chips">${hist.map(h => `<button class="chip" data-act="ask-ex" data-q="${esc(h)}">${esc(short(h, 60))}</button>`).join("")}<button class="chip ghost" data-act="ask-hist-clear">Очистить</button></div>` : ""}`;
+};
+BIND["ask-q"] = (app, el) => { app.ui.askQ = el.value; };
+const askGo = (app, q) => { q = String(q || "").trim().slice(0, 200); app.ui.askQ = q; if (q.length >= 2) { S.askHist = [q].concat((S.askHist || []).filter(x => x.toLowerCase() !== q.toLowerCase())).slice(0, 10); saveLater(); logAct("ask", "Вопрос: " + short(q, 80), "ask"); } paint(app, true); const el = app.root.querySelector('[data-bind="ask-q"]'); if (el) { try { el.focus({ preventScroll: true }); } catch (e) { } } };
+ACT["ask-go"] = app => askGo(app, app.ui.askQ);
+ACT["ask-ex"] = (app, el) => askGo(app, el.getAttribute("data-q"));
+ACT["ask-hist-clear"] = app => { S.askHist = []; save(); paint(app, true); };
+ACT["ask-open"] = (app, el) => { app.ui.askQ = el.getAttribute("data-q") || app.q; app.q = ""; app.input.value = ""; go(app, "ask"); askGo(app, app.ui.askQ); };
+
+/* ================================================================
    ЗАКОНЫ 2 (версия 3.2): группы каталога со статусом редакции, «Кто за что отвечает»,
    быстрый вопрос «Ситуация моя или передавать?», блоки в статье, действия в поиске,
    «Добавить в бланк». Только то, что есть во встроенных текстах норм: ничего не выдумываем.
@@ -7810,9 +8287,8 @@ V.laws = function (app) {
     return `<section class="lawgrp" data-g="${g.k}"><h2>${ico(g.ic)}${esc(g.t)} <small>${ds.length}</small></h2><p class="small muted lg-d">${esc(g.d)}</p>${body}</section>`;
   }).join("");
   return `<h1>⚖️ Законы и правила</h1>
-  <p class="sub">Полные тексты. Ссылки внутри статей («ст. 45», «гл. II ст. 7») кликабельны. У каждого документа указаны редакция и статус: всё это — рабочие тексты для RP, при расхождении с форумом прав форум.</p>
-  ${PACK.lawsExtra ? PACK.lawsExtra(app) : whoQuickHTML(app) + `<div class="lawlinks"><div class="card hl click" data-go="who"><div class="row nw"><span class="wp-i">${ico("users")}</span><div><b>Кто за что отвечает</b><div class="small muted">ФСБ, МВД, СК, прокуратура, ГИБДД — выдержки из их законов со ссылками</div></div></div></div>
-    <div class="card hl click" data-go="uk"><div class="row nw"><span class="wp-i">${ico("gavel")}</span><div><b>УК: шпаргалка по подследственности</b><div class="small muted">Фильтр по буквам Ф, Р, В, С, звёздам и сроку</div></div></div></div></div>`}
+  <p class="sub">Полные тексты с редакцией и статусом; ссылки внутри статей («ст. 45», «гл. II ст. 7») открываются. Это рабочие тексты для RP — при расхождении с форумом прав форум.</p>
+  ${PACK.lawsExtra ? PACK.lawsExtra(app) : whoQuickHTML(app) + `<div class="lawlinks chips"><button class="chip" data-go="who">${ico("users")}Кто за что отвечает</button><button class="chip" data-go="uk">${ico("gavel")}УК: шпаргалка по подследственности</button></div>`}
   <div class="searchbox gap"><span class="si">${ico("search")}</span><input type="search" data-filter=".page" placeholder="Найти закон по названию…" autocomplete="off" aria-label="Найти закон по названию"></div><div class="tiny dim gap" data-fcount></div>
   ${groups}`;
 };
@@ -8009,7 +8485,7 @@ function dashReminders() {
   const drafts = typeof bkDraftList === "function" ? bkDraftList() : [];
   drafts.slice(0, 2).forEach(d => out.push({ ic: "file-pen", k: "info", t: "Незаконченный черновик: " + d.t, d: "Изменён " + ago(d.ts), go: "blanks/" + d.type, label: "Продолжить" }));
   const worth = (S.docs.length + S.my.length + S.userPhrases.length + (S.tpls || []).length) > 0;
-  if (worth && now - (S.lastBackup || 0) > 14 * 86400000) out.push({ ic: "backup", k: "warn", t: "Пора сделать резервную копию", d: S.lastBackup ? "Последняя копия в файл — " + fmtDate(S.lastBackup) + "." : "Копию в файл ещё не делали, а документы хранятся только в этом браузере.", act: "export", label: "Скачать копию" });
+  if (worth && now - (S.lastBackup || 0) > 14 * 86400000) out.push({ ic: "backup", k: "warn", t: "Пора сделать резервную копию", d: S.lastBackup ? "Последняя копия в файл — " + fmtDate(S.lastBackup) + "." : "Копию в файл ещё не делали, а документы хранятся только в этом браузере.", act: "export", label: "Сохранить копию" });
   if (S.set.mode === "novice") { const done = FIRST_STEPS.filter(f => S.steps["first:" + f.id]).length, next = FIRST_STEPS.find(f => !S.steps["first:" + f.id]); if (next) out.push({ ic: "rocket", k: "info", t: "Первые шаги новичка: " + done + " из " + FIRST_STEPS.length, d: "Дальше: " + next.t, go: "learn/first", label: "Продолжить" }); }
   const un = unreadCount(); if (un) out.push({ ic: "bell", k: "info", t: "Непрочитанные уведомления: " + un, d: "Таймеры, доклады и события приложения.", act: "notif-toggle", label: "Открыть" });
   return { list: out, filled };
@@ -8045,7 +8521,7 @@ V.home = function (app) {
   const row = (ic, t, s, attrs, tail) => `<div class="drow" ${attrs} role="button" tabindex="0"><span class="dri">${ico(ic)}</span><span class="drt"><b>${esc(t)}</b>${s ? `<small>${esc(s)}</small>` : ""}</span>${tail || `<span class="drg">${ico("chevr")}</span>`}</div>`;
   return `<section class="dhero"><svg class="dh-wm" viewBox="0 0 34 34" aria-hidden="true">${PACK.heroMark || '<path d="M17 2l13 5v9c0 8-5.5 13.5-13 16C9.5 29.5 4 24 4 16V7z"/><path d="M17 8l7 3v5c0 4.5-3 8-7 9.5C13 24 10 20.5 10 16v-5z"/>'}</svg>
     <div class="dh-main"><span class="eyebrow">${ico("shield")}${esc(PACK.eyebrow)}</span><h1>${greet()}${who}!</h1>
-      <p class="sub">${novice ? "Это ваша рабочая панель: быстрые действия, недавнее и то, что требует внимания. Выберите, что делать, — или начните вводить слово в поиск сверху." : "Рабочая панель."}</p>
+      ${novice ? `<p class="sub">Быстрые действия, незаконченное и то, что требует внимания — или слово в поиск сверху.</p>` : ""}
       ${homeStatusHTML()}</div>
     <div class="dclock"><b data-t="clock">${fmtTime(Date.now())}</b><span>${esc(dateLong())}</span></div></section>
   ${live.length ? `<div class="live-strip">${live.join("")}</div>` : ""}
@@ -8136,7 +8612,9 @@ const PURPOSE = {
 };
 function purposeHTML(route) {
   const p = PURPOSE[route]; if (!p || !hintOn("purpose")) return "";
-  return `<div class="purpose" role="note" aria-label="О разделе"><div><b>Что это</b><span>${esc(p[0])}</span></div><div><b>Когда нужно</b><span>${esc(p[1])}</span></div><div><b>Что получите</b><span>${esc(p[2])}</span></div></div>`;
+  /* 4.1: первые два раза раскрыто, дальше — одна строка «О разделе» (раскрывается по нажатию) */
+  const open = hintSeen("purpose:" + route) <= HINT_OPEN_TIMES;
+  return `<details class="purpose" data-hint="purpose"${open ? " open" : ""}><summary>${ico("info")}<b>О разделе</b><span class="ps">${esc(p[0])}</span><span class="hs-more">${ico("chev")}</span><button class="hx" data-act="hint-off" data-id="purpose" data-tip="Больше не показывать пояснения разделов" aria-label="Скрыть пояснения разделов">${ico("x")}</button></summary><div class="pb"><div><b>Что это</b><span>${esc(p[0])}</span></div><div><b>Когда нужно</b><span>${esc(p[1])}</span></div><div><b>Что получите</b><span>${esc(p[2])}</span></div></div></details>`;
 }
 /* вставляет пояснение после первого абзаца-описания раздела (или после заголовка) */
 function purposeInject(route, html) {
@@ -8335,13 +8813,13 @@ function bkField(app, f, d) {
   const k = f.k, v = d[k], L = esc(f.label) + (f.req ? ' <i class="rq" data-tip="Обязательное поле">*</i>' : ""), full = (f.t === "area" || f.t === "persons" || f.t === "art" || f.t === "photo" || f.t === "chk" || f.w === "full" || (f.t === "text" && f.w !== "half")) ? " full" : "";
   const hint = f.hint ? `<div class="tiny dim">${esc(f.hint)}</div>` : "";
   switch (f.t) {
-    case "text": return `<div data-fk="${esc(k)}"${f.req ? " data-req" : ""} class="bk-f${full}"><label>${L}</label><input type="text" data-bind="bk-f" data-k="${esc(k)}" value="${esc(v || "")}" placeholder="${esc(f.ph || "")}" autocomplete="off">${hint}</div>`;
-    case "area": return `<div data-fk="${esc(k)}"${f.req ? " data-req" : ""} class="bk-f full"><label>${L}</label><textarea data-bind="bk-f" data-k="${esc(k)}" rows="${f.rows || 4}" placeholder="${esc(f.ph || "")}">${esc(v || "")}</textarea>${hint}</div>`;
-    case "date": return `<div data-fk="${esc(k)}"${f.req ? " data-req" : ""} class="bk-f"><label>${L}</label><input type="date" data-bind="bk-f" data-k="${esc(k)}" value="${esc(v || "")}"></div>`;
+    case "text": return `<div data-fk="${esc(k)}"${f.req ? " data-req" : ""} class="bk-f${full}"><label for="bkf-${esc(k)}">${L}</label><input type="text" id="bkf-${esc(k)}" data-bind="bk-f" data-k="${esc(k)}" value="${esc(v || "")}" placeholder="${esc(f.ph || "")}" autocomplete="off">${hint}</div>`;
+    case "area": return `<div data-fk="${esc(k)}"${f.req ? " data-req" : ""} class="bk-f full"><label for="bkf-${esc(k)}">${L}</label><textarea id="bkf-${esc(k)}" data-bind="bk-f" data-k="${esc(k)}" rows="${f.rows || 4}" placeholder="${esc(f.ph || "")}">${esc(v || "")}</textarea>${hint}</div>`;
+    case "date": return `<div data-fk="${esc(k)}"${f.req ? " data-req" : ""} class="bk-f"><label for="bkf-${esc(k)}">${L}</label><input type="date" id="bkf-${esc(k)}" data-bind="bk-f" data-k="${esc(k)}" value="${esc(v || "")}"></div>`;
     case "time": return bkTimeField(f, v, L, hint);
     case "norm": return bkNormField(app, f, v, L, hint);
-    case "num": return `<div data-fk="${esc(k)}"${f.req ? " data-req" : ""} class="bk-f"><label>${L}</label><input type="number" min="${f.min || 0}" max="${f.max || 99}" data-bind="bk-f" data-k="${esc(k)}" value="${esc(v)}"></div>`;
-    case "sel": return `<div data-fk="${esc(k)}"${f.req ? " data-req" : ""} class="bk-f${full}"><label>${L}</label><select data-chg="bk-f" data-k="${esc(k)}">${f.opts.map(o => `<option ${o === v ? "selected" : ""}>${esc(o)}</option>`).join("")}</select></div>`;
+    case "num": return `<div data-fk="${esc(k)}"${f.req ? " data-req" : ""} class="bk-f"><label for="bkf-${esc(k)}">${L}</label><input type="number" id="bkf-${esc(k)}" min="${f.min || 0}" max="${f.max || 99}" data-bind="bk-f" data-k="${esc(k)}" value="${esc(v)}"></div>`;
+    case "sel": return `<div data-fk="${esc(k)}"${f.req ? " data-req" : ""} class="bk-f${full}"><label for="bkf-${esc(k)}">${L}</label><select id="bkf-${esc(k)}" data-chg="bk-f" data-k="${esc(k)}">${f.opts.map(o => `<option ${o === v ? "selected" : ""}>${esc(o)}</option>`).join("")}</select></div>`;
     case "chk": return `<div data-fk="${esc(k)}"${f.req ? " data-req" : ""} class="bk-f full"><label class="chk"><input type="checkbox" data-chg="bk-chk" data-k="${esc(k)}" ${v ? "checked" : ""}><div class="ct">${L}</div></label><div class="bk-terr" data-terr role="alert"></div></div>`;
     case "persons": return `<div data-fk="${esc(k)}"${f.req ? " data-req" : ""} class="bk-f full"><label>${L}</label><div class="bk-persons">${(v || []).map((p, i) => `<div class="bk-prow"><input type="text" data-bind="bk-p" data-i="${i}" data-f="fio" value="${esc(p.fio || "")}" placeholder="Имя Фамилия" autocomplete="off"><input type="text" inputmode="numeric" data-bind="bk-p" data-i="${i}" data-f="pass" value="${esc(p.pass || "")}" placeholder="Паспорт № (CID)" autocomplete="off"><button class="star" data-act="bk-p-del" data-i="${i}" title="Убрать">${ico("x")}</button></div>`).join("")}</div><button class="btn sm" data-act="bk-p-add">${ico("plus")} Добавить лицо</button></div>`;
     case "art": {
@@ -9037,7 +9515,7 @@ V.blanksHub = function (app) {
   app.afterOnce = bkThumbs;
   return `<div class="hero-s"><h1>${ico("doc")} Бланки</h1>
   <p class="sub">${S.set.mode === "novice" ? "Выберите тип документа, впишите данные — справа появится «бумага» с подписью и печатью. Готовое скачайте PDF или картинкой, либо скопируйте текстом." : "Библиотека игровых документов (RP)."}</p></div>
-  ${hintBox("blanks.hub", `<ol><li><b>Выберите</b> бланк в библиотеке (поиск и фильтры — выше).</li><li><b>Заполните</b> поля, проверьте «бумагу» и перетащите печати.</li><li><b>Скачайте</b> PDF/PNG, распечатайте или скопируйте текст для форума.</li><li><b>Сохраните</b> в «Мои документы» — к нему можно вернуться позже.</li></ol><p class="tiny">Образцы текста — примерные RP‑заготовки, а не официальная форма: сверяйтесь с требованиями руководства и правилами сервера.</p>`, { title: "Как пользоваться бланками", ic: "list-ordered" })}
+  ${hintBox("blanks.hub", `<ol><li><b>Выберите</b> бланк в библиотеке (поиск и фильтры — выше).</li><li><b>Заполните</b> поля, проверьте «бумагу» и перетащите печати.</li><li><b>Сохраните</b> в «Мои документы» — к нему можно вернуться позже.</li><li><b>Скачайте</b> PDF/PNG, распечатайте или скопируйте текст для форума.</li></ol><p class="tiny">Образцы текста — примерные RP‑заготовки, а не официальная форма: сверяйтесь с требованиями руководства и правилами сервера.</p>`, { title: "Как пользоваться бланками", ic: "list-ordered" })}
   <div class="bk-tools"><div class="searchbox"><span class="si">${ico("search")}</span><input type="search" data-bind="bk-hq" value="${esc(h.q)}" placeholder="Найти бланк: «рапорт», «обыск», «объяснительная»…" autocomplete="off" aria-label="Поиск по бланкам"></div>
   <button class="btn gold" data-go="blanks/tpl/new" data-tip="Составить свой бланк с нужными полями">${ico("plus")}<span class="lb">Свой шаблон</span></button></div>
   <div class="chips bk-cats" data-bk-chips>${bkHubChips(app)}</div>
@@ -9127,15 +9605,16 @@ function bkEditorHTML(app) {
   const fld2 = (k, label, ph) => `<div class="bk-f" data-fk="${k}"><label>${label}</label><input type="text" data-bind="bk-f" data-k="${k}" value="${esc(d[k] || "")}" placeholder="${esc(ph)}" autocomplete="off"></div>`;
   return `${crumbs(app, [{ t: "Бланки", go: "blanks" }, { t: esc(name) }])}
   <div class="bk-head"><h1>${ico(t.ic)} ${esc(name)}</h1><span class="tag gold" data-tip="Игровой RP‑документ: юридической силы не имеет">RP‑документ</span></div>
-  ${hintBox("blanks.editor", `<ol><li><b>Заполните</b> поля слева. Звёздочкой <i class="rq">*</i> отмечены обязательные.</li><li><b>Проверьте бумагу</b> справа (на телефоне — вкладка «Бумага»). Печати и штампы перетаскиваются.</li><li><b>Скачайте</b> PDF или картинку, распечатайте либо скопируйте текст для форума.</li><li><b>Сохраните</b> в «Мои документы» (Ctrl+S) — иначе документ останется только черновиком.</li></ol><p class="tiny">Образцы текста — примерные RP‑заготовки, а не официальная форма. Сверяйтесь с требованиями руководства и правилами сервера.</p>`, { title: "Как работать с бланком", ic: "list-ordered" })}
+  ${hintBox("blanks.editor", `<ol><li><b>Заполните</b> поля слева. Звёздочкой <i class="rq">*</i> отмечены обязательные.</li><li><b>Проверьте бумагу</b> справа (в узком окне — вкладка «Бумага»). Печати и штампы перетаскиваются.</li><li><b>Скачайте</b> PDF или картинку, распечатайте либо скопируйте текст для форума.</li><li><b>Сохраните</b> в «Мои документы» (Ctrl+S) — иначе документ останется только черновиком.</li></ol><p class="tiny">Образцы текста — примерные RP‑заготовки, а не официальная форма. Сверяйтесь с требованиями руководства и правилами сервера.</p>`, { title: "Как работать с бланком", ic: "list-ordered" })}
   ${bk.from ? `<div class="card hl small bk-from" role="status">${ico("link")}<span>Данные подставлены из ${esc(bk.from)}. Проверьте поля и допишите недостающее.</span></div>` : ""}
   <div class="bk-bar" role="toolbar" aria-label="Действия с документом">
-    <button class="btn gold" data-act="bk-pdf" data-tip="Скачать документ файлом PDF (все страницы)">${ico("file-down")}<span class="lb">PDF</span></button>
-    <button class="btn" data-act="bk-dl" data-tip="Скачать картинкой PNG (все страницы одним файлом)">${ico("image")}<span class="lb">PNG</span></button>
-    <button class="btn" data-act="bk-print" data-tip="Печать или сохранение в PDF средствами браузера">${ico("print")}<span class="lb">Печать</span></button>
-    <button class="btn" data-act="bk-copy-menu" data-tip="Копировать картинкой или текстом (для форума)">${ico("copy")}<span class="lb">Копировать</span></button>
+    <button class="btn gold" data-act="bk-save" data-keys="Ctrl S" data-tip="Сохранить в «Мои документы» (Ctrl S)">${ico("save")}<span class="lb">Сохранить</span></button>
     <button class="btn" data-act="bk-preview" data-tip="Посмотреть готовые страницы крупно перед выгрузкой">${ico("eye")}<span class="lb">Предпросмотр</span></button>
-    <button class="btn" data-act="bk-save" data-keys="Ctrl S" data-tip="Сохранить в «Мои документы»">${ico("save")}<span class="lb">Сохранить</span></button>
+    <span class="bk-sep" aria-hidden="true"></span>
+    <button class="btn" data-act="bk-pdf" data-tip="Скачать документ файлом PDF (все страницы)">${ico("file-down")}<span class="lb">PDF</span></button>
+    <button class="btn" data-act="bk-dl" data-tip="Скачать картинкой PNG (все страницы одним файлом)">${ico("image")}<span class="lb">PNG</span></button>
+    <button class="btn" data-act="bk-copy-menu" data-tip="Скопировать картинкой или текстом (для форума)">${ico("copy")}<span class="lb">Скопировать</span></button>
+    <button class="btn" data-act="bk-print" data-tip="Распечатать или сохранить в PDF средствами системы">${ico("print")}<span class="lb">Распечатать</span></button>
     <button class="btn ghost" data-act="bk-more" data-tip="Ещё: новый номер, заготовка, очистка">${ico("more")}<span class="lb">Ещё</span></button>
     <span class="bk-status" data-bk-status>${bkStatusHTML(bk)}</span>
   </div>
@@ -10086,7 +10565,7 @@ V.binder = function (app) {
   <div class="slotsm">${[1, 2, 3, 4, 5, 6, 7, 8, 9].map(slotCard).join("")}</div>
   <h2>${ico("folder")}Мои отыгровки <small>${(S.binds || []).length}</small></h2>
   ${(S.binds || []).length ? S.binds.map(b => bindCard(b, false)).join("") : `<div class="card muted small">Пока своих нет. Скопируйте заготовку ниже кнопкой «В мои» и измените под себя — или создайте с нуля.</div>`}
-  <div class="row gap gap2"><button class="btn gold" data-act="bind-new">${ico("plus")}Новая отыгровка</button><button class="btn ghost" data-act="bind-import">${ico("file-up")}Импорт из файла</button>${(S.binds || []).length ? `<button class="btn ghost" data-act="bind-export">${ico("file-down")}Экспорт в файл</button>` : ""}</div>
+  <div class="row gap gap2"><button class="btn gold" data-act="bind-new">${ico("plus")}Новая отыгровка</button><button class="btn ghost" data-act="bind-import">${ico("file-up")}Открыть из файла</button>${(S.binds || []).length ? `<button class="btn ghost" data-act="bind-export">${ico("file-down")}Экспорт в файл</button>` : ""}</div>
   <h2>${ico("library")}Заготовки <small>${BIND_STARTERS.length}</small></h2>
   <p class="tiny dim">Собраны из раздела «Фразы». Это игровые отыгровки, а не официальный текст — подстройте под свой стиль.</p>
   ${BIND_STARTERS.map(b => bindCard(b, true)).join("")}`;
@@ -10365,9 +10844,11 @@ const HK_INFO = [
   { id: "lock", t: "Сквозной режим панели", d: "Панель висит, но клики идут в игру. Повторное нажатие вернёт панель" },
   { id: "next", t: "Следующая строка отыгровки", d: "Копирует следующую строку выбранной отыгровки" },
   { id: "prev", t: "Предыдущая строка", d: "Шаг назад по строкам отыгровки" },
-  { id: "det", t: "Начать задержание", d: "Запускает процессуальный час, не сворачивая игру" }
+  { id: "det", t: "Начать задержание", d: "Запускает процессуальный час, не сворачивая игру" },
+  { id: "rec", t: "Запись экрана: старт / стоп", d: "Начинает или останавливает запись экрана (файл — в «Инструменты → Запись экрана»)" },
+  { id: "replay", t: "Сохранить повтор", d: "Если включён «повтор» — сохраняет последние минуты в файл" }
 ];
-const HK_NAMES = { panel: "Панель", hud: "HUD", lock: "Сквозной режим", next: "Следующая строка", prev: "Предыдущая строка", det: "Таймер задержания" };
+const HK_NAMES = { panel: "Панель", hud: "HUD", lock: "Сквозной режим", next: "Следующая строка", prev: "Предыдущая строка", det: "Таймер задержания", rec: "Запись экрана", replay: "Повтор" };
 const HK_STATUS = {
   ok: ["ok", "работает"], idle: ["dim", "ждёт назначения"], off: ["dim", "выключена"],
   busy: ["bad", "занята другой программой"], dup: ["bad", "уже назначена другому действию"], bad: ["bad", "сочетание не подходит"]
@@ -10413,6 +10894,7 @@ function nativeEvent(ev) {
     case "overlay": NSET.visible = !!ev.visible; NSET.lock = !!ev.lock; document.documentElement.toggleAttribute("data-lock", NSET.lock); if (ev.visible) onPanelShown(); break;
     case "settings": NSET.settings = ev.settings; NSET.hotkeys = ev.hotkeys || {}; refreshSettingsTab(); break;
     case "hud": NSET.hudShown = !!ev.shown; break;
+    case "rec": case "rec-warn": if (typeof recEvent === "function") recEvent(ev); break;
     case "update": NSET.upd = ev.state || { status: "idle" }; updateChanged(); break;
     case "go": if (typeof ev.route === "string" && /^[\w\/\-.]{1,80}$/.test(ev.route)) { location.hash = "#/" + ev.route; } break;
     case "notice": {                                   // сообщение программы после входа или обновления (один раз)
@@ -10552,15 +11034,16 @@ V.ovhome = function (app) {
   const live = [];
   if (S.det) live.push(`<button class="live-i" data-go="tools/det"><span class="live"></span><span>Задержание</span><b class="timer sm" data-t="top-det-t"></b></button>`);
   if (S.duty) live.push(`<button class="live-i" data-go="tools/duty"><span class="live"></span><span>Пост</span></button>`);
-  const tiles = [["scn", "compass", "Ситуации", "что делать"], ["tools/det", "timer", "Задержание", "процессуальный час"], ["tools/binder", "layers", "Отыгровки", "строки по порядку"], ["tools/phrases", "chat", "Фразы", "копировать"], ["rules", "flag", "Правила", "как не вылететь"], ["laws", "scale", "Законы", "статьи"], ["tools/cases", "folder", "Дела", "журнал задержаний"], ["tools/counters", "calc", "Счётчики", "за смену"]];
+  const tiles = [["scn", "compass", "Ситуации", "что делать"], ["tools/det", "timer", "Задержание", "процессуальный час"], ["tools/binder", "layers", "Отыгровки", "строки по порядку"], ["tools/phrases", "chat", "Фразы", "скопировать"], ["tools/duty", "clock", "Пост", "дежурство и доклады"], ["rules", "flag", "Правила", "как не вылететь"], ["laws", "scale", "Законы", "статьи"], ["tools/cases", "folder", "Дела", "журнал задержаний"], ["tools/counters", "calc", "Счётчики", "за смену"]];
   return `<div class="ovhome">
     ${live.length ? `<div class="live-row">${live.join("")}</div>` : ""}
-    <h2 class="ovh">${ico("zap")}Горячие слоты <small>${hkLabel("slot1").replace(/1$/, "")}1–9</small></h2>
+    ${slots.some(n => slotItem(n)) ? `<h2 class="ovh">${ico("zap")}Горячие слоты <small>${hkLabel("slot1").replace(/1$/, "")}1–9</small></h2>
     <div class="slotgrid">${slots.map(n => {
       const it = slotItem(n), has = !!it;
       return `<button class="slot ${has ? "has" : ""}" data-act="slot-run" data-n="${n}" data-tip="${has ? esc(it.title) : "Пусто — назначьте в «Отыгровки»"}"><kbd>${n}</kbd><span>${has ? esc(short(it.title, 26)) : "пусто"}</span></button>`;
     }).join("")}</div>
-    <p class="tiny dim ovhint">${NATIVE ? "Клавиша слота копирует строку в буфер, а вставляете вы: <kbd>T</kbd> → <kbd>Ctrl</kbd>+<kbd>V</kbd> → <kbd>Enter</kbd>." : ""}</p>
+    <p class="tiny dim ovhint">${NATIVE ? "Клавиша слота копирует строку в буфер, а вставляете вы: <kbd>T</kbd> → <kbd>Ctrl</kbd>+<kbd>V</kbd> → <kbd>Enter</kbd>." : ""}</p>`
+    : `<button class="card hl click ovempty" data-go="tools/binder"><span class="wp-i">${ico("zap")}</span><span class="tt"><b>Горячие слоты пусты</b><small>Назначьте фразы на клавиши ${esc(hkLabel("slot1").replace(/1$/, ""))}1–9 в «Отыгровках» — одна клавиша копирует строку в буфер</small></span>${ico("chevr")}</button>`}
     <h2 class="ovh">${ico("toolbox")}Разделы</h2>
     <div class="tiles ovtiles">${tiles.map(t => `<button class="tile" data-go="${t[0]}"><span class="ti">${ico(t[1])}</span><span class="tt"><b>${t[2]}</b><small>${t[3]}</small></span></button>`).join("")}</div>
   </div>`;
@@ -10751,6 +11234,107 @@ ACT["upd-install"] = app => { if (!canSelfInstall()) return ACT["upd-installer"]
 ACT["upd-installer"] = () => { const u = NSET.upd || {}; const url = (u.installer && u.installer.url) || (typeof SITE !== "undefined" && SITE.downloadUrl) || ""; if (url) { if (NATIVE) NATIVE.external(url); else window.open(url, "_blank", "noopener"); } };
 
 /* ================================================================
+   4.1 ЗАПИСЬ ЭКРАНА (страница «Инструменты → Запись экрана»).
+   Сама запись делает оболочка для Windows (shell/lib/recorder.js): экран или окно игры, звук игры, микрофон,
+   файл пишется на диск по кускам, «повтор» держит последние минуты. Здесь — только кнопки и состояние.
+   В браузере (без оболочки) страница объясняет, где это работает.
+   ================================================================ */
+
+const REC = { st: null, sources: null, mics: null, list: null, busy: false, warn: "", loadedAt: 0 };
+const REC_PRESETS = [["eco", "Экономно", "720p · 30 к/с · 4 Мбит/с — слабый ПК, маленький файл (~30 МБ/мин)"], ["std", "Стандарт", "1080p · 30 к/с · 8 Мбит/с — для форума и Discord (~60 МБ/мин)"], ["high", "Высокое", "1080p · 60 к/с · 14 Мбит/с — плавно (~105 МБ/мин)"], ["max", "Как на экране", "родное разрешение · 60 к/с · 20 Мбит/с (~150 МБ/мин)"]];
+const recOn = () => !!(NATIVE && NATIVE.rec && NATIVE.level >= 8);
+function recCfg() { const s = NSET.settings; return (s && s.rec) || { source: "", preset: "std", sysAudio: true, mic: false, micId: "", replay: false, replayMin: 2, folder: "", format: "auto", cursor: true }; }
+function recFmtBytes(b) { b = +b || 0; return b < 1048576 ? Math.round(b / 1024) + " КБ" : b < 1073741824 ? (b / 1048576).toFixed(b < 10485760 ? 1 : 0) + " МБ" : (b / 1073741824).toFixed(2) + " ГБ"; }
+function recElapsed(ms) { const s = Math.max(0, Math.floor(ms / 1000)); const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = s % 60; return (h ? h + ":" : "") + String(m).padStart(2, "0") + ":" + String(x).padStart(2, "0"); }
+function recLoad(app, what) {
+  if (!recOn()) return;
+  const jobs = [];
+  if (!what || what.st) jobs.push(NATIVE.rec.state().then(s => { REC.st = s; }));
+  if (!what || what.list) jobs.push(NATIVE.rec.list().then(l => { REC.list = Array.isArray(l) ? l : []; }));
+  if (what && what.sources) jobs.push(NATIVE.rec.sources().then(l => { REC.sources = Array.isArray(l) ? l : []; }));
+  if (what && what.mics) jobs.push(NATIVE.rec.mics().then(l => { REC.mics = Array.isArray(l) ? l : []; }));
+  return Promise.all(jobs).then(() => { REC.loadedAt = Date.now(); if (app && app.route === "tools/rec") paint(app, true); }).catch(() => { });
+}
+function recPatch(app, patch, msg) { return nsetPatch({ rec: patch }, msg).then(() => { if (app.route === "tools/rec") paint(app, true); }); }
+
+V.rec = function (app) {
+  const head = `${crumbs(app, [{ t: "Инструменты", go: "tools" }, { t: "Запись экрана" }])}<h1>${ico("video")} Запись экрана</h1>`;
+  if (!recOn()) return `${head}<p class="sub">Запись экрана и игры со звуком — прямо из программы, без OBS.</p>
+    <div class="card hl"><div class="row nw"><span class="wp-i">${ico("monitor")}</span><div><b>Работает в программе для Windows</b><div class="small muted">${NATIVE ? "Обновите программу: запись появилась в версии 4.1." : "В браузере записи нет. Установите программу — ссылка на сайте проекта."}</div></div></div></div>
+    <div class="card"><b>Что умеет</b><ul class="small"><li>Пишет весь экран или только окно игры, со звуком игры и, по желанию, микрофоном.</li><li>Файл сразу пишется на диск — память не растёт, можно записывать часами.</li><li>«Повтор»: держит последние 1–5 минут; нажали клавишу — последние минуты сохранились в файл. Удобно для доказательств по жалобам.</li><li>MP4 (H.264) — играет везде; если система не умеет, WebM.</li></ul></div>`;
+  const st = REC.st, c = recCfg(), rec = !!(st && st.status === "recording" && st.mode === "rec"), buf = !!(st && st.status === "recording" && st.mode === "replay"), starting = !!(st && st.status === "starting");
+  if (!st || (Date.now() - REC.loadedAt > 1500 && !REC._pending)) { REC._pending = true; Promise.resolve(recLoad(app, { st: 1, list: 1 })).then(() => { REC._pending = false; }); }
+  /* клавиша из настроек; если её сняли — вместо «клавиша не назначена» ссылка туда, где её назначают */
+  const hkKey = id => (NSET.settings && NSET.settings.hotkeys && NSET.settings.hotkeys[id]) || "";
+  const hkSet = `<a class="ref" data-go="tools/overlay">назначить клавишу</a>`;
+  const hk = id => hkKey(id) ? `<kbd>${esc(hkKey(id))}</kbd>` : "";
+  const srcName = c.source ? ((REC.sources || []).find(s => s.id === c.source) || {}).name || (c.source.indexOf("window:") === 0 ? "выбранное окно" : "выбранный экран") : "весь главный экран";
+  const main = rec
+    ? `<section class="card rec-main on"><div class="row sb nw"><div class="row nw"><span class="rec-dot"></span><div><b>Идёт запись</b><div class="small muted">${esc(st.file)} · ${st.w}×${st.h} · ${esc(st.mime.replace(/;.*$/, "").replace("video/", "").toUpperCase())}</div></div></div><b class="timer" data-t="rec-el">${recElapsed(st.elapsed)}</b></div>
+       <div class="row gap"><button class="btn danger big" data-act="rec-stop">${ico("square-stop")}Остановить и сохранить</button><span class="small muted">${hkKey("rec") ? `или ${hk("rec")} в игре` : hkSet}</span><span class="small muted" data-t="rec-size">${recFmtBytes(st.bytes)}</span></div></section>`
+    : `<section class="card rec-main ${starting ? "wait" : ""}"><div class="row sb nw wrap"><div class="row nw"><span class="wp-i">${ico("disc")}</span><div><b>${starting ? "Запускаю запись…" : "Готово к записи"}</b><div class="small muted">Источник: ${esc(srcName)} · ${REC_PRESETS.find(p => p[0] === c.preset)[1]} · ${c.sysAudio !== false ? "звук игры" : "без звука игры"}${c.mic ? " + микрофон" : ""}${buf ? " · идёт буфер повтора" : ""}</div></div></div>
+       <div class="row"><button class="btn gold big" data-act="rec-start" ${starting ? "disabled" : ""}>${ico("circle")}Начать запись</button></div></div>
+       <p class="tiny dim" style="margin:8px 0 0">${hkKey("rec") ? `В игре: ${hk("rec")} — начать или остановить.` : `Клавиша записи не назначена — ${hkSet}.`} Пока идёт запись, в подсказках поверх игры (HUD) горит «● ЗАПИСЬ» и время.</p>${st && st.err ? `<div class="card bad small" style="margin:10px 0 0">${ico("alert")}${esc(st.err)}</div>` : ""}${REC.warn ? `<div class="card warn small" style="margin:10px 0 0">${ico("alert")}${esc(REC.warn)}</div>` : ""}</section>`;
+  const replay = `<section class="card"><div class="row sb nw wrap"><div class="row nw"><span class="wp-i">${ico("rccw")}</span><div><b>Повтор: держать последние минуты</b><div class="small muted">Буфер пишется на диск отрезками по ${c.replayMin} мин и сам затирается. ${hkKey("replay") ? `Нажали ${hk("replay")}` : "Нажали «Сохранить повтор сейчас»"} — последние ${c.replayMin}–${c.replayMin * 2} минут сохранились файлом (двумя файлами: предыдущие минуты и текущие).</div></div></div>
+      <label class="chk" style="margin:0;padding:6px 8px"><input type="checkbox" data-chg="rec-replay" ${c.replay ? "checked" : ""} ${rec ? "disabled" : ""}><div class="ct"><b>Включён</b></div></label></div>
+      <div class="row gap wrap"><span class="small muted">Длина отрезка:</span>${[1, 2, 3, 5].map(n => `<button class="chip ${c.replayMin === n ? "on" : ""}" data-act="rec-set" data-k="replayMin" data-v="${n}">${n} мин</button>`).join("")}<span style="flex:1"></span><button class="btn sm ${buf ? "gold" : ""}" data-act="rec-replay-save" ${buf ? "" : "disabled"}>${ico("save")}Сохранить повтор сейчас</button></div></section>`;
+  const sources = `<section class="card"><div class="row sb nw"><b>${ico("monitor")}Что записывать</b><button class="btn sm ghost" data-act="rec-sources">${ico("refresh")}${REC.sources ? "Обновить список" : "Показать экраны и окна"}</button></div>
+      ${REC.sources ? (REC.sources.length ? `<div class="rec-src">${[{ id: "", name: "Главный экран (как есть)", kind: "screen", thumb: "" }].concat(REC.sources).map(s => `<button class="rec-s ${(c.source || "") === s.id ? "on" : ""}" data-act="rec-set" data-k="source" data-v="${esc(s.id)}" title="${esc(s.name)}">${s.thumb ? `<img src="${s.thumb}" alt="">` : `<span class="rec-ph">${ico(s.kind === "screen" ? "monitor" : "window")}</span>`}<span>${esc(short(s.name, 34))}</span></button>`).join("")}</div>` : `<p class="small muted">Список пуст — попробуйте ещё раз.</p>`) : `<p class="small muted" style="margin:6px 0 0">По умолчанию — главный экран. Окно игры лучше выбирать, когда игра в оконном режиме без рамки: тогда в запись не попадёт лишнее.</p>`}</section>`;
+  const quality = `<section class="card"><b>${ico("sliders")}Качество</b><div class="rec-pre">${REC_PRESETS.map(p => `<button class="rec-p ${c.preset === p[0] ? "on" : ""}" data-act="rec-set" data-k="preset" data-v="${p[0]}" ${rec ? "disabled" : ""}><b>${p[1]}</b><small>${p[2]}</small></button>`).join("")}</div>
+      <div class="row gap wrap"><label class="chk" style="margin:0"><input type="checkbox" data-chg="rec-bool" data-k="sysAudio" ${c.sysAudio !== false ? "checked" : ""} ${rec ? "disabled" : ""}><div class="ct"><b>Звук игры (системный)</b></div></label>
+      <label class="chk" style="margin:0"><input type="checkbox" data-chg="rec-bool" data-k="mic" ${c.mic ? "checked" : ""} ${rec ? "disabled" : ""}><div class="ct"><b>Микрофон</b></div></label>
+      ${c.mic ? `<select data-chg="rec-mic" ${rec ? "disabled" : ""} style="max-width:260px"><option value="">Микрофон по умолчанию</option>${(REC.mics || []).map(m => `<option value="${esc(m.id)}" ${c.micId === m.id ? "selected" : ""}>${esc(m.label)}</option>`).join("")}</select>${REC.mics ? "" : `<button class="btn sm ghost" data-act="rec-mics">Список микрофонов</button>`}` : ""}
+      <label class="chk" style="margin:0"><input type="checkbox" data-chg="rec-bool" data-k="cursor" ${c.cursor !== false ? "checked" : ""} ${rec ? "disabled" : ""}><div class="ct"><b>Курсор</b></div></label></div>
+      <div class="row gap wrap"><span class="small muted">Формат:</span>${[["auto", "Авто (MP4, если умеет система)"], ["mp4", "MP4"], ["webm", "WebM"]].map(f => `<button class="chip ${(c.format || "auto") === f[0] ? "on" : ""}" data-act="rec-set" data-k="format" data-v="${f[0]}" ${rec ? "disabled" : ""}>${f[1]}</button>`).join("")}</div>
+      <p class="tiny dim" style="margin:8px 0 0">Кодирование делает видеокарта, если умеет (H.264). На слабом ПК выбирайте «Экономно» и 30 к/с. Звук игры записывается как слышно в колонках; Discord-разговор тоже попадёт в запись.</p></section>`;
+  const list = REC.list || [];
+  const files = `<section class="card"><div class="row sb nw wrap"><b>${ico("folder-open")}Записи <small class="tag">${list.length}</small></b><div class="row"><button class="btn sm" data-act="rec-folder">${ico("folder-open")}Открыть папку</button><button class="btn sm ghost" data-act="rec-folder-choose">Сменить папку</button>${c.folder ? `<button class="btn sm ghost" data-act="rec-folder-reset">По умолчанию</button>` : ""}</div></div>
+      <div class="tiny dim" style="margin:4px 0 8px">${esc(st ? st.folder : "")}${st && st.free >= 0 ? ` · свободно ${recFmtBytes(st.free * 1048576)}` : ""}</div>
+      ${list.length ? `<div class="rec-list">${list.slice(0, 30).map(f => `<div class="rec-f"><span class="rec-fi">${ico("video")}</span><div class="rec-ft"><b>${esc(f.name)}</b><small>${esc(fmtDate(f.ts))} · ${recFmtBytes(f.size)}</small></div><div class="row"><button class="btn sm" data-act="rec-open" data-n="${esc(f.name)}">${ico("play")}Открыть</button><button class="btn sm ghost danger" data-act="rec-del" data-n="${esc(f.name)}" aria-label="Удалить ${esc(f.name)}">${ico("trash")}</button></div></div>`).join("")}</div>` : `<p class="small muted" style="margin:0">Записей пока нет. Первая появится здесь после «Остановить и сохранить».</p>`}</section>`;
+  return `${head}<p class="sub">Экран или окно игры со звуком — в файл MP4. Файл пишется сразу на диск, память не растёт; «повтор» хранит последние минуты для доказательств.</p>
+    ${hintBox("rec.how", `<ol><li>Выберите, что писать: весь экран или окно игры.</li><li>Нажмите «Начать запись»${hkKey("rec") ? ` или ${hk("rec")} в игре` : ""}. В HUD появится «● ЗАПИСЬ».</li><li>Остановите ${hkKey("rec") ? "той же клавишей" : "кнопкой «Остановить и сохранить»"} — файл в папке «Видео → Помощник Кутузовский».</li></ol><p class="tiny dim">Запись не вмешивается в игру: программа только читает картинку экрана, как это делает OBS.</p>`, { ic: "video", title: "Как это работает" })}
+    ${main}${replay}${sources}${quality}${files}`;
+};
+/* ---------- действия ---------- */
+ACT["rec-start"] = app => { if (!recOn() || REC.busy) return; REC.busy = true; REC.warn = ""; NATIVE.rec.start().then(r => { REC.busy = false; if (r && r.ok === false) toast(app, "Запись не началась: " + (r.why || ""), "bad"); recLoad(app, { st: 1 }); }).catch(() => { REC.busy = false; }); };
+ACT["rec-stop"] = app => { if (!recOn()) return; NATIVE.rec.stop().then(r => { toast(app, r && r.file ? "Сохранено: " + r.file : "Запись остановлена", "ok"); logAct("rec", "Запись экрана: " + (r && r.file ? r.file : "остановлена"), "tools/rec"); recLoad(app, { st: 1, list: 1 }); }); };
+ACT["rec-replay-save"] = app => { if (!recOn()) return; NATIVE.rec.replaySave().then(r => { toast(app, r && r.ok ? "Повтор сохранён: " + (r.files || []).join(", ") : "Повтор не сохранён" + (r && r.why ? ": " + r.why : ""), r && r.ok ? "ok" : "warn"); recLoad(app, { st: 1, list: 1 }); }); };
+ACT["rec-sources"] = app => { recLoad(app, { sources: 1 }); toast(app, "Собираю список экранов и окон…"); };
+ACT["rec-mics"] = app => { recLoad(app, { mics: 1 }); };
+ACT["rec-set"] = (app, el) => { const k = el.getAttribute("data-k"), v = el.getAttribute("data-v"); const patch = {}; patch[k] = k === "replayMin" ? +v : v; recPatch(app, patch, "Сохранено"); };
+CHG["rec-bool"] = (app, el) => { const patch = {}; patch[el.getAttribute("data-k")] = el.checked; recPatch(app, patch); if (el.getAttribute("data-k") === "mic" && el.checked && !REC.mics) recLoad(app, { mics: 1 }); };
+CHG["rec-mic"] = (app, el) => recPatch(app, { micId: el.value });
+CHG["rec-replay"] = (app, el) => recPatch(app, { replay: el.checked }, el.checked ? "Повтор включён: буфер пишется в папку записей (_буфер)" : "Повтор выключен").then(() => setTimeout(() => recLoad(app, { st: 1 }), 900));
+ACT["rec-open"] = (app, el) => { NATIVE.rec.open(el.getAttribute("data-n")).then(ok => { if (!ok) toast(app, "Файл не найден", "bad"); }); };
+ACT["rec-del"] = (app, el) => { const n = el.getAttribute("data-n"); confirmBox(app, "Удалить запись «" + n + "»?", "Удалить", () => NATIVE.rec.remove(n).then(ok => { toast(app, ok ? "Удалено" : "Не удалось удалить", ok ? "ok" : "bad"); recLoad(app, { list: 1 }); }), true); };
+ACT["rec-folder"] = app => { NATIVE.rec.folder(); };
+ACT["rec-folder-choose"] = app => { NATIVE.rec.chooseFolder().then(f => { if (f) { toast(app, "Папка записей: " + f, "ok"); recLoad(app, { st: 1, list: 1 }); } }); };
+ACT["rec-folder-reset"] = app => { NATIVE.rec.resetFolder().then(() => recLoad(app, { st: 1, list: 1 })); };
+/* ---------- события оболочки и секундный тик ---------- */
+function recEvent(ev) {
+  if (!ev) return;
+  if (ev.type === "rec") { REC.st = ev.state || REC.st; APPS.forEach(a => { if (a.route === "tools/rec") paint(a, true); else recBadge(a); }); if (ev.state && ev.state.status === "idle" && ev.state.last) recLoad(null, { list: 1 }); }
+  else if (ev.type === "rec-warn") { REC.warn = ev.why || ""; APPS.forEach(a => { if (a.route === "tools/rec") paint(a, true); }); }
+}
+function recBadge(app) {
+  if (app.mini) return;
+  const st = REC.st, on = !!(st && st.status === "recording" && st.mode === "rec");
+  let b = app.root.querySelector('[data-t="top-rec"]');
+  if (!on) { if (b) b.remove(); return; }
+  if (!b) { const top = app.root.querySelector(".top"); if (!top) return; b = app.doc.createElement("button"); b.className = "tbadge rec"; b.setAttribute("data-t", "top-rec"); b.setAttribute("data-go", "tools/rec"); b.title = "Идёт запись экрана — открыть"; top.insertBefore(b, top.querySelector(".tbadge")); }
+  const t = "● " + recElapsed(Date.now() - st.startedAt); if (b.textContent !== t) b.textContent = t;
+}
+function tickRec(app) {
+  if (!recOn() || !REC.st) return;
+  const st = REC.st;
+  if (st.status === "recording") {
+    const el = app.root.querySelector('[data-t="rec-el"]'); if (el) el.textContent = recElapsed(Date.now() - st.startedAt);
+    if (Date.now() - REC.loadedAt > 5000 && !app.mini) { REC.loadedAt = Date.now(); NATIVE.rec.state().then(s => { if (s) { REC.st = s; const sz = app.root.querySelector('[data-t="rec-size"]'); if (sz) sz.textContent = recFmtBytes(s.bytes); } }).catch(() => { }); }
+  }
+  recBadge(app);
+}
+
+/* ================================================================
    ПАКЕТ «АРМИЯ» — виды и действия, которых нет в общем ядре. Загружается последним (после boot.js).
    • «С кем взаимодействуем» (матрица ведомств + «кому передавать?» по номеру статьи УК)
    • «УК: воинские статьи» (буква В, глава 8)        • «Сила и оружие: светофор»
@@ -10830,10 +11414,9 @@ function handVerdict(q) {
 }
 function handQuickHTML(app) {
   const q = app.ui.handQ || "";
-  return `<div class="card whoq"><div class="row nw" style="align-items:flex-start"><span class="wp-i">${ico("circle-help")}</span><div style="flex:1;min-width:0"><b>Кому передавать задержанного?</b>
-    <div class="small muted">Введите номер статьи УК — покажу ведомство по букве подследственности и что делать дальше (${rich("[[vs:26]]")}, ${rich("[[uk:5.12]]")}).</div>
-    <div class="searchbox" style="margin:8px 0 0"><span class="si">${ico("search")}</span><input type="search" inputmode="decimal" data-bind="hand-q" value="${esc(q)}" placeholder="Например: 8.2 или 12.1" autocomplete="off" aria-label="Номер статьи Уголовного кодекса"></div>
-    <div data-hand-res aria-live="polite">${handVerdict(q)}</div></div></div></div>`;
+  return `<div class="card whoq qline"><div class="ql-row"><span class="wp-i">${ico("circle-help")}</span><label for="hand-q"><b>Кому передавать задержанного?</b><span class="small muted"> — номер статьи УК (${rich("[[vs:26]]")}, ${rich("[[uk:5.12]]")})</span></label>
+    <div class="searchbox"><span class="si">${ico("search")}</span><input id="hand-q" type="search" inputmode="decimal" data-bind="hand-q" value="${esc(q)}" placeholder="Например: 8.2" autocomplete="off" aria-label="Номер статьи Уголовного кодекса"></div></div>
+    <div data-hand-res aria-live="polite">${handVerdict(q)}</div></div>`;
 }
 BIND["hand-q"] = (app, el) => {
   app.ui.handQ = el.value;
@@ -10842,8 +11425,9 @@ BIND["hand-q"] = (app, el) => {
 ACT["hand-protocol"] = (app, el) => { const a = getArt(el.getAttribute("data-id")); if (!a) return; bkOpenFrom(app, "protocol", { art: [a.id] }, "вопроса «кому передавать» (" + artLabel(a) + ")"); };
 
 PACK.lawsExtra = function (app) {
-  const link = (go, ic, t, d) => `<div class="card hl click" data-go="${go}"><div class="row nw"><span class="wp-i">${ico(ic)}</span><div><b>${t}</b><div class="small muted">${d}</div></div></div></div>`;
-  return handQuickHTML(app) + `<div class="lawlinks">${link("who", "users", "С кем взаимодействуем", "ФСБ, МВД, ГИБДД, СК, прокуратура, суд: кому передавать, кого уведомлять")}${link("uk", "gavel", "УК: воинские статьи", "Глава 8 и статьи с буквой В; фильтр по буквам Ф, Р, В, С")}${link("force", "alert", "Сила и оружие: светофор", "Можно · с условиями · нельзя — по ст. 18, 30, 31 и ПК")}${link("matrix", "grid", "Игра — закон — нельзя", "Кнопка в планшете есть — право только по закону")}</div>`;
+  /* 4.1: разделы части теперь в левом меню («Часть»), здесь — короткий ряд ссылок */
+  const link = (go, ic, t, d) => `<button class="chip" data-go="${go}" data-tip="${esc(d)}">${ico(ic)}${t}</button>`;
+  return handQuickHTML(app) + `<div class="lawlinks chips">${link("who", "users", "С кем взаимодействуем", "ФСБ, МВД, ГИБДД, СК, прокуратура, суд: кому передавать, кого уведомлять")}${link("uk", "gavel", "УК: воинские статьи", "Глава 8 и статьи с буквой В; фильтр по буквам Ф, Р, В, С")}${link("force", "alert", "Сила и оружие", "Можно · с условиями · нельзя — по ст. 18, 30, 31 и ПК")}${link("matrix", "grid", "Игра — закон — нельзя", "Кнопка в планшете есть — право только по закону")}</div>`;
 };
 
 /* ---------- «С кем взаимодействуем» ---------- */
@@ -10894,7 +11478,7 @@ V.uk = function (app) {
   return `${crumbs(app, [{ t: "Законы", go: "laws" }, { t: "УК: воинские статьи" }])}
   <h1>⚖️ УК: воинские статьи и буква В</h1>
   <p class="sub">Буква В у статьи — компетенция военной полиции (${rich("[[uk:5.12]]")}): задержать вправе, но наказание не назначаете и следствие не ведёте — передаёте (${rich("[[vs:25]]")} ч. 3, ${rich("[[vs:26]]")}). Воинские преступления — глава 8 УК (${mil} статей). Несколько букв = любое из ведомств.</p>
-  <div class="card"><div class="row">${L.map(l => `<span class="chip ${st.letters.indexOf(l[0]) >= 0 ? "on" : ""}" data-act="uk-letter" data-v="${l[0]}"><span class="jur ${JUR[l[0]].cls}">${l[0]}</span> ${l[1]}</span>`).join("")}<span class="chip" data-act="uk-letter" data-v="">Все</span><span class="chip ${st.ch8 ? "on" : ""}" data-act="uk-ch8">Только глава 8</span></div>
+  <div class="card ukf sticky-f"><div class="row">${L.map(l => `<span class="chip ${st.letters.indexOf(l[0]) >= 0 ? "on" : ""}" data-act="uk-letter" data-v="${l[0]}"><span class="jur ${JUR[l[0]].cls}">${l[0]}</span> ${l[1]}</span>`).join("")}<span class="chip" data-act="uk-letter" data-v="">Все</span><span class="chip ${st.ch8 ? "on" : ""}" data-act="uk-ch8">Только глава 8</span></div>
   <div class="row gap"><span class="small muted">Звёзды:</span>${[0, 1, 2, 3, 4, 5].map(n => `<span class="chip ${st.stars === n ? "on" : ""}" data-act="uk-stars" data-v="${n}">${n ? n + "★" : "Все"}</span>`).join("")}</div>
   <div class="row gap"><span class="small muted">Судимость:</span>${[["", "Неважно"], ["no", "Нет записи"], ["yes", "Есть запись"]].map(f => `<span class="chip ${st.rec === f[0] ? "on" : ""}" data-act="uk-rec" data-v="${f[0]}">${f[1]}</span>`).join("")}<span class="small muted" style="margin-left:8px">Порядок:</span><span class="chip ${st.sort === "n" ? "on" : ""}" data-act="uk-sort" data-v="n">по номеру</span><span class="chip ${st.sort === "stars" ? "on" : ""}" data-act="uk-sort" data-v="stars">по звёздам</span></div></div>
   <div class="searchbox"><span class="si">${ico("search")}</span><input type="search" data-filter=".uklist" placeholder="Слово или номер внутри этого списка…" autocomplete="off"></div>
@@ -11004,8 +11588,8 @@ V.base = function (app) {
   ${next}${tzNote}
   <div class="card"><div class="row sb"><b>${ico("calendar")}График нападений и обороны</b><span class="tiny ${cfg.edited ? "gold" : "muted"}">${cfg.edited ? "изменено вами" : "из темы от " + esc(cfg.at)}</span></div>
     <div class="kv"><b>Дни</b><span>${cfg.days.map(d => DAY_N[d]).join(", ")}</span><b>Время</b><span>${cfg.win.map(w => esc(w[0]) + "–" + esc(w[1])).join(" и ")} (${esc(cfg.tz === "Europe/Moscow" ? "МСК" : cfg.tz)}); час отдыха ${esc(cfg.rest[0])}–${esc(cfg.rest[1])} — нападение запрещено (${rich("[[base:1.2]]")})</span>
-    <b>Лимит криминала</b><span>не более ${cfg.crim} человек; превышение — Demorgan 60 минут и выговор лидеру (${rich("[[base:1.4]]")}). ⚠ Расхождение источников: в общих правилах Форта базовый максимум 50 (меняется ГА/ЗГА), в неофициальной копии — 80; главный источник — тема Кутузовского (CONFLICTS C-09).</span>
-    <b>Air Drop</b><span>любые IC-союзы запрещены: Demorgan 90–120 минут и выговор лидеру (${rich("[[base:2.1]]")}). Остальной текст темы (роли, порядок Air Drop) инструменту не открылся — ❓ GAP G-06, сверьте на форуме.</span></div>
+    <b>Лимит криминала</b><span>не более ${cfg.crim} человек; превышение — Demorgan 60 минут и выговор лидеру (${rich("[[base:1.4]]")}). ⚠ Расхождение источников: в общих правилах Форта базовый максимум 50 (меняется ГА/ЗГА), в неофициальной копии — 80; главный источник — тема Кутузовского на форуме.</span>
+    <b>Air Drop</b><span>любые IC-союзы запрещены: Demorgan 90–120 минут и выговор лидеру (${rich("[[base:2.1]]")}). Роли и порядок Air Drop в программе не приведены — сверьте в теме на форуме.</span></div>
     <div class="row gap"><button class="btn sm" data-act="base-edit">${ico("edit")}Настроить график</button><button class="btn sm" data-go="d/base">${ico("book")}Пересказ темы</button><button class="btn sm" data-go="d/pf">${ico("book")}Правила Форта</button></div></div>
   ${form}
   <h2>${ico("package")}Точки материалов</h2>
@@ -11052,7 +11636,7 @@ const ARMY_UNITS = [
   { id: "cmd", t: "Командование", s: "Руководитель Вооружённых сил (командир части), заместители, командиры подразделений. Структуру подразделений определяет Руководитель.", st: "confirmed", refs: ["vs:8", "vs:10", "vs:11"], tools: [["blanks/order", "Приказ"], ["tools/cases", "Журнал смены"]], learn: ["l12", "l2"], scn: ["s_order", "s_promotion", "s_transfer"] },
   { id: "guard", t: "Караульная служба", s: "Охрана территории, КПП, складов вооружения и техники, важных объектов. Посты, смены и состав — командир и уставы.", st: "confirmed", refs: ["vs:19", "vs:16", "vs:17", "vs:18"], tools: [["tools/duty", "Караул и пост"], ["blanks/guard", "Доклад о заступлении"], ["tools/phrases", "Фразы для КПП"]], learn: ["l4", "l5"], scn: ["s_post_take", "s_kpp_access", "s_intruder"] },
   { id: "mp", t: "Военная полиция", s: "Воинская дисциплина, безопасность территории, внутренние проверки, розыск самовольно отсутствующих, охрана имущества, содействие караулу. Расследование не ведёт.", st: "confirmed", refs: ["vs:23", "vs:24", "vs:27"], tools: [["tools/det", "Задержание и передача"], ["blanks/protocol", "Протокол передачи"], ["blanks/memo", "Служебная записка"]], learn: ["l8", "l9"], scn: ["s_mp_check", "s_mp_awol", "s_mp_scene"] },
-  { id: "rosg", t: "Отдел «Росгвардия»", s: "Патрулирует улицы для охраны общественного порядка и безопасности; нарушителей передаёт МВД или ФСБ. Пункт добавлен в правила 25.10.2026; в законе о ВС такого отдела нет (CONFLICTS C-05).", st: "confirmed", refs: ["rules_upd:6.2.1", "vs:4"], tools: [["tools/det", "Задержание и передача"], ["tools/phrases", "Фразы"]], learn: ["l6", "l1"], scn: ["s_handover", "s_outside"], flag: "расхождение источников" },
+  { id: "rosg", t: "Отдел «Росгвардия»", s: "Патрулирует улицы для охраны общественного порядка и безопасности; нарушителей передаёт МВД или ФСБ. Пункт добавлен в правила 25.10.2026; в законе о ВС такого отдела нет — ориентируйтесь на правила.", st: "confirmed", refs: ["rules_upd:6.2.1", "vs:4"], tools: [["tools/det", "Задержание и передача"], ["tools/phrases", "Фразы"]], learn: ["l6", "l1"], scn: ["s_handover", "s_outside"], flag: "расхождение источников" },
   { id: "vk", t: "Военный комиссариат (ВК)", s: "Воинский учёт, призыв, контракты, взаимодействие с призывниками — по неофициальному Уставу внутренней службы.", st: "unverified", refs: ["ust_vs:2.1"], tools: [["blanks/report", "Рапорт"]], learn: ["l3"], scn: ["s_uniform"] },
   { id: "gru", t: "Главное разведывательное управление (ГРУ)", s: "Разведка: патрули на личном транспорте и в гражданской одежде — по неофициальному уставу.", st: "unverified", refs: ["ust_vs:2.1"], tools: [], learn: ["l1"], scn: ["s_outside"] },
   { id: "vms", t: "Военно-медицинская служба (ВМС)", s: "Проверка мед. справок, санитары на боевых задачах, лекции — по неофициальному уставу.", st: "unverified", refs: ["ust_vs:2.1"], tools: [], learn: ["l10"], scn: ["s_base_attack"] },
@@ -11090,9 +11674,9 @@ V.units = function (app) {
   const list = unitsAll(), shown = app.ui.unitsOff ? list : list.filter(u => u.on), offN = list.filter(u => !u.on).length;
   return `${crumbs(app, [{ t: "Подразделения и звания" }])}
   <h1>${ico("list")} Подразделения и звания</h1>
-  <p class="sub">Справочник части. Подтверждено законом или правилами: командование (ст. 8–11), караул (ст. 19), военная полиция (ст. 23–24), отдел «Росгвардия» (п. 6.2.1 правил). Остальные подразделения известны только из неофициального устава — они отмечены «не сверено». Отделы можно переименовать, выключить или добавить свои; удалённое управление из Центра управления — в следующих версиях.</p>
+  <p class="sub">Справочник части. Подтверждено законом или правилами: командование (ст. 8–11), караул (ст. 19), военная полиция (ст. 23–24), отдел «Росгвардия» (п. 6.2.1 правил). Остальные подразделения известны только из неофициального устава — они отмечены «не сверено». Отделы можно переименовать, выключить или добавить свои.</p>
   ${hintBox("units.how", `<p>Кнопка ${ico("eye-off")} убирает отдел из списка (если в вашей части его нет), ${ico("edit")} — название как у вас, кто и когда утвердил. Свои отделы добавляются кнопкой ниже и получают статус «предложение», пока их не утвердят по п. 2.7 правил.</p>`, { title: "Как вести справочник" })}
-  <div class="row gap"><button class="btn gold sm" data-act="unit-add">${ico("plus")}Добавить подразделение</button><label class="chk sm"><input type="checkbox" data-chg="units-off" ${app.ui.unitsOff ? "checked" : ""}><div class="ct"><b>Показывать выключенные</b></div></label><button class="btn ghost sm" data-act="units-export">${ico("download")}Экспорт</button><button class="btn ghost sm" data-act="units-import">${ico("upload")}Импорт</button></div>
+  <div class="row gap"><button class="btn gold sm" data-act="unit-add">${ico("plus")}Добавить подразделение</button><label class="chk sm"><input type="checkbox" data-chg="units-off" ${app.ui.unitsOff ? "checked" : ""}><div class="ct"><b>Показывать выключенные</b></div></label><button class="btn ghost sm" data-act="units-export">${ico("download")}Сохранить в файл</button><button class="btn ghost sm" data-act="units-import">${ico("upload")}Открыть из файла</button></div>
   ${shown.map(u => unitCard(app, u)).join("")}
   ${offN && !app.ui.unitsOff ? `<div class="card small muted">${ico("info")}Выключено подразделений: ${offN} — это отделы из неофициального устава и предложения. Включите «Показывать выключенные» и ${ico("eye")}, если они есть в вашей части.</div>` : ""}
   <h2>${ico("medal")}Лестница званий <span class="tag warn">не сверено</span></h2>
@@ -11128,13 +11712,13 @@ ACT["units-import-go"] = app => {
 
 /* ---------- «Игра — закон — нельзя» ---------- */
 const ARMY_MATRIX = [
-  { g: "Розыск (кнопка в планшете)", l: "ВС — не орган общей полиции; ВП разыскивает только самовольно отсутствующих военнослужащих", n: "Объявлять граждан в розыск по общеуголовным делам", r: ["vs:4", "vs:24"], flag: "C-03" },
-  { g: "Штраф (кнопка в планшете)", l: "ВС не назначают уголовное или административное наказание без прямого полномочия закона", n: "Выписывать штрафы гражданам — материалы передаются МВД", r: ["vs:25", "vs:26"], flag: "C-03" },
+  { g: "Розыск (кнопка в планшете)", l: "ВС — не орган общей полиции; ВП разыскивает только самовольно отсутствующих военнослужащих", n: "Объявлять граждан в розыск по общеуголовным делам", r: ["vs:4", "vs:24"], flag: "спорно" },
+  { g: "Штраф (кнопка в планшете)", l: "ВС не назначают уголовное или административное наказание без прямого полномочия закона", n: "Выписывать штрафы гражданам — материалы передаются МВД", r: ["vs:25", "vs:26"], flag: "спорно" },
   { g: "Обыск инвентаря (G → Обыск)", l: "Досмотр на входе — мера режима, не обыск; принудительный обыск — только при самостоятельном основании; первичный обыск — при задержании", r: ["vs:17", "vs:24", "pk:II-2.4"], n: "Обыскивать без задержания и без основания" },
   { g: "Наручники (6)", l: "Применяются при задержании по ст. 25 и ПК", n: "Сковывать без задержания", r: ["vs:25", "pk:II-2"] },
   { g: "Вести за собой / пристегнуть (7, 8)", l: "Доставка и передача задержанного компетентному органу без необоснованной задержки", n: "Возить задержанного по городу вместо передачи; затягивать задержание", r: ["vs:26", "rules:6.2", "rules:1.4"] },
   { g: "Остановка транспорта в городе", l: "Полномочий дорожного надзора нет; остановка — только по основаниям ПК", n: "Останавливать машины «для проверки»", r: ["vs:28", "vs:4", "pk:XI-6"] },
-  { g: "Патруль по городу", l: "Выход за территорию — по перечню ст. 28 (учения, перевозки, содействие, ЧП/ВП, преследование); отдел «Росгвардия» патрулирует по правилам сервера", n: "Повседневное патрулирование города вне перечня", r: ["vs:28", "vs:4", "rules_upd:6.2.1"], flag: "C-05" },
+  { g: "Патруль по городу", l: "Выход за территорию — по перечню ст. 28 (учения, перевозки, содействие, ЧП/ВП, преследование); отдел «Росгвардия» патрулирует по правилам сервера", n: "Повседневное патрулирование города вне перечня", r: ["vs:28", "vs:4", "rules_upd:6.2.1"], flag: "спорно" },
   { g: "Задержание в городе", l: "Основания ст. 25; по правилам — на территории Форта или около него и при нарушениях в отношении сотрудников армии", n: "Задерживать вне территории без основания", r: ["vs:25", "rules:6.2"] },
   { g: "Оружие со склада", l: "Выдача по задачам и под учёт; сохранность — на военнослужащем", n: "Передавать оружие постороннему, личные цели", r: ["vs:20"] },
   { g: "Техника из парка", l: "Только допущенные должностью, приказом или подготовкой", n: "Личные цели, управление без допуска", r: ["vs:21"] },
@@ -11142,7 +11726,7 @@ const ARMY_MATRIX = [
   { g: "Выстрел", l: "Смертельная сила — только при непосредственной угрозе смерти или тяжкого вреда", n: "Предупредительные выстрелы; стрелять за побег, режим, отказ, попытку уехать", r: ["vs:30", "pk:XI-5"] }
 ];
 V.matrix = function (app) {
-  const row = m => { const arts = m.r.map(getArt).filter(Boolean); return `<tr><td><b>${esc(m.g)}</b>${m.flag ? `<div><span class="tag warn" title="Расхождение источников: см. CONFLICTS ${m.flag}">спорно · ${m.flag}</span></div>` : ""}</td><td>${esc(m.l)}<div class="row gap tiny">${arts.map(a => `<a class="ref" data-go="a/${esc(enc(a.id))}">${esc(artShort(a))}</a>`).join("")}</div></td><td class="bad-t">${esc(m.n)}</td></tr>`; };
+  const row = m => { const arts = m.r.map(getArt).filter(Boolean); return `<tr><td><b>${esc(m.g)}</b>${m.flag ? `<div><span class="tag warn" title="Источники расходятся: закон и правила сервера говорят разное — главнее форум">источники расходятся</span></div>` : ""}</td><td>${esc(m.l)}<div class="row gap tiny">${arts.map(a => `<a class="ref" data-go="a/${esc(enc(a.id))}">${esc(artShort(a))}</a>`).join("")}</div></td><td class="bad-t">${esc(m.n)}</td></tr>`; };
   return `${crumbs(app, [{ t: "Законы", go: "laws" }, { t: "Игра — закон — нельзя" }])}
   <h1>${ico("grid")} Игра — закон — нельзя</h1>
   <p class="sub">В планшете у Армии те же кнопки, что у МВД: розыск, штраф, обыск, наручники. Закон о Вооружённых силах даёт меньше, чем игра (${rich("[[vs:4]]")}). Правило модуля: <b>кнопка есть — право только по закону</b>. Отметка «спорно» — расхождение источников, разобранное в журнале конфликтов.</p>
@@ -11165,7 +11749,7 @@ const ARMY_NAV = [
   { id: "pt3", t: "Точка 3 (оружейные)", g: "points", st: "todo", src: "тема ПБ-К п. 1.3" }, { id: "pt4", t: "Точка 4 (оружейные)", g: "points", st: "todo", src: "тема ПБ-К п. 1.3" },
   { id: "pt5", t: "Точка 5 (медикаменты)", g: "points", st: "todo", src: "тема ПБ-К п. 1.3" }, { id: "pt6", t: "Точка 6 (медикаменты)", g: "points", st: "todo", src: "тема ПБ-К п. 1.3" },
   { id: "carrier", t: "«Авианосец» (оружейные материалы, по воздуху)", g: "points", st: "todo", src: "правила перехвата поставок п. 3.1" },
-  { id: "airdrop", t: "Место Air Drop", g: "points", st: "todo", src: "тема ПБ-К (часть текста не открылась — GAP G-06)" },
+  { id: "airdrop", t: "Место Air Drop", g: "points", st: "todo", src: "тема «База Кутузовского» на форуме (в программу текст не перенесён)" },
   { id: "fsb", t: "ФСБ — пункт передачи задержанных", g: "gov", st: "todo", src: "ст. 26 ФЗ о ВС; адрес здания — проверить в игре" },
   { id: "mvd", t: "МВД — пункт передачи задержанных", g: "gov", st: "todo", src: "ст. 26 ФЗ о ВС; адрес здания — проверить в игре" },
   { id: "sk", t: "Следственный комитет", g: "gov", st: "todo", src: "ст. 26 ФЗ о ВС" },
@@ -11195,7 +11779,7 @@ V.nav = function (app) {
     ${near.length ? `<ol class="small" style="margin:6px 0 0;padding-left:1.2em">${near.map(n => `<li><b>${esc(n.m.t)}</b> — ${Math.round(n.d)} м</li>`).join("")}</ol>` : `<p class="tiny dim" style="margin:6px 0 0">Введите координаты — покажу три ближайшие метки с известными координатами (расстояние по карте, без высоты).</p>`}</div>
   <div class="row gap"><span class="chip ${!f ? "on" : ""}" data-act="nav-g" data-v="">Все</span>${Object.keys(NAV_G).map(k => `<span class="chip ${f === k ? "on" : ""}" data-act="nav-g" data-v="${k}">${NAV_G[k]}</span>`).join("")}<button class="btn ghost sm" data-act="nav-add">${ico("plus")}Своя метка</button></div>
   ${shown.map(row).join("")}
-  <p class="tiny dim gap">Координаты точек базы, Air Drop и зданий госструктур в открытых источниках не опубликованы (GAPS G-08). Проверенные в игре значения можно внести здесь и поделиться экспортом справочника.</p>`;
+  <p class="tiny dim gap">Координаты точек базы, Air Drop и зданий госструктур в открытых источниках не опубликованы. Проверенные в игре значения можно внести здесь и поделиться экспортом справочника.</p>`;
 };
 ACT["nav-g"] = (app, el) => { app.ui.navG = el.getAttribute("data-v"); paint(app, true); };
 BIND["nav-pos"] = (app, el) => { const v = parseFloat(String(el.value).replace(",", ".")); S.packState.myPos = S.packState.myPos || { x: null, y: null }; S.packState.myPos[el.getAttribute("data-k")] = isFinite(v) ? v : null; };
@@ -11272,6 +11856,12 @@ V.about = function (app) {
   <p class="sub">${esc(PACK.intro)}. Не вмешивается в игру и не отправляет ваши данные: с сайта проекта программа только скачивает список доступа и обновления.</p>
   <div class="card warn"><b>Важно.</b> Это неофициальная сводка. Тексты законов — копии, сверенные с официальной вики по структуре (дата сборки — ноябрь 2026); правила сервера — копии до 25.10.2026 и пересказы; уставы — неофициальные копии, не сверены. Игровые законы меняются: если текст расходится с форумом, <b>прав форум</b>. Сомневаетесь — спросите командира.</div>
   ${typeof accCard === "function" ? accCard() : ""}
+  <h2>Что нового в версии ${APP_VERSION}</h2>
+  <div class="card"><ul style="margin:0;padding-left:1.1em">
+    <li><b>Запись экрана и повтор</b> (<a class="ref" data-go="tools/rec">Инструменты → Запись экрана</a>): экран или окно игры со звуком — в MP4, <kbd>Alt</kbd>+<kbd>R</kbd> — начать и остановить, <kbd>Alt</kbd>+<kbd>K</kbd> — сохранить последние минуты.</li>
+    <li><b>«Спросить»</b> (<a class="ref" data-go="ask">открыть</a>): вопрос своими словами — ответ из законов, ситуаций и словаря модуля с цитатой и номером статьи. Ничего не выдумывает, работает без интернета.</li>
+    <li><b>Понятнее</b>: внутренние коды источников заменены пометками «спорно» и «источники расходятся», меню в одну строку с группой «Часть», подсказки сворачиваются сами.</li>
+    <li><b>Быстрее</b>: главная рисуется почти вдвое быстрее; для слабых ПК — «Экономный режим графики» (Настройки → Вид).</li></ul></div>
   <h2>Что в модуле «Армия»</h2>
   <div class="card"><ul style="margin:0;padding-left:1.1em">
     <li><b>Ситуации по шагам</b> — КПП, караул, задержание и передача, сила и оружие, военная полиция, база и поставки, ЧП и ВП, служба. Каждый шаг со ссылкой на статью.</li>
@@ -11382,7 +11972,7 @@ function tabConflict(app, raw) {
     <p>Помощник открыт в двух вкладках, и документ «${esc(TAB_CONFLICT.name)}» правили и здесь, и там. Какую версию оставить?</p>
     <ul class="small"><li><b>Оставить мою</b> — версия из другой вкладки будет заменена этой.</li><li><b>Взять из другой вкладки</b> — правки, сделанные здесь, пропадут.</li></ul>
     <p class="tiny dim">Остальные данные (настройки, другие документы) обновятся в любом случае. Не уверены — сначала скачайте копию, она ничего не меняет.</p>
-    <div class="row gap2" style="justify-content:flex-end"><button class="btn ghost" data-act="export">${ico("download")}Скачать мои данные</button><button class="btn" data-act="tab-keep-mine">Оставить мою</button><button class="btn gold" data-act="tab-take-theirs" data-autofocus>Взять из другой вкладки</button></div>`);
+    <div class="row gap2" style="justify-content:flex-end"><button class="btn ghost" data-act="export">${ico("download")}Сохранить мои данные в файл</button><button class="btn" data-act="tab-keep-mine">Оставить мою</button><button class="btn gold" data-act="tab-take-theirs" data-autofocus>Взять из другой вкладки</button></div>`);
   return "ask";
 }
 function tabApply(raw) { try { normalizeState(JSON.parse(raw)); registerMyDocs(); applyLook(); return true; } catch (err) { return false; } }
@@ -11447,6 +12037,8 @@ ACT["tab-take-theirs"] = app => {
     try { wizAuto(main); } catch (e) { console.error(e); }
     UPD.start();
     nativeInit().then(nativeBootOk, nativeBootOk);
+    /* 4.1: индекс поиска строится в простое — первый вопрос «Спросить» и первый поиск отвечают мгновенно */
+    try { (window.requestIdleCallback || (f => setTimeout(f, 1200)))(() => { try { if (!IDX) buildIndex(); } catch (e) { } }); } catch (e) { }
   } catch (err) {
     root.innerHTML = '<div style="padding:24px;font:16px/1.5 system-ui,sans-serif;color:#fff;background:#241013;border:1px solid #7d2f35;margin:24px;border-radius:12px"><b>Не удалось запустить помощник.</b><p>Попробуйте открыть файл в свежем Google Chrome или Microsoft Edge. Если не помогло — пришлите разработчику этот текст:</p><pre style="white-space:pre-wrap">' + String(err && err.stack || err).replace(/</g, "&lt;") + "</pre></div>";
     console.error(err);
