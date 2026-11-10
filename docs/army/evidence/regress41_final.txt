@@ -1,0 +1,81 @@
+# Регрессия 4.1.0 — начало 2026-11-10 11:20:46 CET
+## артефакты (sha256)
+   806a88ef7166475a4f2638548fdd8a213d619eb6ac6a22638b2dfce011fe0d45  release/FSB-Helper-Setup.exe
+   b131a9daa907df848b803815082a60fe15d09430e8eca0b891f516325389b3bc  shell/app.html
+   fd6c6a42f49bd78f6698474f7159dc007f8b9273354561be9563faba386dee75  shell/app_army.html
+   61c1e9fed040fd69378fe30098dda460be757f4ab68a4e720b15c1f4f9dabe7e  dist/FSB-Helper-Kutuzovsky.html
+   f40948c44c0b9f46f173ef9ad24d68e3891a3b4cb7de54f23b13bd555850b481  dist/Army-Helper-Kutuzovsky.html
+   bb6309c46f8759d416952ee34a44dc5d4c333aece6db19e492c37b0236fecc90  control/FSB-Control-Center.html
+   bb9a740a333cef7e7407b1c3607bf92ba22d6e5197fdf71d58802222835afc79  site/version.json
+   ad666b0a2c2c9db7d82a3f87215f62a3d13d2c20b28d31eb0337ffb1aafb00a0  site/index.html
+## A. страница ФСБ
+PASS | t_core | 19 с | ИТОГО: ok 51, FAIL 0
+PASS | t_v32 | 4 с | ИТОГО: 24 ok, 0 fail
+PASS | t_v32b | 85 с | ИТОГО: 77 ok, 0 fail
+PASS | t_v32c | 69 с | ИТОГО: ok 131, FAIL 0
+PASS | t_v32d | 18 с | ИТОГО: ok 29, FAIL 0
+PASS | t_v32e | 39 с | ИТОГО: ok 111, FAIL 0
+PASS | t_v32f | 17 с | ИТОГО: ok 44, FAIL 0
+PASS | t_v32g | 8 с | ИТОГО: ok 17, FAIL 0
+PASS | t_v34a | 11 с | ИТОГО: ok 19, FAIL 0
+PASS | t_v361 | 10 с | 15 ok, 0 fail
+PASS | t_bank | 1 с | ИТОГО: ok 7, FAIL 0
+PASS | t_blanks | 39 с | ИТОГО: ok 59, FAIL 0
+PASS | t_data | 30 с | ИТОГО: ok 55, FAIL 0
+PASS | t_exam | 54 с | ИТОГО: ok 42, FAIL 0
+PASS | t_monkey | 80 с | 6 ok, 0 fail
+PASS | t_native | 13 с | 40 ok, 0 fail
+PASS | t_resp | 126 с | ИТОГО: ok 14, FAIL 0
+PASS | t_search35 | 6 с | ИТОГО: ok 24, FAIL 0
+PASS | t_shift | 11 с | ИТОГО: ok 15, FAIL 0
+PASS | t_tpl | 14 с | ИТОГО: ok 21, FAIL 0
+PASS | t_updater33 | 0 с | ИТОГО: ok 7, FAIL 0
+PASS | t_cc34 | 46 с | 87 ok, 0 fail
+PASS | t_cc_faction | 9 с | 37 ok, 0 fail
+PASS | t_ask | 5 с | ИТОГО: ok 37, FAIL 0
+PASS | t_ui41 | 31 с | ИТОГО: ok 26, FAIL 0
+## B. модуль «Армия» и изоляция модулей
+PASS | t_army_content | 33 с | ИТОГО: ok 82, FAIL 0
+PASS | t_army_exam | 70 с | ИТОГО: ok 32, FAIL 0
+PASS | t_isolation | 10 с | ИТОГО: ok 38, FAIL 0
+## C. сайт
+PASS | t_site41 | 6 с | ИТОГО: ok 35, FAIL 0
+## D. оболочка — модули
+PASS | shell_auth_test | 2 с | ИТОГО: ok 72, FAIL 0
+PASS | shell_faction_test | 0 с | 34 ok, 0 fail
+PASS | shell_main_test | 15 с | 98 ok, 0 fail
+PASS | shell_settings_test | 0 с | ИТОГО: ok 17, FAIL 0
+PASS | shell_updater_test | 1 с | 31 ok, 0 fail
+PASS | shell_updater_pages_test | 0 с | 13 ok, 0 fail
+PASS | shell_requests_test | 1 с | ИТОГО: ok 71, FAIL 0
+PASS | shell_persist_test | 2 с | ИТОГО: ok 26, FAIL 0
+PASS | shell_reconcile_test | 0 с | ИТОГО: ok 12, FAIL 0
+## E. Electron e2e (настоящий Electron под xvfb)
+PASS | e2e_electron | 34 с | 17 ok, 0 fail
+PASS | e2e_overlay | 24 с | ИТОГО: 28 ok, 0 fail
+PASS | e2e_password | 42 с | 22 ok, 0 fail
+FAIL(rc=2) | e2e_update | 1 с | 
+PASS | e2e_relay | 175 с | ИТОГО: 78 ok, 0 fail
+PASS | e2e_ccfaults | 113 с | ИТОГО: 23 ok, 0 fail
+PASS | e2e_requests | 37 с | ИТОГО: 47 ok, 0 fail
+PASS | e2e_faction | 32 с | 30 ok, 0 fail
+PASS | e2e_rec | 53 с | ИТОГО: ok 23, FAIL 0
+PASS | e2e_release_chain | 51 с | 33 ok, 0 fail
+## F. установщик под Wine
+PASS | wine_e2e | 21 с | ИТОГО: ok 16, FAIL 0
+FAIL(rc=1) | wine_gui | 18 с | ИТОГО: ok 5, FAIL 1  → после «Готово» программа запущена сама (процесс FSB-Helper.exe)
+## G. живая связка с GitHub (только чтение)
+PASS | t_live_chain | 6 с | ИТОГО: ok 40, FAIL 0
+PASS | live_check | 3 с | ИТОГО: ok 29, FAIL 0
+## H. удобство и оформление 4.0 → 4.1 (те же автопроверки, что в аудите)
+PASS | t_ux41 | 402 с | ИТОГО: ok 11, FAIL 0
+## I. мутации — отдельным потоком параллельно (tools/army_logs/mutations41.log, tools/evidence/mutations41.md)
+# конец 2026-11-10 11:52:24 CET
+ИТОГ: PASS 51, FAIL 2
+DONE
+## Повтор двух наборов на ТЕХ ЖЕ файлах после исправления самих тестов (код программы не менялся; отпечатки ниже = отпечаткам в начале)
+   806a88ef7166475a4f2638548fdd8a213d619eb6ac6a22638b2dfce011fe0d45  release/FSB-Helper-Setup.exe
+   b131a9daa907df848b803815082a60fe15d09430e8eca0b891f516325389b3bc  shell/app.html
+   fd6c6a42f49bd78f6698474f7159dc007f8b9273354561be9563faba386dee75  shell/app_army.html
+PASS | e2e_update (повтор: тест копировал recorder.html из старой 3.4) | 136 с | 19 ok, 0 fail
+PASS | wine_gui (повтор: проверяется сам запуск программы, а не сколько Electron проживёт под Wine) | 17 с | ИТОГО: ok 6, FAIL 0
