@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Установка «Регламента»: SmartScreen, браузер, интеллектуальное управление</title>
+<meta name="description" content="Почему Windows и браузер предупреждают о программе без подписи и что нажать: «Сохранить», «Подробнее» → «Выполнить в любом случае», выключить интеллектуальное управление приложениями.">
+<meta name="color-scheme" content="dark">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" href="fonts/unbounded-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="site.css">
+<meta property="og:title" content="Установка «Регламента»: SmartScreen, браузер, интеллектуальное управление">
+<meta property="og:image" content="https://fsb-helper-ru.github.io/fsb-helper-kutuzovsky/img/home.webp">
+<meta property="og:description" content="Почему Windows и браузер предупреждают о программе без подписи и что нажать: «Сохранить», «Подробнее» → «Выполнить в любом случае», выключить интеллектуальное управление приложениями.">
+</head>
+<body>
+<header class="top" id="top"><div class="wrap"><a class="brand" href="index.html" aria-label="Регламент — на главную"><svg width="34" height="34" viewBox="0 0 256 256" aria-hidden="true"><defs><linearGradient id="lgbg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1a2f6b"/><stop offset="1" stop-color="#2b1d5e"/></linearGradient><linearGradient id="lggd" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6dc8c"/><stop offset="1" stop-color="#c48f28"/></linearGradient></defs><rect x="8" y="8" width="240" height="240" rx="58" fill="url(#lgbg)"/><circle cx="128" cy="128" r="86" fill="none" stroke="url(#lggd)" stroke-width="12" stroke-dasharray="11 6.2"/><circle cx="128" cy="128" r="70" fill="url(#lggd)"/><path d="M100 82h40l20 20v72H100z" fill="#14204a"/><path d="M110 120h40M110 136h40M110 152h26" stroke="#f6dc8c" stroke-width="7" stroke-linecap="round"/></svg><span>Регламент<small>помощник госструктур · Россия Онлайн</small></span></a>
+<nav class="links" aria-label="Разделы сайта"><a href="index.html#features">Что умеет</a><a href="modules.html">Модули</a><a href="install.html" aria-current="page">Установка</a><a href="buy.html">Купить ключ</a><a href="guides.html">Гайды</a><a href="faq.html">Вопросы</a></nav>
+<a class="btn sm" href="https://github.com/fsb-helper-ru/fsb-helper-kutuzovsky/releases/latest/download/FSB-Helper-Setup.exe" aria-label="Скачать для Windows"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg><span>Скачать</span></a></div></header>
+<main class="page">
+<div class="wrap">
+<p class="crumbs"><a href="index.html">Главная</a> › Установка</p>
+<h1>Windows или браузер ругаются? <em>Это нормально</em></h1>
+<p class="lead">У «Регламента» нет платной цифровой подписи Microsoft — она стоит десятки тысяч рублей в год. Без неё Windows и браузеры
+не знают издателя и предупреждают о <b>любой</b> новой программе. Предупреждение не значит, что нашли вирус: это значит «мы не знаем, кто это сделал».</p>
+<div class="calm"><b>Почему можно доверять.</b> Программа ставится в вашу папку пользователя без прав администратора, не трогает игру
+(ничего не нажимает за вас и не встраивается в неё), в интернет ходит только на сайт проекта (GitHub) и в канал заявок на ключ.
+Перед запуском можно сверить контрольную сумму файла с <a href="SHA256SUMS.txt">SHA256SUMS.txt</a> — подробнее на странице <a href="security.html">«Безопасность»</a>.</div>
+<nav class="tabs42" aria-label="Шаги установки"><a href="#browser">1. Браузер</a><a href="#smartscreen">2. SmartScreen</a><a href="#sac">3. Интеллектуальное управление</a><a href="#after">4. После установки</a></nav>
+
+<h2 id="browser">1. Браузер не даёт скачать файл</h2>
+<p>Edge, Chrome или Яндекс Браузер пишут, что файл «обычно не скачивают» или «может быть опасен». Так браузер реагирует на редкие файлы без подписи.</p>
+<ol class="gsteps42">
+<li><h3>Наведите на файл в загрузках и нажмите «…» (три точки)</h3>
+<div class="mock" role="img" aria-label="Схема: строка загрузки браузера с предупреждением и кнопкой с тремя точками"><div class="mt">Загрузки</div><div class="mb">
+<div class="row" style="margin:0"><span class="warnic">!</span><span><b>FSB-Helper-Setup.exe</b> обычно не скачивается. Перед открытием убедитесь, что доверяете файлу.</span></div>
+<div class="row"><span class="b">Удалить</span><span class="b hl" data-n="1">…</span></div></div></div></li>
+<li><h3>Выберите «Сохранить»</h3>
+<div class="mock" role="img" aria-label="Схема: меню с пунктом Сохранить"><div class="mt">Загрузки</div><div class="mb"><div class="menu"><div class="hl">Сохранить</div><div>Сообщить, что файл безопасен</div><div>Подробнее</div></div></div></div></li>
+<li><h3>Появится окно с кнопкой «Удалить». Рядом с ней — стрелка ▾: нажмите её и выберите «Всё равно сохранить»</h3>
+<div class="mock" role="img" aria-label="Схема: окно с кнопкой Удалить, стрелкой и пунктом Всё равно сохранить"><div class="mt">Убедитесь, что вы доверяете файлу</div><div class="mb">
+Убедитесь, что вы доверяете файлу FSB-Helper-Setup.exe, прежде чем открывать его.
+<div class="row"><span class="b">Удалить</span><span class="b hl" data-n="3">▾</span></div>
+<div class="menu"><div class="hl">Всё равно сохранить</div></div></div></div>
+<p class="small">В Chrome то же самое: стрелка или «⋮» у файла → «Сохранить» / «Скачать небезопасный файл». Надписи в разных версиях браузеров немного отличаются — ищите «Сохранить» и «Всё равно».</p></li>
+</ol>
+
+<h2 id="smartscreen">2. Синее окно «Система Windows защитила ваш компьютер»</h2>
+<p>Это фильтр SmartScreen в Microsoft Defender. Он предупреждает о программах, которые ещё мало кто запускал.</p>
+<ol class="gsteps42">
+<li><h3>Нажмите «Подробнее»</h3>
+<div class="mock ss" role="img" aria-label="Схема: синее окно SmartScreen со ссылкой Подробнее"><div class="mt">Microsoft Defender SmartScreen</div><div class="mb"><h4>Система Windows защитила ваш компьютер</h4>
+Фильтр SmartScreen в Microsoft Defender предотвратил запуск неопознанного приложения, которое может подвергнуть ваш компьютер риску.<br><br><span class="b hl" data-n="1" style="border:0;padding:0;text-decoration:underline">Подробнее</span>
+<div class="row" style="justify-content:flex-end"><span class="b">Не выполнять</span></div></div></div></li>
+<li><h3>Появится кнопка «Выполнить в любом случае» — нажмите её</h3>
+<div class="mock ss" role="img" aria-label="Схема: окно SmartScreen с кнопкой Выполнить в любом случае"><div class="mt">Microsoft Defender SmartScreen</div><div class="mb"><h4>Система Windows защитила ваш компьютер</h4>
+Приложение: FSB-Helper-Setup.exe<br>Издатель: Неизвестный издатель
+<div class="row" style="justify-content:flex-end"><span class="b hl" data-n="2">Выполнить в любом случае</span><span class="b">Не выполнять</span></div></div></div>
+<p>«Неизвестный издатель» — как раз из-за отсутствия платной подписи. Дальше откроется установщик «Регламента».</p></li>
+</ol>
+
+<h2 id="sac">3. «Интеллектуальное управление приложениями» заблокировало установку</h2>
+<p>В новой Windows 11 есть защита «Интеллектуальное управление приложениями» (Smart App Control). Она блокирует любые программы без подписи —
+и кнопки «Выполнить в любом случае» у неё нет. Если вы видите сообщение, что приложение заблокировано этой защитой, установить программу можно только после её выключения.</p>
+<ol class="gsteps42">
+<li><h3>Откройте «Безопасность Windows»</h3><p>Пуск → <b>Параметры</b> → <b>Конфиденциальность и защита</b> → <b>Безопасность Windows</b> → <b>Управление приложениями и браузером</b>.</p></li>
+<li><h3>Нажмите «Параметры интеллектуального управления приложениями» и выберите «Выкл.»</h3>
+<div class="mock win" role="img" aria-label="Схема: настройки интеллектуального управления приложениями с выбранным пунктом Выкл."><div class="mt">Безопасность Windows</div><div class="mb">
+<div class="path">Управление приложениями и браузером › Интеллектуальное управление приложениями</div>
+<div style="margin-top:10px"><label class="tog">○ Вкл.</label><br><label class="tog">○ Оценка</label><br><span class="b hl" data-n="2" style="border:0;background:transparent;padding:2px 4px">◉ Выкл.</span></div></div></div></li>
+<li><h3>Запустите установщик ещё раз</h3><p>Теперь сработает обычное предупреждение SmartScreen — см. шаг 2.</p></li>
+</ol>
+<div class="warnbox"><b>Честно о последствиях.</b> Это защита Windows для всех программ без подписи, а не только для нашей. В некоторых версиях Windows включить её обратно
+можно только после сброса или переустановки системы. Microsoft Defender (обычный антивирус) при этом продолжает работать.</div>
+
+<h2 id="after">4. После установки</h2>
+<p>Программа появится на рабочем столе и в меню «Пуск» как <b>«Регламент»</b>. Откройте её, во вкладке <b>«Первый вход»</b> введите логин и ключ, придумайте пароль.
+Нет ключа — нажмите <b>«Получить ключ»</b>: выберите сервер, фракцию и срок, укажите ник из игры и номер заказа Playerok. Подробнее — <a href="buy.html">как купить ключ</a>.</p>
+<p><a class="btn main" href="https://github.com/fsb-helper-ru/fsb-helper-kutuzovsky/releases/latest/download/FSB-Helper-Setup.exe">Скачать для Windows</a></p>
+</div>
+</main>
+<footer><div class="wrap">
+<nav aria-label="Страницы сайта"><a href="index.html">Главная</a><a href="guides.html">Гайды</a><a href="faq.html">Вопросы и ответы</a><a href="security.html">Безопасность</a><a href="changelog.html">Что нового</a><a href="https://github.com/fsb-helper-ru/fsb-helper-kutuzovsky">GitHub</a><a href="https://github.com/fsb-helper-ru/fsb-helper-kutuzovsky/releases">Выпуски</a></nav>
+<p><b>Регламент</b> (прежнее имя — «Помощник · Кутузовский») — неофициальный игровой RP-помощник для госструктур серверов «Кутузовский», «Арбат» и «Тверской» игры «Россия Онлайн». Не является официальной программой игры, сервера или организации и не является юридическим источником. Документы в программе — ролевые, юридической силы не имеют.</p>
+<p>Версия 4.2.0 от 14 ноября 2026 · <a href="SHA256SUMS.txt">SHA256SUMS.txt</a> · <a href="https://vk.ru/griezslav777">Поддержка ВКонтакте</a> · Шрифт Unbounded — <a href="fonts/OFL.txt">SIL Open Font License</a></p>
+</div></footer>
+</body>
+</html>
